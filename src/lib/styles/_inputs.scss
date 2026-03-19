@@ -1,0 +1,110 @@
+@use "colors.scss" as colors;
+@use "defaultTexts.scss" as defaultTexts;
+
+// ── Shared Form Group ──────────────────────────────────────
+// Used by: registration, login, forgot-password (and future components)
+.form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+
+  // spans both columns in grid layouts
+  &--full {
+    grid-column: 1 / -1;
+  }
+
+  label {
+    @extend .default-text;
+    color: colors.$color-text-primary;
+  }
+
+  input,
+  select,
+  textarea {
+    @extend .default-text;
+    color: colors.$color-text-primary;
+    padding: 10px 14px;
+    border: 1px solid colors.$color-border;
+    border-radius: 12px;
+    outline: none;
+    background-color: colors.$color-white;
+    width: 100%;
+    transition: border-color 0.2s ease;
+
+    &:focus {
+      border-color: colors.$color-text-primary;
+    }
+
+    &::placeholder {
+      color: colors.$color-text-secondary;
+      opacity: 0.6;
+    }
+  }
+
+  textarea {
+    padding: 15px;
+    resize: vertical;
+  }
+
+  input[type="date"]:not(:valid) {
+    color: colors.$color-text-secondary;
+    opacity: 0.6;
+  }
+
+  select {
+    cursor: pointer;
+    appearance: auto;
+  }
+}
+
+// ── Password field with toggle ─────────────────────────────
+.input-password {
+  position: relative;
+  display: flex;
+  align-items: center;
+
+  input {
+    width: 100%;
+    padding-right: 42px;
+  }
+}
+
+.toggle-password {
+  position: absolute;
+  right: 12px;
+  top: 50%;
+  transform: translateY(-50%);
+  background: none;
+  border: none;
+  padding: 0;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: colors.$color-text-secondary;
+  transition: color 0.2s ease;
+
+  svg {
+    width: 18px;
+    height: 18px;
+  }
+
+  &:hover {
+    color: colors.$color-text-primary;
+  }
+}
+
+// ── Validation Errors ──────────────────────────────────────
+.input-error {
+  border-color: #d32f2f !important;
+}
+
+.error-text,
+.field-error {
+  display: block;
+  color: #d32f2f;
+  font-size: 0.75rem;
+  font-weight: 400;
+  line-height: 1.4;
+  margin-top: 4px;
+}

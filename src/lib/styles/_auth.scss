@@ -1,0 +1,136 @@
+@use "colors.scss" as colors;
+@use "defaultTexts.scss" as defaultTexts;
+
+// ── Shared Page Wrappers ──────────────────────────────────────
+.auth-page {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 40px 20px;
+  min-height: 100vh;
+  background-color: colors.$color-bg-page;
+}
+
+.auth-card {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  padding: 36px;
+  background-color: colors.$color-white;
+  border-radius: 12px;
+  box-shadow: 0 4px 24px rgba(0, 0, 0, 0.1);
+  width: 100%;
+}
+
+// ── Shared Content Header ─────────────────────────────────────
+.auth-content {
+  h2 {
+    @extend .large-text;
+    color: colors.$color-text-primary;
+    text-align: center;
+  }
+
+  p {
+    @extend .default-text;
+    color: colors.$color-text-secondary;
+    font-weight: 300;
+    text-align: center;
+    margin-top: 10px;
+    margin-bottom: 24px;
+  }
+}
+
+// ── Terms Container ───────────────────────────────────────────
+.auth-terms-container {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+
+  input[type="checkbox"] {
+    width: 16px;
+    height: 16px;
+    flex-shrink: 0;
+    margin-top: 2px;
+    cursor: pointer;
+    accent-color: colors.$color-text-primary;
+  }
+
+  label {
+    @extend .default-text;
+    color: colors.$color-text-secondary;
+    cursor: pointer;
+    line-height: 1.5;
+
+    a {
+      color: colors.$color-text-primary;
+      font-weight: 600;
+      text-decoration: none;
+
+      &:hover {
+        text-decoration: underline;
+      }
+    }
+  }
+}
+
+// ── Shared Submit Button ──────────────────────────────────────
+.auth-submit-btn {
+  @extend .default-text;
+  width: 100%;
+  padding: 13px;
+  background-color: colors.$color-text-primary;
+  color: colors.$color-white;
+  border: none;
+  border-radius: 12px;
+  outline: none;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+
+  &:hover {
+    background-color: colors.$color-text-secondary;
+  }
+}
+
+// ── Footer Links (Sign in / Register) ─────────────────────────
+.auth-footer-link {
+  display: flex;
+  justify-content: center;
+  margin-top: 4px;
+
+  p {
+    @extend .default-text;
+    color: colors.$color-text-secondary;
+
+    a {
+      color: colors.$color-text-primary;
+      font-weight: 600;
+      text-decoration: none;
+
+      &:hover {
+        text-decoration: underline;
+      }
+    }
+  }
+}
+
+// ── Back specifically to Home ─────────────────────────────────
+.auth-back-home {
+  margin-top: 20px;
+
+  a {
+    @extend .default-text;
+    color: colors.$color-text-secondary;
+    text-decoration: none;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+
+    img {
+      width: 20px;
+      height: 20px;
+      fill: colors.$color-text-secondary;
+    }
+  }
+}

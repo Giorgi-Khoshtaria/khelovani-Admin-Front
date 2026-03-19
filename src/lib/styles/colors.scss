@@ -1,0 +1,39 @@
+// ============================================
+// Mace Color Palette
+// ============================================
+
+// Neutrals / Backgrounds
+$color-cream: #f2ebd9; // warm cream
+$color-ivory: #faf7f2; // light ivory
+$color-bg-page: #f5f3ef;
+$color-bg-secondary: #e8dcc8;
+$color-bg-accent: #d4c4a8;
+$color-white: #ffffff;
+$color-black: #000000;
+
+// Reds
+$color-deep-red: #7b1c1c; // deep mace red
+$color-burnt-red: #a63228; // burnt red
+
+// Earthy / Warm
+$color-sand: #d9c4a0; // warm sand
+$color-espresso: #2b1a0f; // dark espresso
+$color-walnut: #6b4c35; // walnut brown
+$color-darkest: #1a1108; // near black
+$color-text-primary: #111827;
+$color-text-secondary: #4b5563;
+
+$color-border: #d1d5db;
+// ============================================
+// Semantic Aliases (optional, recommended)
+// ============================================
+$color-bg-primary: $color-bg-page;
+$color-bg-secondary: $color-bg-secondary;
+$color-bg-accent: $color-bg-accent;
+$color-text-primary: $color-text-primary;
+$color-text-secondary: $color-text-secondary;
+$color-text-light: $color-walnut;
+$color-text-dark: $color-darkest;
+$color-accent: $color-deep-red;
+
+// $color-accent-light: $color-burnt-red;
