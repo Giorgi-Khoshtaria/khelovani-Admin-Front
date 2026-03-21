@@ -1,9 +1,9 @@
 import { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
 import { getPartnerByIdRequest } from "@/apiCalls/partnerApiCalls/getPartner.req";
 import { updatePartnerStatusRequest } from "@/apiCalls/partnerApiCalls/updatePartnerStatus.req";
 import axios from "axios";
-import "./PartnerProfilePage.scss";
+import "./PartnerDetailedPage.scss";
 import TextInput from "@/lib/ui/TextInput";
 import TextareaInput from "@/lib/ui/TextareaInput";
 import { usePartnerContext } from "@/context/PartnerContext";
@@ -23,8 +23,10 @@ interface Partner {
   createdAt: string;
 }
 
-export default function PartnerProfilePage() {
-  const { partnerId: id } = usePartnerContext();
+export default function PartnerDetailedPage() {
+  const { id: urlId } = useParams<{ id: string }>();
+  const { partnerId: contextId } = usePartnerContext();
+  const id = urlId || contextId;
   const navigate = useNavigate();
   const [partner, setPartner] = useState<Partner | null>(null);
   const [loading, setLoading] = useState(true);
@@ -37,7 +39,6 @@ export default function PartnerProfilePage() {
       setError("ავტორიზაცია ვერ მოხერხდა (პარტნიორის ID არ მოიძებნა)");
       return;
     }
-
 
     const fetchPartner = async () => {
       try {
@@ -86,7 +87,7 @@ export default function PartnerProfilePage() {
     <div className="partner-profile">
       <div className="profile-header">
         <div className="header-title">
-          <button className="back-btn" onClick={() => navigate("/")}>
+          <button className="back-btn" onClick={() => navigate("/partners")}>
             ← უკან
           </button>
           <h1>

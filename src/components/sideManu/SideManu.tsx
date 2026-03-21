@@ -7,7 +7,7 @@ export default function SideManu() {
 
   const links = [
     { path: "/", label: "მენიუ" },
-    { path: "/partner-profile/1", label: "პარტნიორის პროფილი" }, // Test id 1
+    { path: "/partner-listing", label: "პარტნიორების სია" },
   ];
 
   return (
@@ -17,8 +17,9 @@ export default function SideManu() {
           <li
             key={link.path}
             className={`side-manu__item ${
-              location.pathname === link.path || 
-              (link.path.startsWith("/partner-profile") && location.pathname.startsWith("/partner-profile"))
+              location.pathname === link.path ||
+              (link.path.startsWith("/partner-profile") &&
+                location.pathname.startsWith("/partner-profile"))
                 ? "active"
                 : ""
             }`}

@@ -1,0 +1,41 @@
+@use "@/lib/styles/colors.scss" as colors;
+
+.partner-listing-page {
+  background-color: var(--khelovani-background-greyscale-primary);
+  min-height: 100vh;
+
+  @media (max-width: 1024px) {
+    padding: 24px;
+  }
+
+  .page-header {
+    margin-bottom: 30px;
+    h1 {
+      font-size: 28px;
+      color: var(--khelovani-font-color-primary);
+    }
+  }
+
+  .partners-grid {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+  }
+
+  .loading,
+  .error,
+  .no-data {
+    text-align: center;
+    padding: 40px;
+    font-size: 16px;
+    color: var(--khelovani-font-color-secondary);
+    background: var(--khelovani-background-color-white);
+    border-radius: 12px;
+  }
+
+  .error {
+    color: #dc3545;
+    background-color: #f8d7da;
+    border: 1px solid #f5c6cb;
+  }
+}

@@ -5,8 +5,9 @@ import Layout from "./layout/Layout";
 import LoginPage from "./pages/loginPage/loginPage";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import Menu from "./pages/menu/Menu";
-import PartnerProfilePage from "./pages/partnerProfilePage/PartnerProfilePage";
+import PartnerDetailedPage from "./pages/partnersPages/partnerDetailedPage/PartnerDetailedPage";
 import { PartnerProvider } from "./context/PartnerProvider";
+import PartnerListing from "./pages/partnersPages/partnerListings/PartnerListing";
 
 const router = createBrowserRouter([
   {
@@ -18,8 +19,12 @@ const router = createBrowserRouter([
         element: <Menu />,
       },
       {
-        path: "partner-profile",
-        element: <PartnerProfilePage />,
+        path: "partners",
+        element: <PartnerListing />,
+      },
+      {
+        path: "partners/:id?",
+        element: <PartnerDetailedPage />,
       },
     ],
   },

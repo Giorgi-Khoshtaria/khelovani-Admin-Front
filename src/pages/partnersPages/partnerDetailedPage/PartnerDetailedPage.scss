@@ -1,9 +1,9 @@
 @use "@/lib/styles/colors.scss" as *;
 
 .partner-profile {
-  padding: 2rem;
-  max-width: 900px;
-  margin: 2rem auto;
+  width: 100%;
+
+  padding: 24px;
   background-color: $color-bg-page;
   border-radius: 12px;
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
@@ -14,12 +14,12 @@
     justify-content: space-between;
     align-items: center;
     border-bottom: 2px solid $color-bg-secondary;
-    padding-bottom: 1.5rem;
-    margin-bottom: 2rem;
+    padding-bottom: 20px;
+    margin-bottom: 24px;
 
     .header-title {
       display: flex;
-      gap: 1rem;
+      gap: 16px;
       align-items: center;
 
       .back-btn {
@@ -28,7 +28,7 @@
         padding: 6px 12px;
         border-radius: 6px;
         cursor: pointer;
-        font-size: 0.9rem;
+        font-size: 14px;
         color: $color-espresso;
         transition: all 0.2s;
 
@@ -40,13 +40,13 @@
       h1 {
         margin: 0;
         color: $color-espresso;
-        font-size: 2rem;
+        font-size: 28px;
         display: flex;
-        gap: 0.5rem;
+        gap: 8px;
         align-items: baseline;
 
         .eng-name {
-          font-size: 1.2rem;
+          font-size: 18px;
           color: $color-text-secondary;
           font-weight: 400;
         }
@@ -54,9 +54,9 @@
     }
 
     .status-badge {
-      padding: 0.5rem 1rem;
+      padding: 8px 16px;
       border-radius: 20px;
-      font-size: 0.875rem;
+      font-size: 14px;
       font-weight: 600;
       text-transform: capitalize;
 
@@ -77,20 +77,20 @@
 
   .actions-section {
     background: $color-white;
-    padding: 1.5rem;
+    padding: 20px;
     border-radius: 8px;
-    margin-bottom: 2rem;
+    margin-bottom: 24px;
     border: 1px solid $color-bg-secondary;
 
     h3 {
-      margin: 0 0 1rem 0;
+      margin: 0 0 16px 0;
       color: $color-espresso;
-      font-size: 1.1rem;
+      font-size: 18px;
     }
 
     .action-buttons {
       display: flex;
-      gap: 1rem;
+      gap: 16px;
 
       button {
         padding: 10px 24px;
@@ -98,7 +98,9 @@
         font-weight: 600;
         cursor: pointer;
         border: none;
-        transition: opacity 0.2s, background 0.2s;
+        transition:
+          opacity 0.2s,
+          background 0.2s;
 
         &:disabled {
           opacity: 0.6;
@@ -126,36 +128,34 @@
     }
   }
 
-
   .profile-grid {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-    gap: 2rem;
+    gap: 24px;
   }
 
   .info-section {
     background: $color-white;
-    padding: 1.5rem;
+    padding: 20px;
     border-radius: 8px;
     border: 1px solid $color-bg-secondary;
 
     h2 {
       margin-top: 0;
-      margin-bottom: 1.2rem;
-      font-size: 1.25rem;
+      margin-bottom: 16px;
+      font-size: 20px;
       color: $color-espresso;
       border-bottom: 1px solid $color-bg-secondary;
-      padding-bottom: 0.5rem;
+      padding-bottom: 8px;
     }
 
     .form-group {
-      margin-bottom: 1.25rem;
+      margin-bottom: 16px;
 
       &:last-child {
         margin-bottom: 0;
       }
     }
-
 
     &.description {
       grid-column: 1 / -1;
@@ -171,8 +171,8 @@
   .loading,
   .error {
     text-align: center;
-    padding: 3rem;
-    font-size: 1.2rem;
+    padding: 40px;
+    font-size: 18px;
     color: $color-text-secondary;
   }
 
