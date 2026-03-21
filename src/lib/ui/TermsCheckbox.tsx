@@ -1,4 +1,4 @@
-import Link from "next/link";
+import { Link } from "react-router-dom";
 
 interface TermsCheckboxProps {
   id: string;
@@ -22,8 +22,8 @@ export default function TermsCheckbox({
       <div style={{ display: "flex", alignItems: "flex-start", gap: "10px" }}>
         <input type="checkbox" id={id} checked={checked} onChange={onChange} />
         <label htmlFor={id}>
-          ვეთანხმები <Link href={termsTo}>მომსახურების პირობებს</Link> და{" "}
-          <Link href={privacyTo}>კონფიდენციალურობის პოლიტიკას</Link>
+          ვეთანხმები <Link to={termsTo}>მომსახურების პირობებს</Link> და{" "}
+          <Link to={privacyTo}>კონფიდენციალურობის პოლიტიკას</Link>
         </label>
       </div>
       {error && <span className="error-text">{error}</span>}

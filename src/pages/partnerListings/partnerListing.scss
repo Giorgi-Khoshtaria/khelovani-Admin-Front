@@ -1,0 +1,131 @@
+@use "@/styles/colors.scss" as *;
+
+.partner-listing-page {
+  background-color: $color-bg-page;
+  min-height: 100vh;
+  padding: 24px;
+
+  @media (max-width: 1024px) {
+    padding: 12px;
+  }
+
+  .page-header {
+    margin-bottom: 30px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    h1 {
+      font-size: 28px;
+      color: $color-text-primary;
+    }
+
+    .tabs {
+      display: flex;
+      gap: 8px;
+      background-color: $color-bg-secondary;
+      padding: 6px;
+      border-radius: 8px;
+
+      button {
+        background: none;
+        border: none;
+        padding: 8px 16px;
+        border-radius: 6px;
+        font-size: 14px;
+        font-weight: 600;
+        cursor: pointer;
+        color: $color-text-secondary;
+        transition: all 0.2s ease;
+
+        &:hover {
+          color: $color-espresso;
+        }
+
+        &.active {
+          background-color: $color-white;
+          color: $color-espresso;
+          box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+        }
+      }
+    }
+  }
+
+  .search-bar {
+    margin-bottom: 24px;
+    
+    input {
+      width: 100%;
+      max-width: 360px;
+      padding: 10px 16px;
+      border-radius: 8px;
+      border: 1px solid $color-border;
+      background-color: $color-white;
+      font-size: 14px;
+      outline: none;
+      transition: border-color 0.2s ease;
+
+      &:focus {
+        border-color: $color-text-primary;
+      }
+
+      ::placeholder {
+        color: $color-text-secondary;
+        opacity: 0.6;
+      }
+    }
+  }
+
+  .partners-list {
+    display: flex;
+    flex-direction: column;
+
+    .list-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 12px 24px;
+      background-color: $color-white;
+      border-radius: 12px;
+      margin-bottom: 12px;
+      border: 1px solid $color-border;
+      gap: 20px;
+
+      .header-col {
+        flex: 1;
+        font-weight: 600;
+        color: $color-text-secondary;
+        font-size: 14px;
+
+        &.action-col {
+          flex: 0 0 auto;
+          width: 180px; 
+          text-align: right;
+        }
+      }
+    }
+
+    .list-body {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+  }
+
+  .loading,
+  .error,
+  .no-data {
+    text-align: center;
+    padding: 40px;
+    font-size: 16px;
+    color: $color-text-secondary;
+    background: $color-white;
+    border-radius: 12px;
+  }
+
+  .error {
+    color: #dc3545;
+    background-color: #f8d7da;
+    border: 1px solid #f5c6cb;
+  }
+}

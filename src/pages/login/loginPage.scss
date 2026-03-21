@@ -1,12 +1,14 @@
+@use "@/styles/colors.scss" as *;
+
 .admin-login-page {
   min-height: 100vh;
   display: flex;
   align-items: center;
   justify-content: center;
-  background: #f4f4f4;
+  background: $color-bg-page;
 
   &__form {
-    background: #ffffff;
+    background: $color-white;
     border-radius: 12px;
     padding: 48px 40px;
     width: 100%;

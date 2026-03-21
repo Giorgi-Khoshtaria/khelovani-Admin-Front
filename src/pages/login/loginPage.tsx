@@ -1,5 +1,5 @@
 import "./loginPage.scss";
-import "@/lib/styles/defaultTexts.scss";
+import "@/styles/defaultTexts.scss";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";

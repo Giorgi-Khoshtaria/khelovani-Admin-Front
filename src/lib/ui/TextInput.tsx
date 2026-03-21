@@ -1,4 +1,4 @@
-import "@/lib/styles/_inputs.scss";
+import "@/styles/_inputs.scss";
 
 interface TextInputProps {
   id: string;
@@ -25,7 +25,6 @@ export default function TextInput({
   fullWidth,
   readOnly,
 }: TextInputProps) {
-
   return (
     <div className={`form-group${fullWidth ? " form-group--full" : ""}`}>
       <label htmlFor={id}>{label}</label>

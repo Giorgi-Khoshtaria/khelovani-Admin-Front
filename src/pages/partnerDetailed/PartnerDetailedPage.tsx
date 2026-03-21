@@ -64,7 +64,9 @@ export default function PartnerDetailedPage() {
     fetchPartner();
   }, [id]);
 
-  const handleStatusUpdate = async (newStatus: typeof PartnerStatus.APPROVED | typeof PartnerStatus.REJECTED) => {
+  const handleStatusUpdate = async (
+    newStatus: typeof PartnerStatus.APPROVED | typeof PartnerStatus.REJECTED,
+  ) => {
     if (!id || !partner) return;
 
     try {
@@ -93,17 +95,24 @@ export default function PartnerDetailedPage() {
           <button className="back-btn" onClick={() => navigate("/partners")}>
             ← უკან
           </button>
-          <h1>
-            {partner.companyNameGe}{" "}
-            <span className="eng-name">({partner.companyNameEn})</span>
-          </h1>
         </div>
-        <div className={`status-badge ${partner.status}`}>
-          {partner.status === PartnerStatus.PENDING
-            ? "მოლოდინი"
-            : partner.status === PartnerStatus.APPROVED
-              ? "დადასტურებული"
-              : "უარყოფილი"}
+        <div className="header-actions">
+          {partner.status === PartnerStatus.APPROVED && (
+            <button
+              className="reject-btn"
+              onClick={() => handleStatusUpdate(PartnerStatus.REJECTED)}
+              disabled={updating}
+            >
+              {updating ? "მუშავდება..." : "უარყოფა"}
+            </button>
+          )}
+          <div className={`status-badge ${partner.status}`}>
+            {partner.status === PartnerStatus.PENDING
+              ? "მოლოდინი"
+              : partner.status === PartnerStatus.APPROVED
+                ? "დადასტურებული"
+                : "უარყოფილი"}
+          </div>
         </div>
       </div>
 
@@ -128,6 +137,16 @@ export default function PartnerDetailedPage() {
           </div>
         </div>
       )}
+
+      <div className="company-info-panel">
+        <div className="company-logo">
+          {partner.companyNameGe.charAt(0).toUpperCase()}
+        </div>
+        <div className="company-text">
+          <h2 className="company-title-ge">{partner.companyNameGe}</h2>
+          <p className="company-title-en">({partner.companyNameEn})</p>
+        </div>
+      </div>
 
       <div className="profile-grid">
         <div className="info-section">

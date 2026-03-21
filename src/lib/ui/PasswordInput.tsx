@@ -1,5 +1,5 @@
 "use client";
-import "@/lib/styles/_inputs.scss";
+import "@/styles/_inputs.scss";
 
 import { useState } from "react";
 import { EyeOpen, EyeOff } from "./EyeIcons";
