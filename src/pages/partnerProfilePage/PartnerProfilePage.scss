@@ -1,0 +1,182 @@
+@use "@/lib/styles/colors.scss" as *;
+
+.partner-profile {
+  padding: 2rem;
+  max-width: 900px;
+  margin: 2rem auto;
+  background-color: $color-bg-page;
+  border-radius: 12px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+  font-family: inherit;
+
+  .profile-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 2px solid $color-bg-secondary;
+    padding-bottom: 1.5rem;
+    margin-bottom: 2rem;
+
+    .header-title {
+      display: flex;
+      gap: 1rem;
+      align-items: center;
+
+      .back-btn {
+        background: none;
+        border: 1px solid $color-bg-secondary;
+        padding: 6px 12px;
+        border-radius: 6px;
+        cursor: pointer;
+        font-size: 0.9rem;
+        color: $color-espresso;
+        transition: all 0.2s;
+
+        &:hover {
+          background: $color-bg-secondary;
+        }
+      }
+
+      h1 {
+        margin: 0;
+        color: $color-espresso;
+        font-size: 2rem;
+        display: flex;
+        gap: 0.5rem;
+        align-items: baseline;
+
+        .eng-name {
+          font-size: 1.2rem;
+          color: $color-text-secondary;
+          font-weight: 400;
+        }
+      }
+    }
+
+    .status-badge {
+      padding: 0.5rem 1rem;
+      border-radius: 20px;
+      font-size: 0.875rem;
+      font-weight: 600;
+      text-transform: capitalize;
+
+      &.pending {
+        background-color: #fef3c7;
+        color: #d97706;
+      }
+      &.approved {
+        background-color: #d1fae5;
+        color: #059669;
+      }
+      &.rejected {
+        background-color: #fee2e2;
+        color: #dc2626;
+      }
+    }
+  }
+
+  .actions-section {
+    background: $color-white;
+    padding: 1.5rem;
+    border-radius: 8px;
+    margin-bottom: 2rem;
+    border: 1px solid $color-bg-secondary;
+
+    h3 {
+      margin: 0 0 1rem 0;
+      color: $color-espresso;
+      font-size: 1.1rem;
+    }
+
+    .action-buttons {
+      display: flex;
+      gap: 1rem;
+
+      button {
+        padding: 10px 24px;
+        border-radius: 6px;
+        font-weight: 600;
+        cursor: pointer;
+        border: none;
+        transition: opacity 0.2s, background 0.2s;
+
+        &:disabled {
+          opacity: 0.6;
+          cursor: not-allowed;
+        }
+      }
+
+      .approve-btn {
+        background-color: #10b981;
+        color: white;
+
+        &:hover:not(:disabled) {
+          background-color: #059669;
+        }
+      }
+
+      .reject-btn {
+        background-color: #ef4444;
+        color: white;
+
+        &:hover:not(:disabled) {
+          background-color: #dc2626;
+        }
+      }
+    }
+  }
+
+
+  .profile-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 2rem;
+  }
+
+  .info-section {
+    background: $color-white;
+    padding: 1.5rem;
+    border-radius: 8px;
+    border: 1px solid $color-bg-secondary;
+
+    h2 {
+      margin-top: 0;
+      margin-bottom: 1.2rem;
+      font-size: 1.25rem;
+      color: $color-espresso;
+      border-bottom: 1px solid $color-bg-secondary;
+      padding-bottom: 0.5rem;
+    }
+
+    .form-group {
+      margin-bottom: 1.25rem;
+
+      &:last-child {
+        margin-bottom: 0;
+      }
+    }
+
+
+    &.description {
+      grid-column: 1 / -1;
+
+      p {
+        margin: 0;
+        line-height: 1.6;
+        color: $color-text-secondary;
+      }
+    }
+  }
+
+  .loading,
+  .error {
+    text-align: center;
+    padding: 3rem;
+    font-size: 1.2rem;
+    color: $color-text-secondary;
+  }
+
+  .error {
+    color: #dc2626;
+  }
+}

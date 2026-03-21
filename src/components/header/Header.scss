@@ -1,0 +1,65 @@
+@use "@/lib/styles/colors.scss" as *;
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 12px 24px;
+  background-color: $color-white;
+  border-bottom: 1px solid $color-border;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+
+  &__logo {
+    display: flex;
+    align-items: center;
+
+    img {
+      object-fit: contain;
+    }
+  }
+
+  &__title {
+    h2 {
+      margin: 0;
+      font-size: 1.25rem;
+      color: $color-text-primary;
+      font-weight: 600;
+    }
+  }
+
+  &__content {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+
+    &__user {
+      p {
+        margin: 0;
+        font-size: 0.9rem;
+        color: $color-text-secondary;
+        font-weight: 500;
+      }
+    }
+
+    button {
+      background-color: transparent;
+      border: 1px solid $color-accent;
+      color: $color-accent;
+      padding: 6px 16px;
+      border-radius: 4px;
+      font-size: 0.9rem;
+      font-weight: 500;
+      cursor: pointer;
+      transition: all 0.2s ease-in-out;
+
+      &:hover {
+        background-color: $color-accent;
+        color: $color-white;
+      }
+
+      &:active {
+        transform: scale(0.98);
+      }
+    }
+  }
+}

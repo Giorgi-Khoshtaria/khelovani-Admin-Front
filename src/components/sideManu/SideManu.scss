@@ -1,0 +1,45 @@
+@use "@/lib/styles/colors.scss" as *;
+
+.side-manu {
+  width: 240px;
+  background-color: $color-white;
+  border-right: 1px solid $color-border;
+  height: calc(100vh - 64px); // Adjust based on header height
+  padding: 20px 0;
+  box-shadow: 2px 0 5px rgba(0, 0, 0, 0.02);
+
+  &__list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+
+  &__item {
+    margin-bottom: 4px;
+
+    &.active {
+      .side-manu__link {
+        background-color: $color-bg-secondary;
+        color: $color-text-dark;
+        border-left: 4px solid $color-accent;
+        font-weight: 600;
+      }
+    }
+  }
+
+  &__link {
+    display: block;
+    padding: 12px 24px;
+    color: $color-text-secondary;
+    text-decoration: none;
+    font-weight: 500;
+    font-size: 0.95rem;
+    transition: all 0.2s ease-in-out;
+    border-left: 4px solid transparent;
+
+    &:hover:not(.active) {
+      background-color: $color-bg-page;
+      color: $color-text-primary;
+    }
+  }
+}

@@ -1,0 +1,109 @@
+@use "@/lib/styles/colors.scss" as *;
+
+.menu-page {
+  padding: 2rem;
+  
+  h1 {
+    margin-bottom: 2rem;
+    color: $color-text-primary;
+  }
+
+  .loading, .error, .no-partners {
+    text-align: center;
+    font-size: 1.2rem;
+    color: $color-text-secondary;
+    padding: 3rem;
+  }
+
+  .error {
+    color: #e63946;
+  }
+
+  .partners-list {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 1.5rem;
+
+    .partner-card {
+      background: #fff;
+      border: 1px solid $color-border;
+      border-radius: 8px;
+      padding: 1.5rem;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+      transition: transform 0.2s, box-shadow 0.2s;
+      cursor: pointer;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+
+      &:hover {
+        transform: translateY(-4px);
+        box-shadow: 0 8px 12px rgba(0, 0, 0, 0.1);
+      }
+
+      .partner-info {
+        h3 {
+          margin: 0;
+          color: $color-text-primary;
+          font-size: 1.25rem;
+        }
+
+        .eng-name {
+          font-size: 0.9rem;
+          color: $color-text-secondary;
+          display: block;
+          margin-top: 0.25rem;
+        }
+
+        .contact-person {
+          margin-top: 1rem;
+          font-size: 0.95rem;
+          color: $color-text-primary;
+        }
+
+        .email {
+          font-size: 0.9rem;
+          color: $color-text-secondary;
+          word-break: break-all;
+        }
+      }
+
+      .partner-footer {
+        margin-top: 1.5rem;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+
+        .status-badge {
+          display: inline-block;
+          padding: 4px 12px;
+          border-radius: 16px;
+          font-size: 0.85rem;
+          font-weight: 500;
+          text-transform: capitalize;
+
+          &.pending {
+            background-color: #ffe8cc;
+            color: #d9480f;
+          }
+
+          &.approved {
+            background-color: #d3f9d8;
+            color: #2b8a3e;
+          }
+
+          &.rejected {
+            background-color: #ffe3e3;
+            color: #c92a2a;
+          }
+        }
+
+        .view-link {
+          color: $color-accent;
+          font-weight: 500;
+          font-size: 0.9rem;
+        }
+      }
+    }
+  }
+}

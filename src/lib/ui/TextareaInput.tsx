@@ -2,12 +2,13 @@ interface TextareaInputProps {
   id: string;
   label: string;
   value: string;
-  onChange: (e: React.ChangeEvent<HTMLTextAreaElement>) => void;
+  onChange?: (e: React.ChangeEvent<HTMLTextAreaElement>) => void;
   placeholder?: string;
   hint?: string;
   error?: string;
   rows?: number;
   fullWidth?: boolean;
+  readOnly?: boolean;
 }
 
 export default function TextareaInput({
@@ -20,7 +21,9 @@ export default function TextareaInput({
   error,
   rows = 3,
   fullWidth,
+  readOnly,
 }: TextareaInputProps) {
+
   return (
     <div className={`form-group${fullWidth ? " form-group--full" : ""}`}>
       <label htmlFor={id}>
@@ -34,7 +37,9 @@ export default function TextareaInput({
         className={error ? "input-error" : ""}
         placeholder={placeholder}
         rows={rows}
+        readOnly={readOnly}
       />
+
       {error && <span className="error-text">{error}</span>}
     </div>
   );

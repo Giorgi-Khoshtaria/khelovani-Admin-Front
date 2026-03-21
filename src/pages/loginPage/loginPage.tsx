@@ -7,8 +7,8 @@ import axios from "axios";
 import TextInput from "@/lib/ui/TextInput";
 import PasswordInput from "@/lib/ui/PasswordInput";
 import { useFormHandler } from "@/lib/hooks/useFormHandler";
-import { validateLoginForm } from "@/lib/validations/authValidations/loginValidations";
 import { loginRequest } from "@/apiCalls/authApiCalls/login.req";
+import { usePartnerContext } from "@/context/PartnerContext";
 
 interface AdminLoginForm {
   email: string;
@@ -21,32 +21,51 @@ const INITIAL_FORM: AdminLoginForm = {
 };
 
 export default function AdminLoginPage() {
-  const navigate = useNavigate();
   const [isLoading, setIsLoading] = useState(false);
 
-  const { formData, errors, setErrors, handleChange } =
-    useFormHandler(INITIAL_FORM);
+  const { setToken, setPartnerId } = usePartnerContext();
+
+  const { formData, errors, handleChange } = useFormHandler(INITIAL_FORM);
+
+  const navigate = useNavigate();
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
-    const newErrors = validateLoginForm(formData.email, formData.password);
-
-    if (Object.keys(newErrors).length > 0) {
-      setErrors(newErrors);
-      return;
-    }
-
     setIsLoading(true);
 
     try {
-      await loginRequest(formData.email, formData.password);
+      const response = await loginRequest(formData.email, formData.password);
+      console.log("Login Response Data:", response);
+
+      const token =
+        response.token ||
+        response.accessToken ||
+        response.jwt ||
+        response.data?.token;
+      if (!token) {
+        console.error("Warning: No token found in response object!");
+      }
+
+      const partnerId =
+        response._id || response.id || response.partnerId || response.user?._id;
+
+      setToken(token);
+      setPartnerId(partnerId);
+
       toast.success("წარმატებით შეხვედით ადმინ პანელში!");
-      setTimeout(() => navigate("/menu"), 2000);
+
+      setTimeout(() => {
+        navigate("/");
+      }, 2000);
     } catch (error: unknown) {
       if (axios.isAxiosError(error)) {
         const responseData = error?.response?.data;
-        if (responseData?.message) {
+        if (responseData?.errors) {
+          Object.values(responseData.errors).forEach((errMsg) => {
+            if (typeof errMsg === "string") toast.error(errMsg);
+          });
+        } else if (responseData?.message) {
           toast.error(responseData.message);
         } else {
           toast.error("შესვლის დროს დაფიქსირდა შეცდომა");
