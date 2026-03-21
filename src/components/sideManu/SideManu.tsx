@@ -7,7 +7,7 @@ export default function SideManu() {
 
   const links = [
     { path: "/", label: "მენიუ" },
-    { path: "/partner-listing", label: "პარტნიორების სია" },
+    { path: "/partners", label: "პარტნიორების სია" },
   ];
 
   return (

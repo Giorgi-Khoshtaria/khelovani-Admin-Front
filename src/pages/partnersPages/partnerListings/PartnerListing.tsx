@@ -4,7 +4,7 @@ import PartnerCard, {
 } from "../../../components/partnerComponents/PartnerCard";
 import "./partnerListing.scss";
 import axios from "axios";
-import { getAllPartnerRequest } from "@/apiCalls/partnerApiCalls/getAllPartner.req";
+import { getAllPartnerRequest } from "@/apiCalls/partnerApiCalls/getPartner.req";
 
 export default function PartnerListing() {
   const [partners, setPartners] = useState<PartnerData[]>([]);

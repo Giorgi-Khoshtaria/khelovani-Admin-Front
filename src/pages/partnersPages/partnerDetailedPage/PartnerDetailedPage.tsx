@@ -1,12 +1,15 @@
 import { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
-import { getPartnerByIdRequest } from "@/apiCalls/partnerApiCalls/getPartner.req";
-import { updatePartnerStatusRequest } from "@/apiCalls/partnerApiCalls/updatePartnerStatus.req";
+import {
+  getPartnerByIdRequest,
+  updatePartnerStatus,
+} from "@/apiCalls/partnerApiCalls/getPartner.req";
 import axios from "axios";
 import "./PartnerDetailedPage.scss";
 import TextInput from "@/lib/ui/TextInput";
 import TextareaInput from "@/lib/ui/TextareaInput";
 import { usePartnerContext } from "@/context/PartnerContext";
+import { PartnerStatus } from "@/lib/status/partnerStatus";
 
 interface Partner {
   _id: string;
@@ -19,7 +22,7 @@ interface Partner {
   email: string;
   address: string;
   description?: string;
-  status: "pending" | "approved" | "rejected";
+  status: PartnerStatus;
   createdAt: string;
 }
 
@@ -61,12 +64,12 @@ export default function PartnerDetailedPage() {
     fetchPartner();
   }, [id]);
 
-  const handleStatusUpdate = async (newStatus: "approved" | "rejected") => {
+  const handleStatusUpdate = async (newStatus: typeof PartnerStatus.APPROVED | typeof PartnerStatus.REJECTED) => {
     if (!id || !partner) return;
 
     try {
       setUpdating(true);
-      await updatePartnerStatusRequest(id, newStatus);
+      await updatePartnerStatus(id, newStatus);
       setPartner({ ...partner, status: newStatus });
     } catch (err) {
       if (axios.isAxiosError(err)) {
@@ -96,28 +99,28 @@ export default function PartnerDetailedPage() {
           </h1>
         </div>
         <div className={`status-badge ${partner.status}`}>
-          {partner.status === "pending"
+          {partner.status === PartnerStatus.PENDING
             ? "მოლოდინი"
-            : partner.status === "approved"
+            : partner.status === PartnerStatus.APPROVED
               ? "დადასტურებული"
               : "უარყოფილი"}
         </div>
       </div>
 
-      {partner.status === "pending" && (
+      {partner.status === PartnerStatus.PENDING && (
         <div className="actions-section">
           <h3>პარტნიორის მართვა</h3>
           <div className="action-buttons">
             <button
               className="approve-btn"
-              onClick={() => handleStatusUpdate("approved")}
+              onClick={() => handleStatusUpdate(PartnerStatus.APPROVED)}
               disabled={updating}
             >
               {updating ? "მუშავდება..." : "დადასტურება"}
             </button>
             <button
               className="reject-btn"
-              onClick={() => handleStatusUpdate("rejected")}
+              onClick={() => handleStatusUpdate(PartnerStatus.REJECTED)}
               disabled={updating}
             >
               {updating ? "მუშავდება..." : "უარყოფა"}

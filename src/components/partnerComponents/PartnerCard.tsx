@@ -1,4 +1,5 @@
 import { Link } from "react-router-dom";
+import { PartnerStatus } from "@/lib/status/partnerStatus";
 import "./PartnerCard.scss";
 
 export interface PartnerData {
@@ -6,7 +7,7 @@ export interface PartnerData {
   companyNameGe: string;
   companyNameEn?: string;
   email: string;
-  status: "pending" | "approved" | "rejected";
+  status: PartnerStatus;
 }
 
 interface PartnerCardProps {
@@ -19,9 +20,9 @@ export default function PartnerCard({ partner }: PartnerCardProps) {
       <div className="partner-card__header">
         <h3 className="partner-card__name">{partner.companyNameGe}</h3>
         <span className={`status-badge ${partner.status}`}>
-          {partner.status === "pending"
+          {partner.status === PartnerStatus.PENDING
             ? "მოლოდინი"
-            : partner.status === "approved"
+            : partner.status === PartnerStatus.APPROVED
               ? "დადასტურებული"
               : "უარყოფილი"}
         </span>
