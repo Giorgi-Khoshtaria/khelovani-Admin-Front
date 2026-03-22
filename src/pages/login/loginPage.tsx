@@ -6,9 +6,10 @@ import { toast } from "react-toastify";
 import axios from "axios";
 import TextInput from "@/lib/ui/TextInput";
 import PasswordInput from "@/lib/ui/PasswordInput";
-import { useFormHandler } from "@/lib/hooks/useFormHandler";
+import { useFormHandler } from "@/hooks/useFormHandler";
 import { loginRequest } from "@/apiCalls/authApiCalls/login.req";
 import { usePartnerContext } from "@/context/PartnerContext";
+import { validateLoginForm } from "@/validations/authValidations/loginValidations";
 
 interface AdminLoginForm {
   email: string;
@@ -25,12 +26,19 @@ export default function AdminLoginPage() {
 
   const { setToken, setPartnerId } = usePartnerContext();
 
-  const { formData, errors, handleChange } = useFormHandler(INITIAL_FORM);
+  const { formData, errors, setErrors, handleChange } =
+    useFormHandler(INITIAL_FORM);
 
   const navigate = useNavigate();
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+
+    const formErrors = validateLoginForm(formData.email, formData.password);
+    if (Object.keys(formErrors).length > 0) {
+      setErrors(formErrors);
+      return;
+    }
 
     setIsLoading(true);
 

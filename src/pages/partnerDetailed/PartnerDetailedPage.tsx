@@ -21,6 +21,7 @@ interface Partner {
   city: string;
   email: string;
   address: string;
+  addressEn: string;
   description?: string;
   status: PartnerStatus;
   createdAt: string;
@@ -176,6 +177,13 @@ export default function PartnerDetailedPage() {
             id="address"
             label="მისამართი"
             value={partner.address}
+            readOnly
+            fullWidth
+          />
+          <TextInput
+            id="addressEn"
+            label="მისამართი (ინგლისურად)"
+            value={partner.addressEn}
             readOnly
             fullWidth
           />

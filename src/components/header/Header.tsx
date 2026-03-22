@@ -1,6 +1,6 @@
 import React from "react";
 import "./Header.scss";
-import { useLogout } from "@/lib/hooks/useLogout";
+import { useLogout } from "@/hooks/useLogout";
 
 function Header() {
   const logout = useLogout();

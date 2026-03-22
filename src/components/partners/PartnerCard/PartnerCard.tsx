@@ -41,7 +41,8 @@ export default function PartnerCard({ partner }: PartnerCardProps) {
       <div className="partner-card__body">
         {partner.status === PartnerStatus.REJECTED ? (
           <p className="partner-card__id">
-            <strong>საიდენტიფიკაციო კოდი:</strong> {partner.identificationCode || "N/A"}
+            <strong>საიდენტიფიკაციო კოდი:</strong>{" "}
+            {partner.identificationCode || "N/A"}
           </p>
         ) : (
           <p className="partner-card__email">
@@ -54,14 +55,13 @@ export default function PartnerCard({ partner }: PartnerCardProps) {
           <Link to={`/partners/${partner._id}`} className="view-details-btn">
             დეტალურად
           </Link>
-          {partner.status === PartnerStatus.PENDING && (
-            <button
-              className="reject-btn"
-              onClick={() => handleStatusUpdate(PartnerStatus.REJECTED)}
-            >
-              უარყოფა
-            </button>
-          )}
+
+          <button
+            className="reject-btn"
+            onClick={() => handleStatusUpdate(PartnerStatus.REJECTED)}
+          >
+            უარყოფა
+          </button>
         </div>
       )}
     </div>

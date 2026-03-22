@@ -1,4 +1,4 @@
-import { useNavigateToLogin } from "@/lib/hooks/useNavigateToLogin";
+import { useNavigateToLogin } from "@/hooks/useNavigateToLogin";
 import "./Menu.scss";
 
 function Menu() {

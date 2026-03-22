@@ -98,11 +98,6 @@ export default function PartnerListing() {
         <div className="no-data">განყოფილება ცარიელია</div>
       ) : (
         <div className="partners-list">
-          <div className="list-header">
-            <div className="header-col">კომპანია / სტატუსი</div>
-            <div className="header-col">ინფორმაცია</div>
-            <div className="header-col action-col">მოქმედება</div>
-          </div>
           <div className="list-body">
             {filteredPartners.map((partner) => (
               <PartnerCard key={partner._id} partner={partner} />
