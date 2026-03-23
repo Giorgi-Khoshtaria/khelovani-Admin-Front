@@ -1,4 +1,5 @@
 @use "@/styles/colors.scss" as *;
+@use "@/styles/_buttons.scss" as *;
 
 .admin-login-page {
   min-height: 100vh;
@@ -26,12 +27,12 @@
   }
 
   h2 {
-    color: #222;
+    color: $color-text-primary;
     margin: 0 0 8px;
   }
 
   p {
-    color: #888;
+    color: $color-text-secondary;
     margin: 0;
   }
 }
@@ -47,24 +48,9 @@
 }
 
 .admin-login-btn {
+  @extend .btn-primary;
   width: 100%;
-  padding: 14px;
-  background: #222;
-  color: #ffffff;
+  padding: 14px; // keep local size
   font-size: 15px;
-  font-weight: 600;
-  border: none;
-  border-radius: 8px;
-  cursor: pointer;
   letter-spacing: 0.3px;
-  transition: background 0.2s ease;
-
-  &:hover:not(:disabled) {
-    background: #444;
-  }
-
-  &:disabled {
-    opacity: 0.6;
-    cursor: not-allowed;
-  }
 }

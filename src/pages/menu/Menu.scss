@@ -18,7 +18,7 @@
   }
 
   .error {
-    color: #e63946;
+    color: $color-danger;
   }
 
   .partners-list {
@@ -27,7 +27,7 @@
     gap: 1.5rem;
 
     .partner-card {
-      background: #fff;
+      background: $color-white;
       border: 1px solid $color-border;
       border-radius: 8px;
       padding: 1.5rem;

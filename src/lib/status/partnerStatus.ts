@@ -4,4 +4,5 @@ export const PartnerStatus = {
   REJECTED: "rejected",
 } as const;
 
-export type PartnerStatus = (typeof PartnerStatus)[keyof typeof PartnerStatus];
+export type PartnerStatus = typeof PartnerStatus[keyof typeof PartnerStatus];
+

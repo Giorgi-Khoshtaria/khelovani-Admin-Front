@@ -1,16 +1,8 @@
+import type { PartnerData } from "@/types/partner.types";
 import { Link } from "react-router-dom";
 import { updatePartnerStatus } from "@/apiCalls/partnerApiCalls/getPartner.req";
 import { PartnerStatus } from "@/lib/status/partnerStatus";
 import "./PartnerCard.scss";
-
-export interface PartnerData {
-  _id: string;
-  companyNameGe: string;
-  companyNameEn?: string;
-  email: string;
-  status: PartnerStatus;
-  identificationCode?: string;
-}
 
 interface PartnerCardProps {
   partner: PartnerData;

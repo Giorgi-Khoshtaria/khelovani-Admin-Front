@@ -1,11 +1,12 @@
 @use "@/styles/colors.scss" as *;
+@use "@/styles/_breakpoints.scss" as *;
 
 .partner-listing-page {
   background-color: $color-bg-page;
   min-height: 100vh;
   padding: 24px;
 
-  @media (max-width: 1024px) {
+  @include mobile-and-tablet {
     padding: 12px;
   }
 
@@ -91,6 +92,10 @@
       border: 1px solid $color-border;
       gap: 20px;
 
+      @include mobile {
+        display: none;
+      }
+
       .header-col {
         flex: 1;
         font-weight: 600;
@@ -124,8 +129,8 @@
   }
 
   .error {
-    color: #dc3545;
-    background-color: #f8d7da;
-    border: 1px solid #f5c6cb;
+    color: $color-danger-hover;
+    background-color: $color-danger-light;
+    border: 1px solid $color-danger;
   }
 }

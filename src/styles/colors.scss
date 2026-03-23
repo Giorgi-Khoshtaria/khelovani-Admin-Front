@@ -33,3 +33,23 @@ $color-text-dark: $color-darkest;
 $color-accent: $color-espresso;
 
 // $color-accent-light: $color-burnt-red;
+
+// ============================================
+// Semantic States (Success, Danger, Warning)
+// ============================================
+$color-success: #10b981; // emerald
+$color-success-hover: #059669;
+$color-success-light: #d1fae5;
+
+$color-danger: #ef4444; // red
+$color-danger-hover: #dc2626;
+$color-danger-light: #fee2e2;
+
+$color-warning: #f59e0b; // amber
+$color-warning-hover: #d97706;
+$color-warning-light: #fef3c7;
+
+$color-info: #3b82f6; // blue
+
+$color-light-gray: #f3f4f6;
+$color-gray-hover: #e5e7eb;

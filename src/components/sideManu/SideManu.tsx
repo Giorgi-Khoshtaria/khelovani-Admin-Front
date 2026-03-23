@@ -1,4 +1,3 @@
-import React from "react";
 import { Link, useLocation } from "react-router-dom";
 import "./SideManu.scss";
 
@@ -8,6 +7,8 @@ export default function SideManu() {
   const links = [
     { path: "/", label: "მენიუ" },
     { path: "/partners", label: "პარტნიორების სია" },
+    { path: "/translations", label: "თარგმანები" },
+    { path: "/roles", label: "როლები" },
   ];
 
   return (

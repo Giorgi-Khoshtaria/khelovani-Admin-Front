@@ -10,22 +10,7 @@ import TextInput from "@/lib/ui/TextInput";
 import TextareaInput from "@/lib/ui/TextareaInput";
 import { usePartnerContext } from "@/context/PartnerContext";
 import { PartnerStatus } from "@/lib/status/partnerStatus";
-
-interface Partner {
-  _id: string;
-  companyNameGe: string;
-  companyNameEn: string;
-  identificationCode: string;
-  contactPerson: string;
-  phone: string;
-  city: string;
-  email: string;
-  address: string;
-  addressEn: string;
-  description?: string;
-  status: PartnerStatus;
-  createdAt: string;
-}
+import type { Partner } from "@/types/partner.types";
 
 export default function PartnerDetailedPage() {
   const { id: urlId } = useParams<{ id: string }>();

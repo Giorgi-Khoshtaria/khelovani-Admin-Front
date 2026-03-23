@@ -1,4 +1,6 @@
 @use "@/styles/colors.scss" as *;
+@use "@/styles/_buttons.scss" as *;
+@use "@/styles/_breakpoints.scss" as *;
 
 .partner-card {
   background: $color-white;
@@ -11,6 +13,13 @@
   align-items: center;
   justify-content: space-between;
   gap: 20px;
+
+  @include mobile {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 16px;
+    padding: 16px;
+  }
   transition:
     transform 0.2s ease,
     box-shadow 0.2s ease;
@@ -57,21 +66,13 @@
     flex: 0 0 auto;
 
     .view-details-btn {
-      display: inline-block;
-      font-size: 14px;
-      font-weight: 500;
-      color: #333;
-      background-color: transparent;
-      border: 1px solid #ccc;
-      padding: 8px 20px;
-      border-radius: 8px;
-      text-decoration: none;
-      transition: all 0.2s ease;
+      @extend .btn-outline;
+      padding: 8px 20px; // keep local padding if specific
 
       &:hover {
-        background-color: #1a1a1a;
-        border-color: #1a1a1a;
-        color: #ffffff;
+        background-color: $color-espresso;
+        border-color: $color-espresso;
+        color: $color-white;
       }
     }
   }

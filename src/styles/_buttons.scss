@@ -1,24 +1,94 @@
+@use "sass:color";
 @use "colors.scss" as colors;
 
-.reject-btn {
-  display: inline-block;
-  background-color: #ef4444;
-  color: white;
+// ============================================
+// Base Button Style
+// ============================================
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
   padding: 8px 16px;
-  border-radius: 6px;
+  border-radius: 8px;
+  font-size: 14px;
   font-weight: 600;
   cursor: pointer;
   border: none;
-  transition: background-color 0.2s ease;
-  text-align: center;
-  font-size: 14px;
+  transition: all 0.2s ease;
+  text-decoration: none;
+  gap: 6px;
 
   &:hover:not(:disabled) {
-    background-color: #dc2626;
+    opacity: 0.9;
   }
 
   &:disabled {
     opacity: 0.6;
     cursor: not-allowed;
   }
+}
+
+// ============================================
+// Button Variants
+// ============================================
+
+// Primary / Accent (Dark Espresso)
+.btn-primary {
+  @extend .btn;
+  background-color: colors.$color-espresso;
+  color: colors.$color-white;
+
+  &:hover:not(:disabled) {
+    background-color: color.adjust(colors.$color-espresso, $lightness: 5%); 
+  }
+}
+
+// Success (Green)
+.btn-success {
+  @extend .btn;
+  background-color: colors.$color-success;
+  color: colors.$color-white;
+
+  &:hover:not(:disabled) {
+    background-color: colors.$color-success-hover;
+  }
+}
+
+// Danger (Red)
+.btn-danger {
+  @extend .btn;
+  background-color: colors.$color-danger;
+  color: colors.$color-white;
+
+  &:hover:not(:disabled) {
+    background-color: colors.$color-danger-hover;
+  }
+}
+
+// Secondary / Light Gray
+.btn-secondary {
+  @extend .btn;
+  background-color: colors.$color-light-gray;
+  color: colors.$color-text-primary;
+
+  &:hover:not(:disabled) {
+    background-color: colors.$color-gray-hover;
+  }
+}
+
+// Outline / White
+.btn-outline {
+  @extend .btn;
+  background-color: transparent;
+  border: 1px solid colors.$color-border;
+  color: colors.$color-text-primary;
+
+  &:hover:not(:disabled) {
+    background-color: rgba(0, 0, 0, 0.02);
+  }
+}
+
+// Backward Compatibility
+.reject-btn {
+  @extend .btn-danger;
 }

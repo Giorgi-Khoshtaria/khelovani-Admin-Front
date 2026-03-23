@@ -1,7 +1,6 @@
 import { useEffect, useState } from "react";
-import PartnerCard, {
-  type PartnerData,
-} from "../../components/partners/PartnerCard/PartnerCard";
+import PartnerCard from "../../components/partners/PartnerCard/PartnerCard";
+import type { PartnerData } from "@/types/partner.types";
 import "./partnerListing.scss";
 import axios from "axios";
 import { getAllPartnerRequest } from "@/apiCalls/partnerApiCalls/getPartner.req";

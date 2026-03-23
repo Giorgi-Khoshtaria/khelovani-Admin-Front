@@ -8,7 +8,9 @@ import Menu from "./pages/menu/Menu";
 import PartnerDetailedPage from "./pages/partnerDetailed/PartnerDetailedPage";
 import { PartnerProvider } from "./context/PartnerProvider";
 import PartnerListing from "./pages/partnerListings/PartnerListing";
-
+import TranslationPage from "./pages/Translation/TranslationPage";
+import RoleManagement from "./pages/Roles/RoleManagement";
+import RoleDetailedPage from "./pages/Roles/RoleDetailedPage";
 const router = createBrowserRouter([
   {
     path: "/",
@@ -25,6 +27,18 @@ const router = createBrowserRouter([
       {
         path: "partners/:id?",
         element: <PartnerDetailedPage />,
+      },
+      {
+        path: "translations",
+        element: <TranslationPage />,
+      },
+      {
+        path: "roles",
+        element: <RoleManagement />,
+      },
+      {
+        path: "roles/:id",
+        element: <RoleDetailedPage />,
       },
     ],
   },

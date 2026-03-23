@@ -1,0 +1,270 @@
+@use "sass:color";
+@use "../../styles/colors.scss" as colors;
+
+.role-management {
+  padding: 2rem;
+
+  .page-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1.5rem;
+
+    h1 {
+      margin: 0;
+      font-size: 1.8rem;
+      color: colors.$color-text-primary;
+    }
+  }
+
+  .tabs {
+    display: flex;
+    gap: 1rem;
+    margin-bottom: 2rem;
+    border-bottom: 2px solid colors.$color-cream;
+    padding-bottom: 0.5rem;
+
+    .tab-item {
+      background: none;
+      border: none;
+      padding: 0.5rem 1rem;
+      font-size: 1rem;
+      font-weight: 600;
+      color: colors.$color-text-secondary;
+      cursor: pointer;
+      position: relative;
+      transition: color 0.2s;
+
+      &:hover {
+        color: colors.$color-text-primary;
+      }
+
+      &.active {
+        color: colors.$color-espresso;
+
+        &::after {
+          content: "";
+          position: absolute;
+          bottom: -0.6rem;
+          left: 0;
+          width: 100%;
+          height: 3px;
+          background-color: colors.$color-espresso;
+        }
+      }
+    }
+  }
+
+  // Grid for Roles Cards
+  .roles-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+    gap: 1.5rem;
+  }
+
+  .role-card {
+    background: colors.$color-white;
+    border-radius: 12px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+    padding: 1.5rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    border: 1px solid rgba(0,0,0,0.03);
+    transition: transform 0.2s, box-shadow 0.2s;
+
+    &:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 6px 16px rgba(0, 0, 0, 0.08);
+    }
+
+    &__header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      margin-bottom: 0.75rem;
+
+      h3 {
+        margin: 0;
+        font-size: 1.25rem;
+        color: colors.$color-text-primary;
+      }
+
+      .status-dot {
+        width: 12px;
+        height: 12px;
+        border-radius: 50%;
+        
+        &.active { background-color: colors.$color-success; }
+        &.inactive { background-color: colors.$color-danger; }
+      }
+    }
+
+    &__desc {
+      color: colors.$color-text-secondary;
+      font-size: 0.9rem;
+      line-height: 1.4;
+      flex-grow: 1;
+      margin-bottom: 1.5rem;
+    }
+
+    &__footer {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-top: 1px solid colors.$color-cream;
+      padding-top: 1rem;
+
+      .count {
+        font-size: 0.85rem;
+        font-weight: 500;
+        color: colors.$color-text-secondary;
+        background: colors.$color-bg-page;
+        padding: 0.25rem 0.6rem;
+        border-radius: 6px;
+      }
+
+      .actions {
+        display: flex;
+        gap: 0.5rem;
+      }
+    }
+  }
+
+  // Permissions Table inside tab
+  .permissions-tab {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+
+    .tab-controls {
+      display: flex;
+      justify-content: flex-end;
+
+      .search-input {
+        padding: 0.6rem 1rem;
+        border: 1px solid colors.$color-border;
+        border-radius: 8px;
+        width: 100%;
+        max-width: 320px;
+        font-size: 0.9rem;
+
+        &:focus {
+          outline: none;
+          border-color: colors.$color-espresso;
+        }
+      }
+    }
+
+    .permissions-list {
+      background: colors.$color-white;
+      border-radius: 12px;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.03);
+      overflow: hidden;
+
+      table {
+        width: 100%;
+        border-collapse: collapse;
+        text-align: left;
+
+        th, td {
+          padding: 1rem;
+          border-bottom: 1px solid colors.$color-cream;
+        }
+
+        th {
+          background-color: colors.$color-ivory;
+          font-weight: 600;
+          color: colors.$color-espresso;
+
+          &.sortable {
+            cursor: pointer;
+            user-select: none;
+            
+            &:hover {
+              background-color: color.adjust(colors.$color-ivory, $lightness: -3%);
+            }
+          }
+        }
+
+        code {
+          background: colors.$color-bg-page;
+          padding: 0.2rem 0.4rem;
+          border-radius: 4px;
+          color: colors.$color-espresso;
+          font-family: monospace;
+        }
+
+        .category-badge {
+          background-color: #e0f2fe;
+          color: #0369a1;
+          padding: 0.25rem 0.5rem;
+          border-radius: 4px;
+          font-size: 0.85rem;
+          font-weight: 500;
+        }
+      }
+    }
+  }
+
+  // Component Overrides / General
+  .btn-danger-sm {
+    background-color: transparent;
+    color: colors.$color-danger;
+    border: 1px solid colors.$color-danger;
+    padding: 0.4rem 0.8rem;
+    border-radius: 6px;
+    font-size: 0.85rem;
+    font-weight: 600;
+    cursor: pointer;
+
+    &:hover {
+      background-color: colors.$color-danger-light;
+    }
+  }
+
+  // Modal Overlays
+  .modal-overlay {
+    position: fixed;
+    top: 0; left: 0; width: 100%; height: 100%;
+    background: rgba(0,0,0,0.4);
+    display: flex; justify-content: center; align-items: center;
+    z-index: 1000;
+  }
+
+  .modal-content {
+    background: white;
+    padding: 2rem;
+    border-radius: 12px;
+    width: 90%;
+    max-width: 500px;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+
+    h2 { margin-top: 0; margin-bottom: 1.5rem; color: colors.$color-espresso; }
+
+    form {
+      display: flex; flex-direction: column; gap: 1rem;
+
+      .form-group {
+        display: flex; flex-direction: column; gap: 0.4rem;
+
+        label { font-weight: 600; font-size: 0.9rem; color: colors.$color-text-primary; }
+        input, textarea, select {
+          padding: 0.75rem;
+          border: 1px solid colors.$color-border;
+          border-radius: 8px;
+          font-size: 0.95rem;
+
+          &:focus { outline: none; border-color: colors.$color-espresso; }
+        }
+        textarea { resize: vertical; min-height: 80px; }
+      }
+
+      .form-actions {
+        display: flex; justify-content: flex-end; gap: 0.75rem; margin-top: 1rem;
+      }
+    }
+  }
+
+  .loading { text-align: center; padding: 4rem; }
+}

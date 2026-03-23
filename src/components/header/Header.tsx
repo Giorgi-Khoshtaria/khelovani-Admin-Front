@@ -1,4 +1,3 @@
-import React from "react";
 import "./Header.scss";
 import { useLogout } from "@/hooks/useLogout";
 
