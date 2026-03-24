@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import useTranslationData from "./useTranslationData";
 import useAddTranslationForm from "./useAddTranslationForm";
 import useEditTranslationForm from "./useEditTranslationForm";
@@ -23,6 +23,8 @@ export default function useTranslation() {
   const [searchQuery, setSearchQuery] = useState("");
   const [toastError, setToastError] = useState<string | null>(null);
   const [selectedIds, setSelectedIds] = useState<string[]>([]);
+  
+  const isMounted = useRef(false);
 
   const clearToastError = () => setToastError(null);
 
@@ -113,6 +115,13 @@ export default function useTranslation() {
 
   // Debounce API fetch for search to prevent hitting DB on every keystroke
   useEffect(() => {
+    if (!isMounted.current) {
+      isMounted.current = true;
+      return;
+    }
+    // Skip initial empty string to avoid duplicate mount fetches
+    if (!searchQuery) return;
+
     const delayDebounceFn = setTimeout(() => {
       fetchData(searchQuery);
     }, 1000);

@@ -1,8 +1,7 @@
-import { useNavigateToLogin } from "@/hooks/useNavigateToLogin";
 import "./Menu.scss";
 
 function Menu() {
-  useNavigateToLogin();
+
 
   return (
     <div className="menu-page">

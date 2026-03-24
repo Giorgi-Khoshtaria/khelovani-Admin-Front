@@ -1,10 +1,8 @@
 import { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
-import {
-  getPartnerByIdRequest,
-  updatePartnerStatus,
-} from "@/apiCalls/partnerApiCalls/getPartner.req";
-import axios from "axios";
+import { getPartnerByIdRequest, updatePartnerStatus } from "@/apiCalls/partnerApiCalls/getPartner.req";
+import { getErrorMessage } from "@/utils/handleApiError";
+import { toast } from "react-toastify";
 import "./PartnerDetailedPage.scss";
 import TextInput from "@/lib/ui/TextInput";
 import TextareaInput from "@/lib/ui/TextareaInput";
@@ -35,13 +33,7 @@ export default function PartnerDetailedPage() {
         const data = await getPartnerByIdRequest(id);
         setPartner(data);
       } catch (err) {
-        if (axios.isAxiosError(err)) {
-          setError(
-            err.response?.data?.message || "ინფორმაციის ჩატვირთვა ვერ მოხერხდა",
-          );
-        } else {
-          setError("მოხდა გაუთვალისწინებელი შეცდომა");
-        }
+        setError(getErrorMessage(err, "ინფორმაციის ჩატვირთვა ვერ მოხერხდა"));
       } finally {
         setLoading(false);
       }
@@ -59,12 +51,8 @@ export default function PartnerDetailedPage() {
       setUpdating(true);
       await updatePartnerStatus(id, newStatus);
       setPartner({ ...partner, status: newStatus });
-    } catch (err) {
-      if (axios.isAxiosError(err)) {
-        alert(err.response?.data?.message || "სტატუსის განახლება ვერ მოხერხდა");
-      } else {
-        alert("მოხდა გაუთვალისწინებელი შეცდომა");
-      }
+      } catch (err) {
+        toast.error(getErrorMessage(err, "სტატუსის განახლება ვერ მოხერხდა"));
     } finally {
       setUpdating(false);
     }

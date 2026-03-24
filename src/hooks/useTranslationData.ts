@@ -1,4 +1,4 @@
-import { useEffect, useState, useCallback } from "react";
+import { useEffect, useState, useCallback, useRef } from "react";
 import {
   getTranslationsRequest,
   getNamespacesRequest,
@@ -14,6 +14,8 @@ export default function useTranslationData() {
   const [namespaces, setNamespaces] = useState<NamespaceItem[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+
+  const isFetched = useRef(false);
 
   const fetchData = useCallback(async (search?: string) => {
     try {
@@ -39,7 +41,10 @@ export default function useTranslationData() {
   }, []); // no external state dependencies used inside
 
   useEffect(() => {
-    fetchData();
+    if (!isFetched.current) {
+      isFetched.current = true;
+      fetchData();
+    }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [fetchData]);
 

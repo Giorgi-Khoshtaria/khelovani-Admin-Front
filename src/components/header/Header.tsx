@@ -1,8 +1,14 @@
+import { usePartnerContext } from "@/context/PartnerContext";
+import { parseJwt } from "@/utils/parseJwt";
 import "./Header.scss";
 import { useLogout } from "@/hooks/useLogout";
 
 function Header() {
   const logout = useLogout();
+  const { token } = usePartnerContext();
+
+  const decoded = parseJwt(token || "");
+  const role = decoded?.role;
 
   return (
     <div className="header">
@@ -12,7 +18,11 @@ function Header() {
         </a>
       </div>
       <div className="header__title">
-        <h2>ადმინ პანელი</h2>
+        <h2>
+          {role === "organization"
+            ? "ორგანიზაციის პანელი"
+            : "ადმინ პანელი"}
+        </h2>
       </div>
       <div className="header__content">
         <button onClick={logout}>გასვლა</button>

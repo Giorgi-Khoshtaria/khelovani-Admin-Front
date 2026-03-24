@@ -219,7 +219,22 @@
     cursor: pointer;
 
     &:hover {
-      background-color: colors.$color-danger-light;
+      background-color: rgba(220, 53, 69, 0.05);
+    }
+  }
+
+  .btn-primary-sm {
+    background-color: transparent;
+    color: colors.$color-espresso;
+    border: 1px solid colors.$color-espresso;
+    padding: 0.4rem 0.8rem;
+    border-radius: 6px;
+    font-size: 0.85rem;
+    font-weight: 600;
+    cursor: pointer;
+
+    &:hover {
+      background-color: colors.$color-cream;
     }
   }
 

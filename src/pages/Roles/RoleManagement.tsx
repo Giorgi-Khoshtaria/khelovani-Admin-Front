@@ -1,114 +1,26 @@
-import { useEffect, useState, useCallback } from "react";
 import { Link } from "react-router-dom";
-import {
-  getRolesRequest,
-  createRoleRequest,
-  deleteRoleRequest,
-} from "../../apiCalls/roleApiCalls/role.req";
-import {
-  getPermissionsRequest,
-  createPermissionRequest,
-  deletePermissionRequest,
-} from "../../apiCalls/roleApiCalls/permission.req";
-import type { Role, Permission } from "../../types/role.types";
+import useRoleManagement from "../../hooks/useRoleManagement";
 import "./RoleManagement.scss";
 
 export default function RoleManagement() {
-  const [roles, setRoles] = useState<Role[]>([]);
-  const [permissions, setPermissions] = useState<Permission[]>([]);
-  const [activeTab, setActiveTab] = useState<"roles" | "permissions">("roles");
-  const [loading, setLoading] = useState(true);
+  const { data, list, modals, forms, actions } = useRoleManagement();
 
-  // Search, Filter & Sort
-  const [searchQuery, setSearchQuery] = useState("");
-  const [debouncedSearchQuery, setDebouncedSearchQuery] = useState("");
-  const [selectedCategory, setSelectedCategory] = useState<string>("all");
-  const [sortField, setSortField] = useState<"name" | "category">("name");
-  const [sortOrder, setSortOrder] = useState<"asc" | "desc">("asc");
-
-  useEffect(() => {
-    const timer = setTimeout(() => setDebouncedSearchQuery(searchQuery), 1000);
-    return () => clearTimeout(timer);
-  }, [searchQuery]);
-
-  // Modals
-  const [isRoleModalOpen, setIsRoleModalOpen] = useState(false);
-  const [isPermModalOpen, setIsPermModalOpen] = useState(false);
-
-  // Forms
-  const [roleForm, setRoleForm] = useState({ name: "", description: "" });
-  const [permForm, setPermForm] = useState({
-    name: "",
-    description: "",
-    category: "General",
-  });
-
-  const loadData = useCallback(async () => {
-    setLoading(true);
-    try {
-      if (activeTab === "roles") {
-        const data = await getRolesRequest();
-        setRoles(data);
-      } else {
-        // Pass search, category, and sort to backend
-        const data = await getPermissionsRequest(debouncedSearchQuery, selectedCategory, sortField, sortOrder);
-        setPermissions(data);
-      }
-    } catch {
-      alert("მონაცემების ჩატვირთვა ვერ მოხერხდა");
-    } finally {
-      setLoading(false);
-    }
-  }, [activeTab, debouncedSearchQuery, selectedCategory, sortField, sortOrder]);
-
-  useEffect(() => {
-    loadData();
-  }, [loadData]);
-
-  const handleCreateRole = async (e: React.FormEvent) => {
-    e.preventDefault();
-    try {
-      await createRoleRequest(roleForm);
-      setIsRoleModalOpen(false);
-      setRoleForm({ name: "", description: "" });
-      loadData();
-    } catch {
-      alert("როლი ვერ შეიქმნა");
-    }
-  };
-
-  const handleCreatePermission = async (e: React.FormEvent) => {
-    e.preventDefault();
-    try {
-      await createPermissionRequest(permForm);
-      setIsPermModalOpen(false);
-      setPermForm({ name: "", description: "", category: "General" });
-      loadData();
-    } catch {
-      alert("უფლება ვერ შეიქმნა");
-    }
-  };
-
-  const handleDeleteRole = async (id: string) => {
-    if (!window.confirm("ნამდვილად გსურთ როლის წაშლა?")) return;
-    try {
-      await deleteRoleRequest(id);
-      loadData();
-    } catch {
-      alert("წაშლა ვერ მოხერხდა");
-    }
-  };
-
-  const handleSort = (field: "name" | "category") => {
-    if (sortField === field) {
-      setSortOrder(sortOrder === "asc" ? "desc" : "asc");
-    } else {
-      setSortField(field);
-      setSortOrder("asc");
-    }
-  };
-
-  // Frontend filter removed as it is handled on the backend now during loadData
+  const { roles, permissions, loading } = data;
+  const { activeTab, searchQuery, selectedCategory, sortField, sortOrder } = list;
+  const { isRoleModalOpen, isPermModalOpen, isPermEditModalOpen, setIsRoleModalOpen, setIsPermModalOpen, setIsPermEditModalOpen } = modals;
+  const { roleFormHandler, permFormHandler, editPermFormHandler } = forms;
+  const {
+    setActiveTab,
+    setSearchQuery,
+    setSelectedCategory,
+    handleSort,
+    handleCreateRole,
+    handleCreatePermission,
+    handleOpenEditPermissionModal,
+    handleUpdatePermission,
+    handleDeleteRole,
+    handleDeletePermission,
+  } = actions;
 
   if (loading) return <div className="loading">იტვირთება...</div>;
 
@@ -237,13 +149,15 @@ export default function RoleManagement() {
                       </td>
                       <td>
                         <button
+                          className="btn-primary-sm"
+                          style={{ marginRight: "0.5rem" }}
+                          onClick={() => handleOpenEditPermissionModal(perm)}
+                        >
+                          რედაქტირება
+                        </button>
+                        <button
                           className="btn-danger-sm"
-                          onClick={async () => {
-                            if (window.confirm("წაშლა?")) {
-                              await deletePermissionRequest(perm._id);
-                              loadData();
-                            }
-                          }}
+                          onClick={() => handleDeletePermission(perm._id)}
                         >
                           წაშლა
                         </button>
@@ -266,21 +180,19 @@ export default function RoleManagement() {
               <div className="form-group">
                 <label>სახელი *</label>
                 <input
+                  id="name"
                   type="text"
-                  value={roleForm.name}
-                  onChange={(e) =>
-                    setRoleForm({ ...roleForm, name: e.target.value })
-                  }
+                  value={roleFormHandler.formData.name}
+                  onChange={roleFormHandler.handleChange}
                   required
                 />
               </div>
               <div className="form-group">
                 <label>აღწერა *</label>
                 <textarea
-                  value={roleForm.description}
-                  onChange={(e) =>
-                    setRoleForm({ ...roleForm, description: e.target.value })
-                  }
+                  id="description"
+                  value={roleFormHandler.formData.description}
+                  onChange={roleFormHandler.handleChange}
                   required
                 />
               </div>
@@ -310,32 +222,29 @@ export default function RoleManagement() {
               <div className="form-group">
                 <label>სახელი (მაგ. users:read) *</label>
                 <input
+                  id="name"
                   type="text"
-                  value={permForm.name}
-                  onChange={(e) =>
-                    setPermForm({ ...permForm, name: e.target.value })
-                  }
+                  value={permFormHandler.formData.name}
+                  onChange={permFormHandler.handleChange}
                   required
                 />
               </div>
               <div className="form-group">
                 <label>აღწერა *</label>
                 <input
+                  id="description"
                   type="text"
-                  value={permForm.description}
-                  onChange={(e) =>
-                    setPermForm({ ...permForm, description: e.target.value })
-                  }
+                  value={permFormHandler.formData.description}
+                  onChange={permFormHandler.handleChange}
                   required
                 />
               </div>
               <div className="form-group">
                 <label>კატეგორია *</label>
                 <select
-                  value={permForm.category}
-                  onChange={(e) =>
-                    setPermForm({ ...permForm, category: e.target.value })
-                  }
+                  id="category"
+                  value={permFormHandler.formData.category}
+                  onChange={permFormHandler.handleChange}
                   required
                 >
                   <option value="General">General</option>
@@ -355,6 +264,66 @@ export default function RoleManagement() {
                 </button>
                 <button type="submit" className="btn-primary">
                   დამატება
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+      )}
+
+      {/* Edit Permission Modal */}
+      {isPermEditModalOpen && (
+        <div className="modal-overlay">
+          <div className="modal-content">
+            <h2>უფლების რედაქტირება</h2>
+            <form onSubmit={handleUpdatePermission}>
+              <div className="form-group">
+                <label>სახელი *</label>
+                <input
+                  id="name"
+                  type="text"
+                  value={editPermFormHandler.formData.name}
+                  onChange={editPermFormHandler.handleChange}
+                  required
+                  disabled
+                />
+              </div>
+              <div className="form-group">
+                <label>აღწერა *</label>
+                <input
+                  id="description"
+                  type="text"
+                  value={editPermFormHandler.formData.description}
+                  onChange={editPermFormHandler.handleChange}
+                  required
+                />
+              </div>
+              <div className="form-group">
+                <label>კატეგორია *</label>
+                <select
+                  id="category"
+                  value={editPermFormHandler.formData.category}
+                  onChange={editPermFormHandler.handleChange}
+                  required
+                >
+                  <option value="General">General</option>
+                  <option value="USERS">Users</option>
+                  <option value="ORGS">Orgs</option>
+                  <option value="ROLES">Roles</option>
+                  <option value="SETTINGS">Settings</option>
+                  <option value="REPORTS">Reports</option>
+                </select>
+              </div>
+              <div className="form-actions">
+                <button
+                  type="button"
+                  className="btn-secondary"
+                  onClick={() => setIsPermEditModalOpen(false)}
+                >
+                  გაუქმება
+                </button>
+                <button type="submit" className="btn-primary">
+                  შენახვა
                 </button>
               </div>
             </form>

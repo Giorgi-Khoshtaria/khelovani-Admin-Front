@@ -1,15 +1,30 @@
 import { Link, useLocation } from "react-router-dom";
+import { usePartnerContext } from "@/context/PartnerContext";
+import { parseJwt } from "@/utils/parseJwt";
 import "./SideManu.scss";
 
 export default function SideManu() {
   const location = useLocation();
+  const { token, partnerId } = usePartnerContext();
+
+  const decoded = parseJwt(token || "");
+  const role = decoded?.role;
 
   const links = [
     { path: "/", label: "მენიუ" },
-    { path: "/partners", label: "პარტნიორების სია" },
-    { path: "/translations", label: "თარგმანები" },
-    { path: "/roles", label: "როლები" },
   ];
+
+  if (role === "super_admin" || role === "moderator" || !role) {
+    links.push(
+      { path: "/partners", label: "პარტნიორების სია" },
+      { path: "/translations", label: "თარგმანები" },
+      { path: "/roles", label: "როლები" }
+    );
+  } else if (role === "organization" && partnerId) {
+    links.push(
+      { path: `/partners/${partnerId}`, label: "ჩემი პროფილი" }
+    );
+  }
 
   return (
     <div className="side-manu">

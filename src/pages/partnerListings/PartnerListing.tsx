@@ -2,8 +2,10 @@ import { useEffect, useState } from "react";
 import PartnerCard from "../../components/partners/PartnerCard/PartnerCard";
 import type { PartnerData } from "@/types/partner.types";
 import "./partnerListing.scss";
-import axios from "axios";
+
 import { getAllPartnerRequest } from "@/apiCalls/partnerApiCalls/getPartner.req";
+import { useDebounce } from "@/hooks/useDebounce";
+import { getErrorMessage } from "@/utils/handleApiError";
 
 export default function PartnerListing() {
   const [partners, setPartners] = useState<PartnerData[]>([]);
@@ -11,17 +13,9 @@ export default function PartnerListing() {
     "all" | "pending" | "approved" | "rejected"
   >("all");
   const [searchQuery, setSearchQuery] = useState("");
-  const [debouncedQuery, setDebouncedQuery] = useState("");
+  const debouncedQuery = useDebounce(searchQuery, 1000);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
-
-  useEffect(() => {
-    const handler = setTimeout(() => {
-      setDebouncedQuery(searchQuery);
-    }, 1000);
-
-    return () => clearTimeout(handler);
-  }, [searchQuery]);
 
   useEffect(() => {
     const fetchPartners = async () => {
@@ -30,14 +24,7 @@ export default function PartnerListing() {
         const data = await getAllPartnerRequest(debouncedQuery, activeTab);
         setPartners(data);
       } catch (err) {
-        if (axios.isAxiosError(err)) {
-          setError(
-            err.response?.data?.message ||
-              "პარტნიორების ჩატვირთვა ვერ მოხერხდა",
-          );
-        } else {
-          setError("მოხდა გაუთვალისწინებელი შეცდომა");
-        }
+        setError(getErrorMessage(err, "პარტნიორების ჩატვირთვა ვერ მოხერხდა"));
       } finally {
         setLoading(false);
       }
