@@ -69,7 +69,7 @@
       @extend .btn-outline;
       padding: 8px 20px; // keep local padding if specific
 
-      &:hover {
+      &:hover:not(:disabled) {
         background-color: $color-espresso;
         border-color: $color-espresso;
         color: $color-white;

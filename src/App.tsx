@@ -3,7 +3,7 @@ import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import Layout from "./layout/Layout";
 import LoginPage from "./pages/login/loginPage";
-import { createBrowserRouter, RouterProvider } from "react-router-dom";
+import { createBrowserRouter, RouterProvider, Navigate } from "react-router-dom";
 import Menu from "./pages/menu/Menu";
 import PartnerDetailedPage from "./pages/partnerDetailed/PartnerDetailedPage";
 import { PartnerProvider } from "./context/PartnerProvider";
@@ -11,6 +11,21 @@ import PartnerListing from "./pages/partnerListings/PartnerListing";
 import TranslationPage from "./pages/Translation/TranslationPage";
 import RoleManagement from "./pages/Roles/RoleManagement";
 import RoleDetailedPage from "./pages/Roles/RoleDetailedPage";
+import { usePartnerContext } from "./context/PartnerContext";
+import { parseJwt } from "./utils/parseJwt";
+
+const IndexRedirect = () => {
+  const { token, partnerId } = usePartnerContext();
+  const decoded = parseJwt(token || "");
+  const role = decoded?.role;
+
+  if (role === "organisation" && partnerId) {
+    return <Navigate to={`/partners/${partnerId}`} replace />;
+  }
+
+  return <Navigate to="/menu" replace />;
+};
+
 const router = createBrowserRouter([
   {
     path: "/",
@@ -18,6 +33,10 @@ const router = createBrowserRouter([
     children: [
       {
         index: true,
+        element: <IndexRedirect />,
+      },
+      {
+        path: "menu",
         element: <Menu />,
       },
       {

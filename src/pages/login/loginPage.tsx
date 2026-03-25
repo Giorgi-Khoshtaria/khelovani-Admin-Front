@@ -10,6 +10,7 @@ import { useFormHandler } from "@/hooks/useFormHandler";
 import { loginRequest } from "@/apiCalls/authApiCalls/login.req";
 import { usePartnerContext } from "@/context/PartnerContext";
 import { validateLoginForm } from "@/validations/authValidations/loginValidations";
+import { parseJwt } from "@/utils/parseJwt";
 
 interface AdminLoginForm {
   email: string;
@@ -56,15 +57,22 @@ export default function AdminLoginPage() {
       }
 
       const partnerId =
-        response._id || response.id || response.partnerId || response.user?._id;
+        response.id || response._id || response.partnerId || response.user?._id;
 
       setToken(token);
       setPartnerId(partnerId);
 
+      const decoded = parseJwt(token);
+      const role = decoded?.role;
+
       toast.success("წარმატებით შეხვედით ადმინ პანელში!");
 
       setTimeout(() => {
-        navigate("/");
+        if (role === "organisation" && partnerId) {
+          navigate(`/partners/${partnerId}`);
+        } else {
+          navigate("/");
+        }
       }, 2000);
     } catch (error: unknown) {
       if (axios.isAxiosError(error)) {

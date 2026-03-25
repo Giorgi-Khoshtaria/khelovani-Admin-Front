@@ -1,8 +1,10 @@
 @use "@/styles/colors.scss" as *;
+@use "@/styles/buttons" as *;
+@use "@/styles/badges" as *;
+@use "sass:color";
 
 .partner-profile {
   width: 100%;
-
   padding: 24px;
   background-color: $color-bg-page;
   border-radius: 12px;
@@ -23,18 +25,9 @@
       align-items: center;
 
       .back-btn {
-        background: none;
-        border: 1px solid $color-bg-secondary;
+        @extend .btn-outline;
         padding: 6px 12px;
-        border-radius: 6px;
-        cursor: pointer;
         font-size: 14px;
-        color: $color-espresso;
-        transition: all 0.2s;
-
-        &:hover {
-          background: $color-bg-secondary;
-        }
       }
 
       h1 {
@@ -58,56 +51,63 @@
       gap: 12px;
       align-items: center;
 
+      .admin-status-actions,
+      .profile-owner-actions {
+        display: flex;
+        gap: 12px;
+      }
 
+      .edit-btn {
+        @extend .btn-secondary;
+      }
 
+      .save-btn {
+        @extend .btn-success;
+      }
 
-    }
-  }
+      .cancel-btn {
+        @extend .btn-secondary;
+      }
 
-  .actions-section {
-    background: $color-white;
-    padding: 20px;
-    border-radius: 8px;
-    margin-bottom: 24px;
-    border: 1px solid $color-bg-secondary;
+      .delete-btn {
+        @extend .btn-danger;
+      }
 
-    h3 {
-      margin: 0 0 16px 0;
-      color: $color-espresso;
-      font-size: 18px;
-    }
-
-    .action-buttons {
-      display: flex;
-      gap: 16px;
-
-      button {
-        padding: 10px 24px;
-        border-radius: 6px;
-        font-weight: 600;
-        cursor: pointer;
-        border: none;
-        transition:
-          opacity 0.2s,
-          background 0.2s;
-
-        &:disabled {
-          opacity: 0.6;
-          cursor: not-allowed;
+      .reject-btn {
+        @extend .btn-danger;
+        background-color: #fee2e2;
+        color: #991b1b;
+        border: 1px solid #fca5a5;
+        
+        &:hover:not(:disabled) {
+          background-color: #ef4444;
+          color: white;
+          border-color: #dc2626;
         }
       }
 
       .approve-btn {
-        background-color: #10b981;
-        color: white;
+        @extend .btn-success;
+        background-color: #d1fae5;
+        color: #065f46;
+        border: 1px solid #6ee7b7;
 
         &:hover:not(:disabled) {
-          background-color: #059669;
+          background-color: #10b981;
+          color: white;
+          border-color: #059669;
         }
       }
 
-
+      .status-badge {
+        @extend .status-badge;
+      }
     }
+  }
+
+  .edit-actions {
+    display: flex;
+    gap: 12px;
   }
 
   .company-info-panel {
@@ -122,33 +122,41 @@
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.02);
 
     .company-logo {
-      width: 56px;
-      height: 56px;
+      width: 64px;
+      height: 64px;
       background-color: $color-bg-secondary;
-      border-radius: 12px;
+      border-radius: 16px;
       display: flex;
       align-items: center;
       justify-content: center;
-      font-size: 24px;
+      font-size: 28px;
       font-weight: 700;
       color: $color-espresso;
     }
 
     .company-text {
+      flex: 1;
       display: flex;
       flex-direction: column;
       gap: 4px;
 
+      .edit-company-names {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 16px;
+        width: 100%;
+      }
+
       .company-title-ge {
         margin: 0;
-        font-size: 22px;
+        font-size: 24px;
         color: $color-espresso;
         font-weight: 600;
       }
 
       .company-title-en {
         margin: 0;
-        font-size: 14px;
+        font-size: 16px;
         color: $color-text-secondary;
         font-weight: 400;
       }
@@ -157,23 +165,25 @@
 
   .profile-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
     gap: 24px;
   }
 
   .info-section {
     background: $color-white;
-    padding: 20px;
-    border-radius: 8px;
+    padding: 24px;
+    border-radius: 12px;
     border: 1px solid $color-bg-secondary;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.02);
 
     h2 {
       margin-top: 0;
-      margin-bottom: 16px;
-      font-size: 20px;
+      margin-bottom: 20px;
+      font-size: 18px;
       color: $color-espresso;
       border-bottom: 1px solid $color-bg-secondary;
-      padding-bottom: 8px;
+      padding-bottom: 12px;
+      font-weight: 600;
     }
 
     .form-group {
@@ -181,6 +191,14 @@
 
       &:last-child {
         margin-bottom: 0;
+      }
+    }
+
+    &.social-links {
+      .form-group {
+        display: flex;
+        flex-direction: column;
+        gap: 4px;
       }
     }
 
@@ -198,8 +216,8 @@
   .loading,
   .error {
     text-align: center;
-    padding: 40px;
-    font-size: 18px;
+    padding: 60px;
+    font-size: 20px;
     color: $color-text-secondary;
   }
 

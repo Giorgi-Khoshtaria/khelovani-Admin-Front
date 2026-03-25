@@ -10,20 +10,17 @@ export default function SideManu() {
   const decoded = parseJwt(token || "");
   const role = decoded?.role;
 
-  const links = [
-    { path: "/", label: "მენიუ" },
-  ];
+  const links: { path: string; label: string }[] = [];
 
-  if (role === "super_admin" || role === "moderator" || !role) {
+  if (role === "super_admin" || role === "admin" || role === "moderator") {
     links.push(
+      { path: "/menu", label: "მენიუ" },
       { path: "/partners", label: "პარტნიორების სია" },
       { path: "/translations", label: "თარგმანები" },
-      { path: "/roles", label: "როლები" }
+      { path: "/roles", label: "როლები" },
     );
-  } else if (role === "organization" && partnerId) {
-    links.push(
-      { path: `/partners/${partnerId}`, label: "ჩემი პროფილი" }
-    );
+  } else if (role === "organisation" && partnerId) {
+    links.push({ path: `/partners/${partnerId}`, label: "ჩემი პროფილი" });
   }
 
   return (
@@ -34,8 +31,8 @@ export default function SideManu() {
             key={link.path}
             className={`side-manu__item ${
               location.pathname === link.path ||
-              (link.path.startsWith("/partner-profile") &&
-                location.pathname.startsWith("/partner-profile"))
+              (link.path.startsWith("/partners") &&
+                location.pathname.startsWith("/partners"))
                 ? "active"
                 : ""
             }`}

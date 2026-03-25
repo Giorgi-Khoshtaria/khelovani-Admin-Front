@@ -19,7 +19,7 @@ function Header() {
       </div>
       <div className="header__title">
         <h2>
-          {role === "organization"
+          {role === "organisation"
             ? "ორგანიზაციის პანელი"
             : "ადმინ პანელი"}
         </h2>

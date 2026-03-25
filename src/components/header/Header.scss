@@ -61,9 +61,10 @@
       color: $color-accent;
       padding: 6px 16px; // keep local size if needed
 
-      &:hover {
-        background-color: $color-accent;
+      &:hover:not(:disabled) {
+        background-color: $color-espresso;
         color: $color-white;
+        border-color: $color-espresso;
       }
 
       &:active {

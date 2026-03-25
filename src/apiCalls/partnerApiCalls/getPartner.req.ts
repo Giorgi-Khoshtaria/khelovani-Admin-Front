@@ -1,5 +1,6 @@
 import axios from "axios";
 import { PartnerStatus } from "@/lib/status/partnerStatus";
+import type { Partner } from "@/types/partner.types";
 
 export const getPartnerByIdRequest = async (id: string) => {
   const BACKEND_URL = import.meta.env.VITE_BACKEND_API_URL;
@@ -14,7 +15,10 @@ export const getPartnerByIdRequest = async (id: string) => {
   return response.data;
 };
 
-export const getAllPartnerRequest = async (search?: string, status?: string) => {
+export const getAllPartnerRequest = async (
+  search?: string,
+  status?: string,
+) => {
   const BACKEND_URL = import.meta.env.VITE_BACKEND_API_URL;
   const token = localStorage.getItem("adminToken");
 
@@ -31,7 +35,10 @@ export const getAllPartnerRequest = async (search?: string, status?: string) => 
   return response.data;
 };
 
-export const updatePartnerStatus = async (id: string, status: PartnerStatus) => {
+export const updatePartnerStatus = async (
+  id: string,
+  status: PartnerStatus,
+) => {
   const BACKEND_URL = import.meta.env.VITE_BACKEND_API_URL;
   const token = localStorage.getItem("adminToken");
 
@@ -40,6 +47,42 @@ export const updatePartnerStatus = async (id: string, status: PartnerStatus) => 
     {
       status,
     },
+    {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    },
+  );
+
+  return response.data;
+};
+
+export const updatePartnerRequest = async (
+  id: string,
+  updateData: Partial<Partner>,
+) => {
+  const BACKEND_URL = import.meta.env.VITE_BACKEND_API_URL;
+  const token = localStorage.getItem("adminToken");
+
+  const response = await axios.patch(
+    `${BACKEND_URL}/api/admin/partners/${id}`,
+    updateData,
+    {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    },
+  );
+
+  return response.data;
+};
+
+export const deletePartnerRequest = async (id: string) => {
+  const BACKEND_URL = import.meta.env.VITE_BACKEND_API_URL;
+  const token = localStorage.getItem("adminToken");
+
+  const response = await axios.delete(
+    `${BACKEND_URL}/api/admin/partners/${id}`,
     {
       headers: {
         Authorization: `Bearer ${token}`,
