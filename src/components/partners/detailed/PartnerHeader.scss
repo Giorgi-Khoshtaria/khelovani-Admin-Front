@@ -1,0 +1,100 @@
+@use "@/styles/colors.scss" as *;
+@use "@/styles/buttons" as *;
+@use "@/styles/badges" as *;
+
+.profile-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 2px solid $color-bg-secondary;
+  padding-bottom: 20px;
+  margin-bottom: 24px;
+
+  .header-title {
+    display: flex;
+    gap: 16px;
+    align-items: center;
+
+    .back-btn {
+      @extend .btn-outline;
+      padding: 6px 12px;
+      font-size: 14px;
+    }
+
+    h1 {
+      margin: 0;
+      color: $color-espresso;
+      font-size: 28px;
+      display: flex;
+      gap: 8px;
+      align-items: baseline;
+
+      .eng-name {
+        font-size: 18px;
+        color: $color-text-secondary;
+        font-weight: 400;
+      }
+    }
+  }
+
+  .header-actions {
+    display: flex;
+    gap: 12px;
+    align-items: center;
+
+    .admin-status-actions,
+    .profile-owner-actions,
+    .edit-actions {
+      display: flex;
+      gap: 12px;
+    }
+
+    .edit-btn {
+      @extend .btn-secondary;
+    }
+
+    .save-btn {
+      @extend .btn-success;
+    }
+
+    .cancel-btn {
+      @extend .btn-secondary;
+    }
+
+    .delete-btn {
+      @extend .btn-danger;
+    }
+
+    .reject-btn {
+      @extend .btn-danger;
+      /* Specific custom style for this button as per previous implementation but using @extend */
+      background-color: #fee2e2;
+      color: #991b1b;
+      border: 1px solid #fca5a5;
+      
+      &:hover:not(:disabled) {
+        background-color: #ef4444;
+        color: white;
+        border-color: #dc2626;
+      }
+    }
+
+    .approve-btn {
+      @extend .btn-success;
+      /* Specific custom style for this button as per previous implementation but using @extend */
+      background-color: #d1fae5;
+      color: #065f46;
+      border: 1px solid #6ee7b7;
+
+      &:hover:not(:disabled) {
+        background-color: #10b981;
+        color: white;
+        border-color: #059669;
+      }
+    }
+
+    .status-badge {
+      @extend .status-badge;
+    }
+  }
+}

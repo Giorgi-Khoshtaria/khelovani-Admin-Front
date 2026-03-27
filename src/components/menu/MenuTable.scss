@@ -1,0 +1,66 @@
+@use "@/styles/colors.scss" as colors;
+@use "@/styles/buttons" as *;
+@use "@/styles/badges" as *;
+
+.menu-table-wrapper {
+  background: colors.$color-white;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+  overflow: hidden;
+}
+
+.menu-table {
+  width: 100%;
+  border-collapse: collapse;
+  text-align: left;
+
+  th,
+  td {
+    padding: 1rem 1.25rem;
+    border-bottom: 1px solid colors.$color-cream;
+  }
+
+  th {
+    background-color: colors.$color-ivory;
+    font-weight: 600;
+    font-size: 0.9rem;
+    color: colors.$color-espresso;
+  }
+
+  code {
+    background: colors.$color-bg-page;
+    padding: 0.2rem 0.5rem;
+    border-radius: 4px;
+    font-family: monospace;
+    font-size: 0.9rem;
+    color: colors.$color-espresso;
+  }
+
+  .actions-cell {
+    display: flex;
+    gap: 0.5rem;
+  }
+
+  .empty-row td {
+    text-align: center;
+    padding: 3rem;
+    color: colors.$color-text-secondary;
+    font-size: 0.95rem;
+  }
+
+  .status-badge {
+    @extend .status-badge;
+  }
+}
+
+.btn-primary-sm {
+  @extend .btn-outline;
+  padding: 0.4rem 0.8rem;
+  font-size: 0.85rem;
+}
+
+.btn-danger-sm {
+  @extend .btn-danger;
+  padding: 0.4rem 0.8rem;
+  font-size: 0.85rem;
+}

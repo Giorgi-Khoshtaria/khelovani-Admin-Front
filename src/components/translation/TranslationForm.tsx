@@ -1,4 +1,5 @@
 import type { NamespaceItem } from "@/types/translation.types";
+import "./TranslationForm.scss";
 
 interface TranslationFormProps {
   form: {

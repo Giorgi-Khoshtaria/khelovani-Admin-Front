@@ -1,3 +1,4 @@
+import "./TranslationItem.scss";
 
 interface TranslationItemProps {
   translationKey: string;

@@ -1,0 +1,67 @@
+@use "@/styles/colors.scss" as *;
+
+.namespaces-sidebar {
+  flex: 0 0 240px;
+  background-color: $color-white;
+  padding: 16px;
+  border-radius: 12px;
+  border: 1px solid $color-border;
+  align-self: flex-start;
+
+  @media (max-width: 1150px) {
+    flex: none;
+    width: 100%;
+    padding: 12px;
+
+    h3 {
+      display: none;
+    }
+
+    ul {
+      display: flex;
+      flex-direction: row;
+      overflow-x: auto;
+      gap: 8px;
+      padding: 4px 0;
+    }
+
+    li {
+      margin-bottom: 0 !important;
+      padding: 8px 12px;
+      white-space: nowrap;
+    }
+  }
+
+  h3 {
+    font-size: 16px;
+    color: $color-text-secondary;
+    margin-bottom: 12px;
+    padding-bottom: 8px;
+    border-bottom: 1px solid $color-border;
+  }
+
+  ul {
+    list-style: none;
+    padding: 0;
+
+    li {
+      padding: 10px 14px;
+      border-radius: 8px;
+      cursor: pointer;
+      font-size: 14px;
+      font-weight: 500;
+      color: $color-text-primary;
+      transition: all 0.2s;
+      margin-bottom: 4px;
+
+      &:hover {
+        background-color: rgba(0, 0, 0, 0.02);
+      }
+
+      &.active {
+        background-color: $color-espresso;
+        color: $color-white;
+      }
+    }
+  }
+}

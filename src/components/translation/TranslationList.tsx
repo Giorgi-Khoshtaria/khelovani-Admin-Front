@@ -1,5 +1,6 @@
 import type { RawTranslation } from "@/types/translation.types";
 import TranslationItem from "./TranslationItem";
+import "./TranslationList.scss";
 
 interface TranslationListProps {
   filteredKeys: string[];
