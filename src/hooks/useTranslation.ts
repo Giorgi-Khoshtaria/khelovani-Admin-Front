@@ -1,4 +1,4 @@
-import { useEffect, useState, useRef } from "react";
+import { useEffect, useState } from "react";
 import useTranslationData from "./useTranslationData";
 import useAddTranslationForm from "./useAddTranslationForm";
 import useEditTranslationForm from "./useEditTranslationForm";
@@ -7,6 +7,7 @@ import { parseExcelTranslations } from "@/utils/translationUtils";
 import {
   bulkTranslationRequest,
   deleteTranslationRequest,
+  bulkDeleteTranslationRequest,
 } from "@/apiCalls/translationApiCalls/translation.req";
 
 export default function useTranslation() {
@@ -14,6 +15,8 @@ export default function useTranslation() {
     translations,
     rawTranslations,
     namespaces,
+    totalCount,
+    totalPages,
     loading,
     error,
     fetchData,
@@ -21,15 +24,20 @@ export default function useTranslation() {
 
   const [activeNamespace, setActiveNamespace] = useState<string>("all");
   const [searchQuery, setSearchQuery] = useState("");
+  const [currentPage, setCurrentPage] = useState(1);
   const [toastError, setToastError] = useState<string | null>(null);
   const [selectedIds, setSelectedIds] = useState<string[]>([]);
-  
-  const isMounted = useRef(false);
 
   const clearToastError = () => setToastError(null);
 
+
   const handleSuccess = () => {
-    fetchData();
+    fetchData({ 
+      search: searchQuery || undefined, 
+      namespace: currentNamespace !== "all" ? currentNamespace : undefined,
+      page: currentPage,
+      limit: 15
+    });
   };
 
   const handleError = (msg: string) => {
@@ -69,7 +77,12 @@ export default function useTranslation() {
       }
 
       await bulkTranslationRequest({ items });
-      fetchData();
+      fetchData({ 
+        search: searchQuery || undefined, 
+        namespace: currentNamespace !== "all" ? currentNamespace : undefined,
+        page: currentPage,
+        limit: 15
+      });
     } catch (err) {
       setToastError(getErrorMessage(err, "იმპორტის დროს დაფიქსირდა შეცდომა"));
     }
@@ -79,7 +92,12 @@ export default function useTranslation() {
     if (!window.confirm("ნამდვილად გსურთ ამ თარგმანის წაშლა?")) return;
     try {
       await deleteTranslationRequest(id);
-      fetchData();
+      fetchData({ 
+        search: searchQuery || undefined, 
+        namespace: currentNamespace !== "all" ? currentNamespace : undefined,
+        page: currentPage,
+        limit: 15
+      });
     } catch (err) {
       setToastError(getErrorMessage(err, "წაშლა ვერ მოხერხდა"));
     }
@@ -104,30 +122,32 @@ export default function useTranslation() {
     if (!window.confirm(`ნამდვილად გსურთ ${selectedIds.length} თარგმანის წაშლა?`)) return;
 
     try {
-      const { bulkDeleteTranslationRequest } = await import("@/apiCalls/translationApiCalls/translation.req");
       await bulkDeleteTranslationRequest(selectedIds);
       setSelectedIds([]);
-      fetchData();
+      fetchData({ 
+        search: searchQuery || undefined, 
+        namespace: currentNamespace !== "all" ? currentNamespace : undefined,
+        page: currentPage,
+        limit: 15
+      });
     } catch (err) {
       setToastError(getErrorMessage(err, "ჯგუფური წაშლის დროს დაფიქსირდა შეცდომა"));
     }
   };
 
-  // Debounce API fetch for search to prevent hitting DB on every keystroke
+  // API fetch for search and namespace to handle filtration on backend
   useEffect(() => {
-    if (!isMounted.current) {
-      isMounted.current = true;
-      return;
-    }
-    // Skip initial empty string to avoid duplicate mount fetches
-    if (!searchQuery) return;
-
     const delayDebounceFn = setTimeout(() => {
-      fetchData(searchQuery);
-    }, 1000);
+      fetchData({ 
+        search: searchQuery || undefined, 
+        namespace: activeNamespace !== "all" ? activeNamespace : undefined,
+        page: currentPage,
+        limit: 15
+      });
+    }, 500);
 
     return () => clearTimeout(delayDebounceFn);
-  }, [searchQuery, fetchData]);
+  }, [searchQuery, activeNamespace, currentPage, fetchData]);
 
   const currentNamespaceTranslations = translations[currentNamespace] || {};
   // Backend filters already, so just extract keys directly
@@ -144,6 +164,10 @@ export default function useTranslation() {
     list: {
       activeNamespace: currentNamespace,
       searchQuery,
+      currentPage,
+      setCurrentPage,
+      totalCount,
+      totalPages,
       filteredKeys,
       currentNamespaceTranslations,
       selectedIds,
@@ -173,8 +197,14 @@ export default function useTranslation() {
       onSubmit: editFormHook.submit,
     },
     actions: {
-      setActiveNamespace,
-      setSearchQuery,
+      setActiveNamespace: (val: string) => {
+        setActiveNamespace(val);
+        setCurrentPage(1);
+      },
+      setSearchQuery: (val: string) => {
+        setSearchQuery(val);
+        setCurrentPage(1);
+      },
       handleFileUpload,
       handleDeleteTranslation,
       handleSelectChange,

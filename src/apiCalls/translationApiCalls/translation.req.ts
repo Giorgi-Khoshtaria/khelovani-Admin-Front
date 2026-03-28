@@ -7,10 +7,15 @@ const getAuthHeaders = () => {
   };
 };
 
-export const getTranslationsRequest = async (search?: string) => {
+export const getTranslationsRequest = async (params: {
+  search?: string;
+  page?: number;
+  limit?: number;
+  namespace?: string;
+}) => {
   const BACKEND_URL = import.meta.env.VITE_BACKEND_API_URL;
   const response = await axios.get(`${BACKEND_URL}/api/admin/translations`, {
-    params: { search },
+    params,
   });
   return response.data;
 };

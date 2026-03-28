@@ -8,6 +8,8 @@ interface PartnerCompanyPanelProps {
   editForm: Partial<Partner>;
   onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
   errors: Record<string, string>;
+  isOwnProfile?: boolean;
+  onPhotoChange?: (file: File) => void;
 }
 
 export function PartnerCompanyPanel({
@@ -16,7 +18,30 @@ export function PartnerCompanyPanel({
   editForm,
   onChange,
   errors,
+  isOwnProfile,
+  onPhotoChange,
 }: PartnerCompanyPanelProps) {
+  const handlePhotoClick = () => {
+    if (isOwnProfile) {
+      document.getElementById("company-photo-input")?.click();
+    }
+  };
+
+  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (file) {
+      if (file.size > 5 * 1024 * 1024) {
+        alert("ფაილის ზომა არ უნდა აღემატებოდეს 5MB-ს");
+        return;
+      }
+      if (!file.type.startsWith("image/")) {
+        alert("მხოლოდ სურათების ატვირთვაა ნებადართული");
+        return;
+      }
+      onPhotoChange?.(file);
+    }
+  };
+
   return (
     <div className="company-info-panel">
       <div className="company-logo">
@@ -47,6 +72,31 @@ export function PartnerCompanyPanel({
             <p className="company-title-en">({partner.companyNameEn})</p>
           </>
         )}
+      </div>
+
+      <div 
+        className={`company-photo-box ${isOwnProfile ? 'can-edit' : ''}`}
+        onClick={handlePhotoClick}
+      >
+        {partner.profilePhoto ? (
+          <img src={partner.profilePhoto} alt="Company Logo" className="actual-photo" />
+        ) : (
+          <div className="photo-placeholder">
+            <span>ფოტოს დამატება</span>
+          </div>
+        )}
+        {isOwnProfile && (
+          <div className="photo-edit-overlay">
+            <span>შეცვლა</span>
+          </div>
+        )}
+        <input 
+          type="file" 
+          id="company-photo-input" 
+          style={{ display: 'none' }} 
+          accept="image/*"
+          onChange={handleFileChange}
+        />
       </div>
     </div>
   );

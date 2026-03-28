@@ -1,6 +1,7 @@
 @use "@/styles/colors.scss" as *;
 @use "@/styles/_buttons.scss" as *;
 @use "@/styles/_breakpoints.scss" as *;
+@use "@/styles/_inputs.scss" as *;
 
 .translation-page {
   background-color: $color-bg-page;
@@ -60,7 +61,7 @@
         align-items: center;
 
         input {
-          @extend .form-group; // Although it's an input, we want standard input styles
+          @extend .input-field; // Use standard input styles
           flex: 1;
           margin-bottom: 0;
         }
@@ -82,5 +83,30 @@
     background: $color-white;
     border-radius: 12px;
     border: 1px solid $color-border;
+  }
+
+  .pagination {
+    margin-top: 24px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 16px;
+
+    button {
+      @extend .btn-outline;
+      padding: 6px 16px;
+      font-size: 13px;
+      
+      &:disabled {
+        opacity: 0.5;
+        cursor: not-allowed;
+      }
+    }
+
+    .page-info {
+      font-size: 14px;
+      font-weight: 500;
+      color: $color-text-secondary;
+    }
   }
 }

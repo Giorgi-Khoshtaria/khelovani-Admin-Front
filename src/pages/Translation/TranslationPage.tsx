@@ -63,24 +63,46 @@ export default function TranslationPage() {
           ) : list.filteredKeys.length === 0 ? (
             <div className="no-data">თარგმანები ვერ მოიძებნა</div>
           ) : (
-            <TranslationList
-              filteredKeys={list.filteredKeys}
-              translations={list.currentNamespaceTranslations}
-              rawTranslations={data.rawTranslations}
-              activeNamespace={list.activeNamespace}
-              editingId={editForm.editingId}
-              editGe={editForm.editGe}
-              setEditGe={editForm.setEditGe}
-              editEn={editForm.editEn}
-              setEditEn={editForm.setEditEn}
-              onEdit={editForm.startEditing}
-              onSave={editForm.onSubmit}
-              onCancel={() => editForm.setEditingId(null)}
-              onDelete={actions.handleDeleteTranslation}
-              selectedIds={list.selectedIds}
-              onSelectChange={actions.handleSelectChange}
-              onSelectAll={actions.handleSelectAll}
-            />
+            <>
+              <TranslationList
+                filteredKeys={list.filteredKeys}
+                translations={list.currentNamespaceTranslations}
+                rawTranslations={data.rawTranslations}
+                activeNamespace={list.activeNamespace}
+                editingId={editForm.editingId}
+                editGe={editForm.editGe}
+                setEditGe={editForm.setEditGe}
+                editEn={editForm.editEn}
+                setEditEn={editForm.setEditEn}
+                onEdit={editForm.startEditing}
+                onSave={editForm.onSubmit}
+                onCancel={() => editForm.setEditingId(null)}
+                onDelete={actions.handleDeleteTranslation}
+                selectedIds={list.selectedIds}
+                onSelectChange={actions.handleSelectChange}
+                onSelectAll={actions.handleSelectAll}
+              />
+
+              {list.totalPages > 1 && (
+                <div className="pagination">
+                  <button
+                    disabled={list.currentPage === 1}
+                    onClick={() => list.setCurrentPage((p) => Math.max(1, p - 1))}
+                  >
+                    წინა
+                  </button>
+                  <span className="page-info">
+                    გვერდი {list.currentPage} / {list.totalPages}
+                  </span>
+                  <button
+                    disabled={list.currentPage === list.totalPages}
+                    onClick={() => list.setCurrentPage((p) => Math.min(list.totalPages, p + 1))}
+                  >
+                    შემდეგი
+                  </button>
+                </div>
+              )}
+            </>
           )}
         </div>
       </div>

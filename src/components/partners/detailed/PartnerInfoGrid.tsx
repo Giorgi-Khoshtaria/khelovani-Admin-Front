@@ -135,13 +135,22 @@ export function PartnerInfoGrid({
         </div>
       </div>
 
-      {(partner.description || isEditing) && (
+      {(partner.description || partner.descriptionEn || isEditing) && (
         <div className="info-section description">
           <h2>აღწერა</h2>
           <TextareaInput
             id="description"
             label="აღწერა"
             value={(isEditing ? editForm.description : partner.description) || ""}
+            onChange={onChange}
+            readOnly={!isEditing}
+            fullWidth
+            rows={5}
+          />
+          <TextareaInput
+            id="descriptionEn"
+            label="აღწერა (ინგლისურად)"
+            value={(isEditing ? editForm.descriptionEn : partner.descriptionEn) || ""}
             onChange={onChange}
             readOnly={!isEditing}
             fullWidth

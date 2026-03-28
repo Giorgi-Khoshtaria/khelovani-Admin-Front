@@ -3,6 +3,27 @@
 
 // ── Shared Form Group ──────────────────────────────────────
 // Used by: registration, login, forgot-password (and future components)
+.input-field {
+  @extend .default-text;
+  color: colors.$color-text-primary;
+  padding: 10px 14px;
+  border: 1px solid colors.$color-border;
+  border-radius: 12px;
+  outline: none;
+  background-color: colors.$color-white;
+  width: 100%;
+  transition: border-color 0.2s ease;
+
+  &:focus {
+    border-color: colors.$color-text-primary;
+  }
+
+  &::placeholder {
+    color: colors.$color-text-secondary;
+    opacity: 0.6;
+  }
+}
+
 .form-group {
   display: flex;
   flex-direction: column;
@@ -21,24 +42,7 @@
   input,
   select,
   textarea {
-    @extend .default-text;
-    color: colors.$color-text-primary;
-    padding: 10px 14px;
-    border: 1px solid colors.$color-border;
-    border-radius: 12px;
-    outline: none;
-    background-color: colors.$color-white;
-    width: 100%;
-    transition: border-color 0.2s ease;
-
-    &:focus {
-      border-color: colors.$color-text-primary;
-    }
-
-    &::placeholder {
-      color: colors.$color-text-secondary;
-      opacity: 0.6;
-    }
+    @extend .input-field;
   }
 
   textarea {

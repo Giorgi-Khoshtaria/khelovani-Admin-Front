@@ -92,3 +92,23 @@ export const deletePartnerRequest = async (id: string) => {
 
   return response.data;
 };
+export const uploadPartnerPhotoRequest = async (id: string, file: File) => {
+  const BACKEND_URL = import.meta.env.VITE_BACKEND_API_URL;
+  const token = localStorage.getItem("adminToken");
+
+  const formData = new FormData();
+  formData.append("image", file);
+
+  const response = await axios.patch(
+    `${BACKEND_URL}/api/admin/partners/${id}/photo`,
+    formData,
+    {
+      headers: {
+        Authorization: `Bearer ${token}`,
+        "Content-Type": "multipart/form-data",
+      },
+    },
+  );
+
+  return response.data;
+};

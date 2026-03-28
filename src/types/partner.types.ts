@@ -14,6 +14,7 @@ export interface PartnerData {
   facebook?: string;
   instagram?: string;
   tiktok?: string;
+  profilePhoto?: string;
 }
 
 export interface Partner {
@@ -28,10 +29,12 @@ export interface Partner {
   address: string;
   addressEn: string;
   description?: string;
+  descriptionEn?: string;
   status: PartnerStatus;
   createdAt: string;
   website?: string;
   facebook?: string;
   instagram?: string;
   tiktok?: string;
+  profilePhoto?: string;
 }

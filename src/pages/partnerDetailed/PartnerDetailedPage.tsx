@@ -5,6 +5,7 @@ import {
   updatePartnerStatus,
   updatePartnerRequest,
   deletePartnerRequest,
+  uploadPartnerPhotoRequest,
 } from "@/apiCalls/partnerApiCalls/getPartner.req";
 import { getErrorMessage } from "@/utils/handleApiError";
 import { toast } from "react-toastify";
@@ -148,6 +149,21 @@ export default function PartnerDetailedPage() {
     }
   };
 
+  const handlePhotoChange = async (file: File) => {
+    if (!id) return;
+
+    try {
+      setUpdating(true);
+      const updatedData = await uploadPartnerPhotoRequest(id, file);
+      setPartner(updatedData);
+      toast.success("პროფილის ფოტო განახლდა");
+    } catch (err) {
+      toast.error(getErrorMessage(err, "ფოტოს ატვირთვა ვერ მოხერხდა"));
+    } finally {
+      setUpdating(false);
+    }
+  };
+
   if (loading) return <div className="loading">იტვირთება...</div>;
   if (error) return <div className="error">{error}</div>;
   if (!partner) return <div className="error">პარტნიორი ვერ მოიძებნა</div>;
@@ -178,6 +194,8 @@ export default function PartnerDetailedPage() {
         editForm={editForm}
         onChange={handleChange}
         errors={formErrors}
+        isOwnProfile={isOwnProfile}
+        onPhotoChange={handlePhotoChange}
       />
 
       <PartnerInfoGrid
