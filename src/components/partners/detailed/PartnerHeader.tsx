@@ -13,7 +13,7 @@ interface PartnerHeaderProps {
   onCancel: () => void;
   onEdit: () => void;
   onDelete: () => void;
-  onStatusUpdate: (newStatus: typeof PartnerStatus.APPROVED | typeof PartnerStatus.REJECTED) => void;
+  onStatusUpdate: (newStatus: typeof PartnerStatus.APPROVED | typeof PartnerStatus.REJECTED | typeof PartnerStatus.BANNED) => void;
 }
 
 export function PartnerHeader({
@@ -93,6 +93,16 @@ export function PartnerHeader({
                 {updating ? "..." : "უარყოფა"}
               </button>
             )}
+            {partner.status !== PartnerStatus.BANNED && (
+              <button
+                className="ban-btn"
+                style={{ marginLeft: "8px" }}
+                onClick={() => onStatusUpdate(PartnerStatus.BANNED)}
+                disabled={updating}
+              >
+                {updating ? "..." : "დაბლოკვა"}
+              </button>
+            )}
           </div>
         )}
 
@@ -102,7 +112,9 @@ export function PartnerHeader({
               ? "მოლოდინი"
               : partner.status === PartnerStatus.APPROVED
                 ? "დადასტურებული"
-                : "უარყოფილი"}
+                : partner.status === PartnerStatus.BANNED
+                  ? "დაბლოკილი"
+                  : "უარყოფილი"}
           </div>
         )}
       </div>

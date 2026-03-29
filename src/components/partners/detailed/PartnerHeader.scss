@@ -79,6 +79,18 @@
       }
     }
 
+    .ban-btn {
+      @extend .btn-danger;
+      background-color: #dc3545;
+      color: white;
+      border: 1px solid #dc3545;
+
+      &:hover:not(:disabled) {
+        background-color: #c82333;
+        border-color: #bd2130;
+      }
+    }
+
     .approve-btn {
       @extend .btn-success;
       /* Specific custom style for this button as per previous implementation but using @extend */

@@ -1,23 +1,14 @@
 import type { PartnerData } from "@/types/partner.types";
 import { Link } from "react-router-dom";
-import { updatePartnerStatus } from "@/apiCalls/partnerApiCalls/getPartner.req";
 import { PartnerStatus } from "@/lib/status/partnerStatus";
 import "./PartnerCard.scss";
 
 interface PartnerCardProps {
   partner: PartnerData;
+  onDelete?: () => void;
 }
 
-export default function PartnerCard({ partner }: PartnerCardProps) {
-  const handleStatusUpdate = async (
-    newStatus: typeof PartnerStatus.APPROVED | typeof PartnerStatus.REJECTED,
-  ) => {
-    try {
-      await updatePartnerStatus(partner._id, newStatus);
-    } catch (error) {
-      console.error("Failed to update status:", error);
-    }
-  };
+export default function PartnerCard({ partner, onDelete }: PartnerCardProps) {
   return (
     <div className="partner-card">
       <div className="partner-card__header">
@@ -27,7 +18,9 @@ export default function PartnerCard({ partner }: PartnerCardProps) {
             ? "მოლოდინი"
             : partner.status === PartnerStatus.APPROVED
               ? "დადასტურებული"
-              : "უარყოფილი"}
+              : partner.status === PartnerStatus.BANNED
+                ? "დაბლოკილი"
+                : "უარყოფილი"}
         </span>
       </div>
       <div className="partner-card__body">
@@ -49,10 +42,21 @@ export default function PartnerCard({ partner }: PartnerCardProps) {
           </Link>
 
           <button
-            className="reject-btn"
-            onClick={() => handleStatusUpdate(PartnerStatus.REJECTED)}
+            className="delete-btn reject-btn"
+            onClick={async () => {
+              if (window.confirm("ნამდვილად გსურთ პარტნიორის წაშლა?")) {
+                try {
+                  const { deletePartnerRequest } = await import("@/apiCalls/partnerApiCalls/getPartner.req");
+                  await deletePartnerRequest(partner._id);
+                  if (onDelete) onDelete();
+                } catch (error) {
+                  console.error("Failed to delete partner:", error);
+                  alert("წაშლა ვერ მოხერხდა");
+                }
+              }
+            }}
           >
-            უარყოფა
+            წაშლა
           </button>
         </div>
       )}

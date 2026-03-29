@@ -10,7 +10,7 @@ import { getErrorMessage } from "@/utils/handleApiError";
 export default function PartnerListing() {
   const [partners, setPartners] = useState<PartnerData[]>([]);
   const [activeTab, setActiveTab] = useState<
-    "all" | "pending" | "approved" | "rejected"
+    "all" | "pending" | "approved" | "rejected" | "banned"
   >("all");
   const [searchQuery, setSearchQuery] = useState("");
   const debouncedQuery = useDebounce(searchQuery, 1000);
@@ -32,6 +32,15 @@ export default function PartnerListing() {
 
     fetchPartners();
   }, [debouncedQuery, activeTab]);
+
+  const refreshPartners = async () => {
+    try {
+      const data = await getAllPartnerRequest(debouncedQuery, activeTab);
+      setPartners(data);
+    } catch (err) {
+      console.error("Failed to refresh:", err);
+    }
+  };
 
   const filteredPartners = partners;
 
@@ -64,6 +73,12 @@ export default function PartnerListing() {
           >
             უარყოფილი
           </button>
+          <button
+            onClick={() => setActiveTab("banned")}
+            className={activeTab === "banned" ? "active" : ""}
+          >
+            დაბლოკილი
+          </button>
         </div>
       </div>
 
@@ -86,7 +101,7 @@ export default function PartnerListing() {
         <div className="partners-list">
           <div className="list-body">
             {filteredPartners.map((partner) => (
-              <PartnerCard key={partner._id} partner={partner} />
+              <PartnerCard key={partner._id} partner={partner} onDelete={refreshPartners} />
             ))}
           </div>
         </div>
