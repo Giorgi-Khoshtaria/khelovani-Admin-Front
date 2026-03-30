@@ -9,6 +9,10 @@ import PartnerDetailedPage from "./pages/partnerDetailed/PartnerDetailedPage";
 import { PartnerProvider } from "./context/PartnerProvider";
 import PartnerListing from "./pages/partnerListings/PartnerListing";
 import TranslationPage from "./pages/Translation/TranslationPage";
+import ProductListingPage from "./pages/products/listing/ProductListingPage";
+import AddProductPage from "./pages/products/add/AddProductPage";
+import ProductDetailsPage from "./pages/products/details/ProductDetailsPage";
+import EditProductPage from "./pages/products/edit/EditProductPage";
 import RoleManagement from "./pages/Roles/RoleManagement";
 import RoleDetailedPage from "./pages/Roles/RoleDetailedPage";
 import { usePartnerContext } from "./context/PartnerContext";
@@ -46,6 +50,30 @@ const router = createBrowserRouter([
       {
         path: "partners/:id?",
         element: <PartnerDetailedPage />,
+      },
+      {
+        path: "partners/:id/products",
+        element: <ProductListingPage />,
+      },
+      {
+        path: "partners/:id/products/add",
+        element: <AddProductPage />,
+      },
+      {
+        path: "partners/:id/products/:productId",
+        element: <ProductDetailsPage />,
+      },
+      {
+        path: "partners/:id/products/:productId/edit",
+        element: <EditProductPage />,
+      },
+      {
+        path: "products",
+        element: <ProductListingPage />,
+      },
+      {
+        path: "products/:productId",
+        element: <ProductDetailsPage />,
       },
       {
         path: "translations",

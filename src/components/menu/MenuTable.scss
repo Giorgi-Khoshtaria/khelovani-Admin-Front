@@ -16,36 +16,36 @@
 
   th,
   td {
-    padding: 1rem 1.25rem;
+    padding: 16px 20px;
     border-bottom: 1px solid colors.$color-cream;
   }
 
   th {
     background-color: colors.$color-ivory;
     font-weight: 600;
-    font-size: 0.9rem;
+    font-size: 14.4px;
     color: colors.$color-espresso;
   }
 
   code {
     background: colors.$color-bg-page;
-    padding: 0.2rem 0.5rem;
+    padding: 3.2px 8px;
     border-radius: 4px;
     font-family: monospace;
-    font-size: 0.9rem;
+    font-size: 14.4px;
     color: colors.$color-espresso;
   }
 
   .actions-cell {
     display: flex;
-    gap: 0.5rem;
+    gap: 8px;
   }
 
   .empty-row td {
     text-align: center;
-    padding: 3rem;
+    padding: 48px;
     color: colors.$color-text-secondary;
-    font-size: 0.95rem;
+    font-size: 15.2px;
   }
 
   .status-badge {
@@ -55,12 +55,12 @@
 
 .btn-primary-sm {
   @extend .btn-outline;
-  padding: 0.4rem 0.8rem;
-  font-size: 0.85rem;
+  padding: 6.4px 12.8px;
+  font-size: 13.6px;
 }
 
 .btn-danger-sm {
   @extend .btn-danger;
-  padding: 0.4rem 0.8rem;
-  font-size: 0.85rem;
+  padding: 6.4px 12.8px;
+  font-size: 13.6px;
 }

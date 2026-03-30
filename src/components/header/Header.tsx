@@ -1,7 +1,7 @@
 import { usePartnerContext } from "@/context/PartnerContext";
 import { parseJwt } from "@/utils/parseJwt";
 import "./Header.scss";
-import { useLogout } from "@/hooks/useLogout";
+import { useLogout } from "@/hooks/auth/useLogout";
 
 function Header() {
   const logout = useLogout();

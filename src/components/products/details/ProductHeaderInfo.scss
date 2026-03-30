@@ -1,0 +1,70 @@
+@use "@/styles/colors.scss" as colors;
+
+.product-header-info {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+
+  .category-tag {
+    text-transform: uppercase;
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: 0.05em;
+    color: colors.$color-walnut;
+  }
+
+  h1 {
+    font-size: 32px;
+    color: colors.$color-espresso;
+    margin: 0;
+    line-height: 1.2;
+  }
+
+  .title-en {
+    font-size: 20px;
+    color: colors.$color-text-secondary;
+    font-weight: 400;
+    margin: -4px 0 8px 0;
+  }
+
+  .price-stock-row {
+    display: flex;
+    align-items: center;
+    gap: 24px;
+    margin-top: 8px;
+
+    .price-tag {
+      font-size: 28px;
+      font-weight: 700;
+      color: colors.$color-espresso;
+    }
+
+    .stock-badge {
+      padding: 4px 12px;
+      border-radius: 999px;
+      font-size: 13.6px;
+      font-weight: 600;
+
+      &.in-stock {
+        background-color: colors.$color-success-light;
+        color: colors.$color-success-hover;
+      }
+
+      &.out-of-stock {
+        background-color: colors.$color-danger-light;
+        color: colors.$color-danger-hover;
+      }
+    }
+  }
+
+  .condition-info {
+    font-size: 15.2px;
+    color: colors.$color-text-secondary;
+    margin-top: 16px;
+
+    strong {
+      color: colors.$color-espresso;
+      text-transform: capitalize;
+    }
+  }
+}

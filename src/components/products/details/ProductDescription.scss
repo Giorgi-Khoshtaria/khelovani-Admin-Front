@@ -1,0 +1,34 @@
+@use "@/styles/colors.scss" as colors;
+
+.product-description-section {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  padding: 24px 0;
+  border-top: 1px solid colors.$color-border;
+  margin-top: 24px;
+
+  .desc-block {
+    h3 {
+      font-size: 17.6px;
+      color: colors.$color-walnut;
+      margin-bottom: 12px;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+
+    p {
+      line-height: 1.6;
+      color: colors.$color-text-primary;
+      white-space: pre-line;
+      font-size: 16px;
+    }
+
+    &.en {
+      p {
+        color: colors.$color-text-secondary;
+        font-style: italic;
+      }
+    }
+  }
+}

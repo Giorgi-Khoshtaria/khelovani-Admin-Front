@@ -1,10 +1,19 @@
 import { useEffect, useState, useCallback } from "react";
-import { getRolesRequest, createRoleRequest, deleteRoleRequest } from "../apiCalls/roleApiCalls/role.req";
-import { getPermissionsRequest, createPermissionRequest, updatePermissionRequest, deletePermissionRequest } from "../apiCalls/roleApiCalls/permission.req";
-import type { Role, Permission } from "../types/role.types";
-import { useFormHandler } from "./useFormHandler";
-import { useDebounce } from "./useDebounce";
-import { getErrorMessage } from "../utils/handleApiError";
+import {
+  getRolesRequest,
+  createRoleRequest,
+  deleteRoleRequest,
+} from "@/apiCalls/roleApiCalls/role.req";
+import {
+  getPermissionsRequest,
+  createPermissionRequest,
+  updatePermissionRequest,
+  deletePermissionRequest,
+} from "@/apiCalls/roleApiCalls/permission.req";
+import type { Role, Permission } from "@/types/role.types";
+import { useFormHandler } from "@/hooks/utils/useFormHandler";
+import { useDebounce } from "@/hooks/utils/useDebounce";
+import { getErrorMessage } from "@/utils/handleApiError";
 import { toast } from "react-toastify";
 
 export default function useRoleManagement() {
@@ -24,7 +33,9 @@ export default function useRoleManagement() {
   const [isRoleModalOpen, setIsRoleModalOpen] = useState(false);
   const [isPermModalOpen, setIsPermModalOpen] = useState(false);
   const [isPermEditModalOpen, setIsPermEditModalOpen] = useState(false);
-  const [editingPermission, setEditingPermission] = useState<Permission | null>(null);
+  const [editingPermission, setEditingPermission] = useState<Permission | null>(
+    null,
+  );
 
   // Forms
   const roleFormHandler = useFormHandler({ name: "", description: "" });
@@ -46,11 +57,16 @@ export default function useRoleManagement() {
         const data = await getRolesRequest();
         setRoles(data);
       } else {
-        const data = await getPermissionsRequest(debouncedSearchQuery, selectedCategory, sortField, sortOrder);
+        const data = await getPermissionsRequest(
+          debouncedSearchQuery,
+          selectedCategory,
+          sortField,
+          sortOrder,
+        );
         setPermissions(data);
       }
     } catch {
-      alert("მონაცემების ჩატვირთვა ვერ მოხერხდა");
+      toast.error("მონაცემების ჩატვირთვა ვერ მოხერხდა");
     } finally {
       setLoading(false);
     }
@@ -78,7 +94,11 @@ export default function useRoleManagement() {
     try {
       await createPermissionRequest(permFormHandler.formData);
       setIsPermModalOpen(false);
-      permFormHandler.setFormData({ name: "", description: "", category: "General" });
+      permFormHandler.setFormData({
+        name: "",
+        description: "",
+        category: "General",
+      });
       toast.success("უფლება წარმატებით შეიქმნა");
       loadData();
     } catch (err) {
@@ -100,7 +120,10 @@ export default function useRoleManagement() {
     e.preventDefault();
     if (!editingPermission) return;
     try {
-      await updatePermissionRequest(editingPermission._id, editPermFormHandler.formData);
+      await updatePermissionRequest(
+        editingPermission._id,
+        editPermFormHandler.formData,
+      );
       setIsPermEditModalOpen(false);
       setEditingPermission(null);
       toast.success("უფლება წარმატებით განახლდა");

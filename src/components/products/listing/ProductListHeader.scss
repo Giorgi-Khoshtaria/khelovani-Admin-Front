@@ -1,0 +1,19 @@
+@use "@/styles/colors.scss" as colors;
+@use "@/styles/_breakpoints.scss" as *;
+
+.list-header {
+  display: grid;
+  grid-template-columns: 80px 2fr 1.2fr 1fr 100px 80px 120px;
+  padding: 16px;
+  background-color: colors.$color-ivory;
+  border-bottom: 2px solid colors.$color-border;
+  font-weight: 700;
+  font-size: 13px;
+  color: colors.$color-walnut;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+
+  @include tablet {
+    display: none;
+  }
+}

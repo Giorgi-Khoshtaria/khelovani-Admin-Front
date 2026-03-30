@@ -3,25 +3,25 @@
 @use "@/styles/_buttons.scss" as *;
 
 .menu-page {
-  padding: 2rem;
+  padding: 32px;
 
   .page-header {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    margin-bottom: 2rem;
+    margin-bottom: 32px;
 
     h1 {
       margin: 0;
-      font-size: 1.8rem;
+      font-size: 28.8px;
       color: colors.$color-text-primary;
     }
   }
 
   .loading {
     text-align: center;
-    padding: 3rem;
+    padding: 48px;
     color: colors.$color-text-secondary;
-    font-size: 0.95rem;
+    font-size: 15.2px;
   }
 }

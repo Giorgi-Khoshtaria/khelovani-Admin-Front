@@ -1,0 +1,57 @@
+@use "@/styles/colors.scss" as colors;
+@use "@/styles/_buttons.scss" as *;
+@use "@/styles/_breakpoints.scss" as *;
+
+.product-listing-page {
+  padding: 24px;
+  max-width: 1440px; // Aligned with global .layout
+  margin: 0 auto;
+
+  .card {
+    background: colors.$color-white;
+    border-radius: 12px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+  }
+
+  .page-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 24px;
+
+    .header-title {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+
+      .back-btn {
+        @extend .btn-outline;
+        padding: 6px 12px;
+        font-size: 14px;
+      }
+
+      h1 {
+        margin: 0;
+        color: colors.$color-espresso;
+        font-size: 24px;
+      }
+    }
+
+    .add-product-btn {
+      @extend .btn-success;
+    }
+  }
+
+  .loading, .empty-state {
+    text-align: center;
+    padding: 48px;
+    color: colors.$color-text-secondary;
+  }
+
+  .products-list {
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+  }
+}
+

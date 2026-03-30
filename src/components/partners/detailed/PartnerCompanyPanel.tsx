@@ -1,5 +1,6 @@
 import TextInput from "@/lib/ui/TextInput";
 import type { Partner } from "@/types/partner.types";
+import { toast } from "react-toastify";
 import "./PartnerCompanyPanel.scss";
 
 interface PartnerCompanyPanelProps {
@@ -31,11 +32,11 @@ export function PartnerCompanyPanel({
     const file = e.target.files?.[0];
     if (file) {
       if (file.size > 5 * 1024 * 1024) {
-        alert("ფაილის ზომა არ უნდა აღემატებოდეს 5MB-ს");
+        toast.warning("ფაილის ზომა არ უნდა აღემატებოდეს 5MB-ს");
         return;
       }
       if (!file.type.startsWith("image/")) {
-        alert("მხოლოდ სურათების ატვირთვაა ნებადართული");
+        toast.warning("მხოლოდ სურათების ატვირთვაა ნებადართული");
         return;
       }
       onPhotoChange?.(file);

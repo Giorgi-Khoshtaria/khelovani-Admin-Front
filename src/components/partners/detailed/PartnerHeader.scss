@@ -42,8 +42,28 @@
     gap: 12px;
     align-items: center;
 
-    .admin-status-actions,
-    .profile-owner-actions,
+    .admin-status-actions {
+      display: flex;
+      gap: 12px;
+    }
+
+    .profile-owner-actions {
+      display: flex;
+      gap: 12px;
+
+      .edit-btn {
+        @extend .btn-outline;
+      }
+      
+      .add-item-btn {
+        @extend .btn-success;
+      }
+
+      .delete-btn {
+        @extend .btn-danger;
+      }
+    }
+
     .edit-actions {
       display: flex;
       gap: 12px;

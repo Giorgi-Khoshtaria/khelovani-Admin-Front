@@ -14,22 +14,22 @@
 
 .modal-content {
   background: white;
-  padding: 2rem;
+  padding: 32px;
   border-radius: 14px;
   width: 90%;
   max-width: 480px;
   box-shadow: 0 12px 30px rgba(0, 0, 0, 0.12);
 
   h2 {
-    margin: 0 0 1.5rem;
-    font-size: 1.3rem;
+    margin: 0 0 24px;
+    font-size: 20.8px;
     color: colors.$color-espresso;
   }
 
   form {
     display: flex;
     flex-direction: column;
-    gap: 1rem;
+    gap: 16px;
 
     .form-group {
       @extend .form-group;
@@ -38,7 +38,7 @@
         label {
           display: flex;
           align-items: center;
-          gap: 0.5rem;
+          gap: 8px;
           font-weight: 500;
           cursor: pointer;
         }
@@ -55,8 +55,8 @@
     .form-actions {
       display: flex;
       justify-content: flex-end;
-      gap: 0.75rem;
-      margin-top: 0.5rem;
+      gap: 12px;
+      margin-top: 8px;
       
       .cancel-btn {
         @extend .btn-secondary;

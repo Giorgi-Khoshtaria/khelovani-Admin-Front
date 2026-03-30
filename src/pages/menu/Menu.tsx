@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { usePartnerContext } from "@/context/PartnerContext";
 import { parseJwt } from "@/utils/parseJwt";
 import { toast } from "react-toastify";
-import { useNavigateToLogin } from "@/hooks/useNavigateToLogin";
+import { useNavigateToLogin } from "@/hooks/auth/useNavigateToLogin";
 import {
   getMenuItemsRequest,
   createMenuItemRequest,

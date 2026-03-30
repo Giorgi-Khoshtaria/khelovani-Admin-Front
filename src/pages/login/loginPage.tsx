@@ -6,7 +6,7 @@ import { toast } from "react-toastify";
 import axios from "axios";
 import TextInput from "@/lib/ui/TextInput";
 import PasswordInput from "@/lib/ui/PasswordInput";
-import { useFormHandler } from "@/hooks/useFormHandler";
+import { useFormHandler } from "@/hooks/utils/useFormHandler";
 import { loginRequest } from "@/apiCalls/authApiCalls/login.req";
 import { usePartnerContext } from "@/context/PartnerContext";
 import { validateLoginForm } from "@/validations/authValidations/loginValidations";

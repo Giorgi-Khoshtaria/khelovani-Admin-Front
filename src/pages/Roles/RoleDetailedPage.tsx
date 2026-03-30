@@ -3,6 +3,7 @@ import { useParams, useNavigate, Link } from "react-router-dom";
 import { getRoleByIdRequest, updateRoleRequest } from "../../apiCalls/roleApiCalls/role.req";
 import { getPermissionsRequest } from "../../apiCalls/roleApiCalls/permission.req";
 import type { Role, Permission } from "../../types/role.types";
+import { toast } from "react-toastify";
 import "./RoleDetailedPage.scss";
 
 export default function RoleDetailedPage() {
@@ -26,7 +27,7 @@ export default function RoleDetailedPage() {
       // Extra ids from populated permissions array
       setSelectedPermissionIds(roleData.permissions?.map((p) => p._id) || []);
     } catch {
-      alert("მონაცემების ჩატვირთვა ვერ მოხერხდა");
+      toast.error("მონაცემების ჩატვირთვა ვერ მოხერხდა");
       navigate("/roles");
     } finally {
       setLoading(false);
@@ -46,10 +47,10 @@ export default function RoleDetailedPage() {
   const handleSave = async () => {
     if (!id) return;
     try {
-      await updateRoleRequest(id, { permissions: selectedPermissionIds as any }); // Cast if TS complains about populated types vs raw IDs save format
-      alert("უფლებები წარმატებით განახლდა");
+      await updateRoleRequest(id, { permissions: selectedPermissionIds as unknown as Permission[] });
+      toast.success("უფლებები წარმატებით განახლდა");
     } catch {
-      alert("შენახვა ვერ მოხერხდა");
+      toast.error("შენახვა ვერ მოხერხდა");
     }
   };
 

@@ -9,19 +9,44 @@ export default function SideManu() {
 
   const decoded = parseJwt(token || "");
   const role = decoded?.role;
+  const permissions: string[] = decoded?.permissions || [];
 
   const links: { path: string; label: string }[] = [];
 
-  if (role === "super_admin" || role === "admin" || role === "moderator") {
-    links.push(
-      { path: "/menu", label: "მენიუ" },
-      { path: "/partners", label: "პარტნიორების სია" },
-      { path: "/translations", label: "თარგმანები" },
-      { path: "/roles", label: "როლები" },
-    );
-  } else if (role === "organisation" && partnerId) {
-    links.push({ path: `/partners/${partnerId}`, label: "ჩემი პროფილი" });
+  const hasPermission = (p: string) => permissions.includes(p) || role === "super_admin" || role === "admin";
+
+  // Admin / Moderator Links
+  if (hasPermission("menu.manage")) links.push({ path: "/menu", label: "მენიუ" });
+  if (hasPermission("users.list")) links.push({ path: "/partners", label: "პარტნიორების სია" });
+  if (hasPermission("products.viewAll")) links.push({ path: "/products", label: "ყველა პროდუქტი" });
+  if (hasPermission("translations.read")) links.push({ path: "/translations", label: "თარგმანები" });
+  if (hasPermission("roles.read")) links.push({ path: "/roles", label: "როლები" });
+
+  // Organisation / Partner Links
+  if (role === "organisation" && partnerId) {
+    if (permissions.includes("organization.profile.view") || permissions.includes("organization.profile.edit") || permissions.length === 0) {
+      links.push({ path: `/partners/${partnerId}`, label: "ჩემი პროფილი" });
+    }
+    if (permissions.includes("organization.products.view") || permissions.includes("organization.products.create") || permissions.length === 0) {
+      links.push({ path: `/partners/${partnerId}/products`, label: "ჩემი პროდუქტები" });
+    }
   }
+
+  const isActive = (linkPath: string) => {
+    if (location.pathname === linkPath) return true;
+    
+    // Admin /partners highlighting
+    if (linkPath === "/partners" && location.pathname.startsWith("/partners")) {
+      return true;
+    }
+    
+    // Org /products highlighting (includes /products/add)
+    if (linkPath.endsWith("/products") && location.pathname.startsWith(linkPath)) {
+      return true;
+    }
+    
+    return false;
+  };
 
   return (
     <div className="side-manu">
@@ -29,13 +54,7 @@ export default function SideManu() {
         {links.map((link) => (
           <li
             key={link.path}
-            className={`side-manu__item ${
-              location.pathname === link.path ||
-              (link.path.startsWith("/partners") &&
-                location.pathname.startsWith("/partners"))
-                ? "active"
-                : ""
-            }`}
+            className={`side-manu__item ${isActive(link.path) ? "active" : ""}`}
           >
             <Link to={link.path} className="side-manu__link">
               {link.label}

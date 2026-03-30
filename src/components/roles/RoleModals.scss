@@ -12,23 +12,23 @@
 
 .modal-content {
   background: white;
-  padding: 2rem;
+  padding: 32px;
   border-radius: 12px;
   width: 90%;
   max-width: 500px;
   box-shadow: 0 10px 25px rgba(0,0,0,0.1);
 
-  h2 { margin-top: 0; margin-bottom: 1.5rem; color: colors.$color-espresso; }
+  h2 { margin-top: 0; margin-bottom: 24px; color: colors.$color-espresso; }
 
   form {
-    display: flex; flex-direction: column; gap: 1rem;
+    display: flex; flex-direction: column; gap: 16px;
 
     .form-group {
       @extend .form-group;
     }
 
     .form-actions {
-      display: flex; justify-content: flex-end; gap: 0.75rem; margin-top: 1rem;
+      display: flex; justify-content: flex-end; gap: 12px; margin-top: 16px;
       
       .cancel-btn {
         @extend .btn-secondary;

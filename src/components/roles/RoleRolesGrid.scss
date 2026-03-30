@@ -4,14 +4,14 @@
 .roles-grid {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
-  gap: 1.5rem;
+  gap: 24px;
 }
 
 .role-card {
   background: colors.$color-white;
   border-radius: 12px;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
-  padding: 1.5rem;
+  padding: 24px;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
@@ -27,11 +27,11 @@
     display: flex;
     justify-content: space-between;
     align-items: flex-start;
-    margin-bottom: 0.75rem;
+    margin-bottom: 12px;
 
     h3 {
       margin: 0;
-      font-size: 1.25rem;
+      font-size: 20px;
       color: colors.$color-text-primary;
     }
 
@@ -47,10 +47,10 @@
 
   &__desc {
     color: colors.$color-text-secondary;
-    font-size: 0.9rem;
+    font-size: 14.4px;
     line-height: 1.4;
     flex-grow: 1;
-    margin-bottom: 1.5rem;
+    margin-bottom: 24px;
   }
 
   &__footer {
@@ -58,31 +58,31 @@
     justify-content: space-between;
     align-items: center;
     border-top: 1px solid colors.$color-cream;
-    padding-top: 1rem;
+    padding-top: 16px;
 
     .count {
-      font-size: 0.85rem;
+      font-size: 13.6px;
       font-weight: 500;
       color: colors.$color-text-secondary;
       background: colors.$color-bg-page;
-      padding: 0.25rem 0.6rem;
+      padding: 4px 9.6px;
       border-radius: 6px;
     }
 
     .actions {
       display: flex;
-      gap: 0.5rem;
+      gap: 8px;
       
       .edit-link {
         @extend .btn-outline;
-        padding: 0.4rem 0.8rem;
-        font-size: 0.85rem;
+        padding: 6.4px 12.8px;
+        font-size: 13.6px;
       }
       
       .delete-btn {
         @extend .btn-danger;
-        padding: 0.4rem 0.8rem;
-        font-size: 0.85rem;
+        padding: 6.4px 12.8px;
+        font-size: 13.6px;
       }
     }
   }

@@ -2,23 +2,23 @@
 @use "../../styles/colors.scss" as colors;
 
 .role-detailed-page {
-  padding: 2rem;
+  padding: 32px;
 
   .page-header {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    margin-bottom: 1rem;
+    margin-bottom: 16px;
 
     .header-left {
       display: flex;
       flex-direction: column;
-      gap: 0.5rem;
+      gap: 8px;
 
       .back-link {
         color: colors.$color-text-secondary;
         text-decoration: none;
-        font-size: 0.9rem;
+        font-size: 14.4px;
         font-weight: 500;
 
         &:hover {
@@ -28,7 +28,7 @@
 
       h1 {
         margin: 0;
-        font-size: 1.8rem;
+        font-size: 28.8px;
         color: colors.$color-text-primary;
       }
     }
@@ -36,10 +36,10 @@
 
   .role-desc {
     color: colors.$color-text-secondary;
-    margin-bottom: 2rem;
-    font-size: 1rem;
+    margin-bottom: 32px;
+    font-size: 16px;
     background: colors.$color-white;
-    padding: 1rem;
+    padding: 16px;
     border-radius: 8px;
     border-left: 4px solid colors.$color-espresso;
     box-shadow: 0 1px 3px rgba(0,0,0,0.05);
@@ -48,7 +48,7 @@
   .permissions-grid {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
-    gap: 1.5rem;
+    gap: 24px;
     align-items: start;
   }
 
@@ -56,28 +56,28 @@
     background: colors.$color-white;
     border-radius: 12px;
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
-    padding: 1.5rem;
+    padding: 24px;
     border: 1px solid rgba(0,0,0,0.05);
 
     .category-header {
       display: flex;
       justify-content: space-between;
       align-items: center;
-      margin-bottom: 1rem;
+      margin-bottom: 16px;
       border-bottom: 2px solid colors.$color-cream;
-      padding-bottom: 0.5rem;
+      padding-bottom: 8px;
 
       h3 {
         margin: 0;
-        font-size: 1.1rem;
+        font-size: 17.6px;
         color: colors.$color-espresso;
       }
 
       .select-all-label {
         display: flex;
         align-items: center;
-        gap: 0.4rem;
-        font-size: 0.85rem;
+        gap: 6.4px;
+        font-size: 13.6px;
         color: colors.$color-text-secondary;
         cursor: pointer;
 
@@ -91,14 +91,14 @@
     .permission-items {
       display: flex;
       flex-direction: column;
-      gap: 0.8rem;
+      gap: 12.8px;
     }
 
     .permission-item {
       display: flex;
       align-items: flex-start;
-      gap: 0.75rem;
-      padding: 0.5rem;
+      gap: 12px;
+      padding: 8px;
       border-radius: 6px;
       cursor: pointer;
       transition: background 0.2s;
@@ -108,7 +108,7 @@
       }
 
       input[type="checkbox"] {
-        margin-top: 0.25rem;
+        margin-top: 4px;
         cursor: pointer;
         width: 16px;
         height: 16px;
@@ -117,24 +117,24 @@
       .permission-info {
         display: flex;
         flex-direction: column;
-        gap: 0.2rem;
+        gap: 3.2px;
 
         .perm-name {
           font-weight: 600;
           color: colors.$color-text-primary;
-          font-size: 0.95rem;
+          font-size: 15.2px;
 
           code {
             background: #f1f3f5;
-            padding: 0.1rem 0.3rem;
+            padding: 1.6px 4.8px;
             border-radius: 4px;
             font-family: monospace;
-            font-size: 0.85rem;
+            font-size: 13.6px;
           }
         }
 
         .perm-desc {
-          font-size: 0.85rem;
+          font-size: 13.6px;
           color: colors.$color-text-secondary;
         }
       }
@@ -143,6 +143,6 @@
 
   .loading {
     text-align: center;
-    padding: 3rem;
+    padding: 48px;
   }
 }

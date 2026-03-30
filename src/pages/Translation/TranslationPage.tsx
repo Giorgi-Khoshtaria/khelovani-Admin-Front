@@ -1,7 +1,7 @@
 import TranslationForm from "@/components/translation/TranslationForm";
 import NamespaceSidebar from "@/components/translation/NamespaceSidebar";
 import TranslationList from "@/components/translation/TranslationList";
-import useTranslation from "../../hooks/useTranslation";
+import useTranslation from "../../hooks/translations/useTranslation";
 import "./TranslationPage.scss";
 
 export default function TranslationPage() {

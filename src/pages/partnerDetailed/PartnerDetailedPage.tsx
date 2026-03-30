@@ -11,7 +11,7 @@ import { getErrorMessage } from "@/utils/handleApiError";
 import { toast } from "react-toastify";
 import "./PartnerDetailedPage.scss";
 import { usePartnerContext } from "@/context/PartnerContext";
-import { useLogout } from "@/hooks/useLogout";
+import { useLogout } from "@/hooks/auth/useLogout";
 import { PartnerStatus } from "@/lib/status/partnerStatus";
 import type { Partner } from "@/types/partner.types";
 import { parseJwt } from "@/utils/parseJwt";
@@ -65,7 +65,7 @@ export default function PartnerDetailedPage() {
   }, [id]);
 
   const handleStatusUpdate = async (
-    newStatus: typeof PartnerStatus.APPROVED | typeof PartnerStatus.REJECTED,
+    newStatus: typeof PartnerStatus.APPROVED | typeof PartnerStatus.REJECTED | typeof PartnerStatus.BANNED,
   ) => {
     if (!id || !partner) return;
 

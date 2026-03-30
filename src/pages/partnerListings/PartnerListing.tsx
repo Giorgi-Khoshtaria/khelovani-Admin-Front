@@ -4,7 +4,7 @@ import type { PartnerData } from "@/types/partner.types";
 import "./partnerListing.scss";
 
 import { getAllPartnerRequest } from "@/apiCalls/partnerApiCalls/getPartner.req";
-import { useDebounce } from "@/hooks/useDebounce";
+import { useDebounce } from "@/hooks/utils/useDebounce";
 import { getErrorMessage } from "@/utils/handleApiError";
 
 export default function PartnerListing() {

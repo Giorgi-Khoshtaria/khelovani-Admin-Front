@@ -1,0 +1,10 @@
+@use "@/styles/colors.scss" as colors;
+
+.loading-overlay {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 60vh;
+  font-size: 19.2px;
+  color: colors.$color-text-secondary;
+}

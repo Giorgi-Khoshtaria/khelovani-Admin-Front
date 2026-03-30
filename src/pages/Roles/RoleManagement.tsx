@@ -1,4 +1,4 @@
-import useRoleManagement from "../../hooks/useRoleManagement";
+import useRoleManagement from "../../hooks/roles/useRoleManagement";
 import "./RoleManagement.scss";
 import { RoleRolesGrid } from "@/components/roles/RoleRolesGrid";
 import { RolePermissionsTable } from "@/components/roles/RolePermissionsTable";

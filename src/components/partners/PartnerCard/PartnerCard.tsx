@@ -1,6 +1,7 @@
 import type { PartnerData } from "@/types/partner.types";
 import { Link } from "react-router-dom";
 import { PartnerStatus } from "@/lib/status/partnerStatus";
+import { toast } from "react-toastify";
 import "./PartnerCard.scss";
 
 interface PartnerCardProps {
@@ -46,12 +47,13 @@ export default function PartnerCard({ partner, onDelete }: PartnerCardProps) {
             onClick={async () => {
               if (window.confirm("ნამდვილად გსურთ პარტნიორის წაშლა?")) {
                 try {
-                  const { deletePartnerRequest } = await import("@/apiCalls/partnerApiCalls/getPartner.req");
+                  const { deletePartnerRequest } =
+                    await import("@/apiCalls/partnerApiCalls/getPartner.req");
                   await deletePartnerRequest(partner._id);
                   if (onDelete) onDelete();
                 } catch (error) {
                   console.error("Failed to delete partner:", error);
-                  alert("წაშლა ვერ მოხერხდა");
+                  toast.error("წაშლა ვერ მოხერხდა");
                 }
               }
             }}
