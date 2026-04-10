@@ -1,6 +1,9 @@
 import { usePartnerContext } from "@/context/PartnerContext";
+import { parseJwt } from "@/utils/parseJwt";
 
 export const useGetPartnerId = () => {
-  const { partnerId } = usePartnerContext();
-  return partnerId;
+  const { token } = usePartnerContext();
+  if (!token) return null;
+  const decoded = parseJwt(token);
+  return decoded?.id || null;
 };

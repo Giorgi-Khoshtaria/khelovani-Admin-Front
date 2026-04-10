@@ -5,10 +5,11 @@ import "./SideManu.scss";
 
 export default function SideManu() {
   const location = useLocation();
-  const { token, partnerId } = usePartnerContext();
+  const { token } = usePartnerContext();
 
   const decoded = parseJwt(token || "");
   const role = decoded?.role;
+  const partnerId = decoded?.id;
   const permissions: string[] = decoded?.permissions || [];
 
   const links: { path: string; label: string }[] = [];

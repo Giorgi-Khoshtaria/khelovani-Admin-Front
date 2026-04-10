@@ -22,12 +22,13 @@ import { PartnerInfoGrid } from "@/components/partners/detailed/PartnerInfoGrid"
 
 export default function PartnerDetailedPage() {
   const { id: urlId } = useParams<{ id: string }>();
-  const { partnerId: contextId, token } = usePartnerContext();
+  const { token } = usePartnerContext();
+  const decoded = parseJwt(token || "");
+  const contextId = decoded?.id;
   const id = urlId || contextId;
   const navigate = useNavigate();
   const logout = useLogout();
 
-  const decoded = parseJwt(token || "");
   const userRole = decoded?.role;
   const isAdmin = userRole === "admin";
   const isOwnProfile = contextId === id;

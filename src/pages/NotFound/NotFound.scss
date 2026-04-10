@@ -1,0 +1,201 @@
+@use "@/styles/colors.scss" as *;
+
+.nf-container {
+  height: 100%;
+  min-height: calc(100vh - 100px); // Approximate account for header
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: $color-ivory;
+  position: relative;
+  overflow: hidden;
+  font-family: inherit;
+  padding: 2rem;
+}
+
+.nf-background {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+
+  &__grid {
+    position: absolute;
+    inset: 0;
+    background-image: radial-gradient(rgba($color-espresso, 0.05) 1px, transparent 1px);
+    background-size: 40px 40px;
+    mask-image: radial-gradient(circle at center, black, transparent 80%);
+  }
+
+  &__blob {
+    position: absolute;
+    border-radius: 50%;
+    filter: blur(100px);
+    opacity: 0.5;
+
+    &--1 {
+      width: 500px;
+      height: 500px;
+      background: rgba($color-espresso, 0.08);
+      top: -10%;
+      right: -5%;
+      animation: float-slow 25s infinite alternate;
+    }
+
+    &--2 {
+      width: 400px;
+      height: 400px;
+      background: rgba($color-sand, 0.2);
+      bottom: -10%;
+      left: -5%;
+      animation: float-slow 20s infinite alternate-reverse;
+    }
+
+    &--3 {
+      width: 300px;
+      height: 300px;
+      background: rgba($color-walnut, 0.1);
+      top: 40%;
+      left: 20%;
+      animation: float-slow 30s infinite alternate 5s;
+    }
+  }
+}
+
+.nf-content {
+  position: relative;
+  z-index: 10;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2rem;
+  width: 100%;
+  max-width: 600px;
+  animation: nf-entry 1s cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+
+.nf-visual {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  user-select: none;
+
+  &__number {
+    font-size: clamp(6rem, 15vw, 10rem);
+    font-weight: 900;
+    color: $color-espresso;
+    line-height: 1;
+    letter-spacing: -0.05em;
+    opacity: 0.9;
+  }
+
+  &__circle {
+    width: clamp(5rem, 12vw, 8rem);
+    height: clamp(5rem, 12vw, 8rem);
+    border: 12px solid $color-espresso;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    box-shadow: 0 0 30px rgba($color-espresso, 0.15);
+
+    &-inner {
+      width: 40%;
+      height: 40%;
+      background-color: $color-sand;
+      border-radius: 50%;
+      animation: pulse-ring 3s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+    }
+  }
+}
+
+.nf-card {
+  background: rgba($color-white, 0.4);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid rgba($color-white, 0.5);
+  border-radius: 32px;
+  padding: 3rem 2rem;
+  text-align: center;
+  width: 100%;
+  box-shadow: 0 10px 40px rgba($color-espresso, 0.05), inset 0 0 0 1px rgba($color-white, 0.5);
+
+  &__title {
+    font-size: clamp(1.75rem, 4vw, 2.5rem);
+    font-weight: 800;
+    color: $color-darkest;
+    margin-bottom: 1.25rem;
+    line-height: 1.2;
+  }
+
+  &__description {
+    font-size: 1.125rem;
+    color: $color-text-secondary;
+    margin-bottom: 2.5rem;
+    line-height: 1.6;
+    max-width: 450px;
+    margin-inline: auto;
+  }
+
+  &__btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.75rem;
+    background: $color-espresso;
+    color: $color-white;
+    padding: 1.125rem 2.5rem;
+    border-radius: 100px;
+    font-weight: 600;
+    font-size: 1.1rem;
+    transition: all 0.4s cubic-bezier(0.2, 0.8, 0.2, 1);
+    box-shadow: 0 10px 30px rgba($color-espresso, 0.2);
+    text-decoration: none;
+
+    &:hover {
+      background-color: $color-darkest;
+      transform: translateY(-4px) scale(1.02);
+      box-shadow: 0 15px 40px rgba($color-espresso, 0.3);
+
+      svg {
+        transform: translateX(-4px);
+      }
+    }
+
+    svg {
+      width: 22px;
+      height: 22px;
+      transition: transform 0.4s cubic-bezier(0.2, 0.8, 0.2, 1);
+    }
+  }
+}
+
+@keyframes float-slow {
+  0% { transform: translate(0, 0) rotate(0deg); }
+  100% { transform: translate(40px, 60px) rotate(10deg); }
+}
+
+@keyframes nf-entry {
+  0% { opacity: 0; transform: scale(0.95); }
+  100% { opacity: 1; transform: scale(1); }
+}
+
+@keyframes pulse-ring {
+  0%, 100% { transform: scale(0.8); opacity: 0.5; }
+  50% { transform: scale(1.2); opacity: 1; }
+}
+
+@media (max-width: 500px) {
+  .nf-container { padding: 1.5rem; }
+  .nf-content { gap: 1.5rem; }
+  .nf-card {
+    padding: 2.5rem 1.5rem;
+    border-radius: 24px;
+    &__btn { width: 100%; }
+  }
+  .nf-visual {
+    &__circle { border-width: 8px; }
+  }
+}

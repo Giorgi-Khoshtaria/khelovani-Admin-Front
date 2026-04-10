@@ -14,7 +14,6 @@ function Layout() {
 
   return (
     <div className="layout">
-
       <Header />
       <div className="layout__main">
         <SideManu />
@@ -28,4 +27,3 @@ function Layout() {
 }
 
 export default Layout;
-

@@ -24,10 +24,12 @@ import { parseJwt } from "./utils/parseJwt";
 import ProtectedRoute from "./components/auth/ProtectedRoute";
 
 import ExportPage from "./pages/Export/ExportPage";
+import NotFound from "./pages/NotFound/NotFound";
 
 const IndexRedirect = () => {
-  const { token, partnerId } = usePartnerContext();
+  const { token } = usePartnerContext();
   const decoded = parseJwt(token || "");
+  const partnerId = decoded?.id;
   const role = decoded?.role;
 
   if (role === "organisation" && partnerId) {
@@ -137,8 +139,11 @@ const router = createBrowserRouter([
         path: "products/:productId",
         element: <ProductDetailsPage />,
       },
+      {
+        path: "*",
+        element: <NotFound />,
+      },
     ],
-
   },
   {
     path: "/login",

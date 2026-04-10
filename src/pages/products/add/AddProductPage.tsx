@@ -10,12 +10,13 @@ import "./AddProductPage.scss";
 
 export default function AddProductPage() {
   const { id: urlId } = useParams<{ id: string }>();
-  const { partnerId: contextId, token } = usePartnerContext();
+  const { token } = usePartnerContext();
+  const decoded = parseJwt(token || "");
+  const contextId = decoded?.id;
   const id = urlId || contextId;
   const navigate = useNavigate();
   const [loading, setLoading] = useState(false);
 
-  const decoded = parseJwt(token || "");
   const role = (decoded?.role || "").toLowerCase();
   const isAdmin = role === "admin" || role === "super_admin";
 

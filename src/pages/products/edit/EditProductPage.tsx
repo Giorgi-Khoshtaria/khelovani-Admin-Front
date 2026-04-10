@@ -1,7 +1,10 @@
 import { useState, useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
-import { getProductDetailsRequest, updateProductRequest } from "@/apiCalls/partnerApiCalls/product.req";
+import {
+  getProductDetailsRequest,
+  updateProductRequest,
+} from "@/apiCalls/partnerApiCalls/product.req";
 import { useProductForm } from "@/hooks/products/useProductForm";
 import ProductForm from "@/components/products/form/ProductForm";
 import { usePartnerContext } from "@/context/PartnerContext";
@@ -9,16 +12,20 @@ import { parseJwt } from "@/utils/parseJwt";
 import "./EditProductPage.scss";
 
 export default function EditProductPage() {
-  const { id: urlPartnerId, productId } = useParams<{ id: string; productId: string }>();
-  const { partnerId: contextId, token } = usePartnerContext();
+  const { id: urlPartnerId, productId } = useParams<{
+    id: string;
+    productId: string;
+  }>();
+  const { token } = usePartnerContext();
+  const decoded = parseJwt(token || "");
+  const contextId = decoded?.id;
   const partnerId = urlPartnerId || contextId;
+  const role = (decoded?.role || "").toLowerCase();
+  const isAdmin = role === "admin";
+
   const navigate = useNavigate();
   const [loading, setLoading] = useState(false);
   const [fetching, setFetching] = useState(true);
-
-  const decoded = parseJwt(token || "");
-  const role = (decoded?.role || "").toLowerCase();
-  const isAdmin = role === "admin" || role === "super_admin";
   const [existingImages, setExistingImages] = useState<string[]>([]);
 
   const {
@@ -30,7 +37,7 @@ export default function EditProductPage() {
     handleInputChange,
     handleTagInputChange,
     handleFileChange,
-    validate
+    validate,
   } = useProductForm();
 
   useEffect(() => {
@@ -46,7 +53,10 @@ export default function EditProductPage() {
           category: product.category || "",
           condition: product.condition || "handmade",
           price: product.price !== undefined ? product.price.toString() : "",
-          stockQuantity: product.stockQuantity !== undefined ? product.stockQuantity.toString() : "",
+          stockQuantity:
+            product.stockQuantity !== undefined
+              ? product.stockQuantity.toString()
+              : "",
           tagsGe: product.tagsGe || [],
           materialsGe: product.materialsGe || [],
           tagsEn: product.tagsEn || [],
@@ -56,7 +66,10 @@ export default function EditProductPage() {
           isShown: product.isShown || false,
           isOneOfAKind: product.isOneOfAKind || false,
           shippingAvailable: product.shippingAvailable || false,
-          shippingPrice: product.shippingPrice !== undefined ? product.shippingPrice.toString() : "",
+          shippingPrice:
+            product.shippingPrice !== undefined
+              ? product.shippingPrice.toString()
+              : "",
           locationGe: product.locationGe || "",
           locationEn: product.locationEn || "",
           dimensions: product.dimensions || "",
@@ -90,12 +103,20 @@ export default function EditProductPage() {
     try {
       setLoading(true);
       await updateProductRequest(partnerId, productId, submissionData);
-      toast.success("პროდუქტი წარმატებით განახლდა / Product successfully updated");
-      navigate(urlPartnerId ? `/partners/${partnerId}/products/${productId}` : `/profile/products/${productId}`);
+      toast.success(
+        "პროდუქტი წარმატებით განახლდა / Product successfully updated",
+      );
+      navigate(
+        urlPartnerId
+          ? `/partners/${partnerId}/products/${productId}`
+          : `/profile/products/${productId}`,
+      );
     } catch (error: unknown) {
-      const message = error instanceof Error 
-        ? (error as unknown as { response?: { data?: { message?: string } } }).response?.data?.message || error.message 
-        : "შეცდომა განახლებისას / Error updating product";
+      const message =
+        error instanceof Error
+          ? (error as unknown as { response?: { data?: { message?: string } } })
+              .response?.data?.message || error.message
+          : "შეცდომა განახლებისას / Error updating product";
       toast.error(message);
     } finally {
       setLoading(false);
@@ -122,7 +143,12 @@ export default function EditProductPage() {
         existingImages={existingImages}
         onSubmit={handleSubmit}
         handleInputChange={handleInputChange}
-        handleTagInputChange={handleTagInputChange as (name: "tagsGe" | "tagsEn" | "materialsGe" | "materialsEn", value: string) => void}
+        handleTagInputChange={
+          handleTagInputChange as (
+            name: "tagsGe" | "tagsEn" | "materialsGe" | "materialsEn",
+            value: string,
+          ) => void
+        }
         handleFileChange={handleFileChange}
         onCancel={() => navigate(-1)}
         isAdmin={isAdmin}

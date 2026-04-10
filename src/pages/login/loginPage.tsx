@@ -25,7 +25,7 @@ const INITIAL_FORM: AdminLoginForm = {
 export default function AdminLoginPage() {
   const [isLoading, setIsLoading] = useState(false);
 
-  const { setToken, setPartnerId } = usePartnerContext();
+  const { setToken } = usePartnerContext();
 
   const { formData, errors, setErrors, handleChange } =
     useFormHandler(INITIAL_FORM);
@@ -60,7 +60,6 @@ export default function AdminLoginPage() {
         response.id || response._id || response.partnerId || response.user?._id;
 
       setToken(token);
-      setPartnerId(partnerId);
 
       const decoded = parseJwt(token);
       const role = decoded?.role;
