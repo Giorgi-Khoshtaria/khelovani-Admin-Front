@@ -1,26 +1,36 @@
 import { useState, useEffect, useCallback, useMemo } from "react";
-import { getProductsRequest, deleteProductRequest, updateProductRequest } from "@/apiCalls/partnerApiCalls/product.req";
+import {
+  getProductsRequest,
+  deleteProductRequest,
+  updateProductRequest,
+} from "@/apiCalls/partnerApiCalls/product.req";
 import { getAllPartnerRequest } from "@/apiCalls/partnerApiCalls/getPartner.req";
 import { toast } from "react-toastify";
 import type { Product } from "@/types/productTypes";
 import { parseJwt } from "@/utils/parseJwt";
 import type { Partner } from "@/types/partner.types";
 
+interface TokenPayload {
+  id: string;
+  role: string | { name: string };
+  permissions: string[];
+}
+
 export const useProductListing = (id?: string) => {
   const [products, setProducts] = useState<Product[]>([]);
   const [loading, setLoading] = useState(true);
   const [search, setSearch] = useState("");
   const [category, setCategory] = useState("all");
-  
+
   // Admin filter by organization
   const [selectedPartnerId, setSelectedPartnerId] = useState("");
-  const [partners, setPartners] = useState<{ _id: string, name: string }[]>([]);
+  const [partners, setPartners] = useState<{ _id: string; name: string }[]>([]);
 
   const userData = useMemo(() => {
     const token = localStorage.getItem("adminToken");
     if (!token) return null;
     try {
-      return parseJwt(token);
+      return parseJwt(token) as TokenPayload;
     } catch {
       return null;
     }
@@ -28,22 +38,35 @@ export const useProductListing = (id?: string) => {
 
   const isAdmin = useMemo(() => {
     if (!userData) return false;
-    const role = (typeof userData.role === "string" ? userData.role : userData.role?.name || "").toLowerCase();
+    const role = (
+      typeof userData.role === "string"
+        ? userData.role
+        : userData.role?.name || ""
+    ).toLowerCase();
     const permissions = userData.permissions || [];
-    return role === "admin" || role === "super_admin" || permissions.includes("products.viewAll");
+    return role === "admin" || permissions.includes("products.viewAll");
   }, [userData]);
 
-  const fetchProducts = useCallback(async (showLoading = true) => {
-    try {
-      if (showLoading) setLoading(true);
-      const data = await getProductsRequest(id, search, category, selectedPartnerId);
-      setProducts(data);
-    } catch {
-      toast.error("შეცდომა პროდუქტების ჩატვირთვისას");
-    } finally {
-      if (showLoading) setLoading(false);
-    }
-  }, [id, search, category, selectedPartnerId]);
+  const fetchProducts = useCallback(
+    async (showLoading = true) => {
+      try {
+        if (showLoading) setLoading(true);
+        const effectiveId = id || (!isAdmin ? userData?.id : undefined);
+        const data = await getProductsRequest(
+          effectiveId,
+          search,
+          category,
+          selectedPartnerId,
+        );
+        setProducts(data);
+      } catch {
+        toast.error("შეცდომა პროდუქტების ჩატვირთვისას");
+      } finally {
+        if (showLoading) setLoading(false);
+      }
+    },
+    [id, search, category, selectedPartnerId, isAdmin, userData],
+  );
 
   useEffect(() => {
     fetchProducts();
@@ -55,9 +78,10 @@ export const useProductListing = (id?: string) => {
       if (isAdmin && !id) {
         try {
           const data = await getAllPartnerRequest();
-          const mapped = data.map((p: Partner) => ({
+          const partnersList = Array.isArray(data) ? data : data.partners || [];
+          const mapped = partnersList.map((p: Partner) => ({
             _id: p._id,
-            name: p.companyNameGe || p.companyNameEn || "Unknown Organization"
+            name: p.companyNameGe || p.companyNameEn || "Unknown Organization",
           }));
           setPartners(mapped);
         } catch (err) {
@@ -69,7 +93,12 @@ export const useProductListing = (id?: string) => {
   }, [isAdmin, id]);
 
   const handleDelete = async (productId: string) => {
-    if (!window.confirm("ნამდვილად გსურთ პროდუქტის წაშლა? / Are you sure you want to delete this product?")) return;
+    if (
+      !window.confirm(
+        "ნამდვილად გსურთ პროდუქტის წაშლა? / Are you sure you want to delete this product?",
+      )
+    )
+      return;
     try {
       await deleteProductRequest(id, productId);
       toast.success("პროდუქტი წარმატებით წაიშალა");
@@ -83,13 +112,25 @@ export const useProductListing = (id?: string) => {
     const originalStatus = product.isShown;
     const newStatus = !originalStatus;
 
-    setProducts(prev => prev.map(p => p._id === product._id ? { ...p, isShown: newStatus } : p));
+    setProducts((prev) =>
+      prev.map((p) =>
+        p._id === product._id ? { ...p, isShown: newStatus } : p,
+      ),
+    );
 
     try {
       await updateProductRequest(id, product._id, { isShown: newStatus });
-      toast.success(originalStatus ? "პროდუქტი დაიმალა / Product hidden" : "პროდუქტი გამოჩნდა / Product shown");
+      toast.success(
+        originalStatus
+          ? "პროდუქტი დაიმალა / Product hidden"
+          : "პროდუქტი გამოჩნდა / Product shown",
+      );
     } catch {
-      setProducts(prev => prev.map(p => p._id === product._id ? { ...p, isShown: originalStatus } : p));
+      setProducts((prev) =>
+        prev.map((p) =>
+          p._id === product._id ? { ...p, isShown: originalStatus } : p,
+        ),
+      );
       toast.error("შეცდომა სტატუსის შეცვლისას");
     }
   };
@@ -107,6 +148,6 @@ export const useProductListing = (id?: string) => {
     isAdmin,
     handleDelete,
     handleToggleVisibility,
-    fetchProducts
+    fetchProducts,
   };
 };

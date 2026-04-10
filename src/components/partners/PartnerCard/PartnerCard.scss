@@ -30,12 +30,30 @@
     box-shadow: 0 6px 16px rgba(0, 0, 0, 0.08);
   }
 
+  &.selected {
+    border-color: $color-espresso;
+    background-color: rgba($color-espresso, 0.02);
+  }
+
   &__header {
     display: flex;
     flex-direction: column;
     align-items: flex-start;
     gap: 8px;
     flex: 1;
+
+    &-left {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .partner-card__checkbox {
+      width: 18px;
+      height: 18px;
+      cursor: pointer;
+      accent-color: $color-espresso;
+    }
 
     h3 {
       margin: 0;

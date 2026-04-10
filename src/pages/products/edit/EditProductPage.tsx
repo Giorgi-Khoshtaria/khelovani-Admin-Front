@@ -4,13 +4,21 @@ import { toast } from "react-toastify";
 import { getProductDetailsRequest, updateProductRequest } from "@/apiCalls/partnerApiCalls/product.req";
 import { useProductForm } from "@/hooks/products/useProductForm";
 import ProductForm from "@/components/products/form/ProductForm";
+import { usePartnerContext } from "@/context/PartnerContext";
+import { parseJwt } from "@/utils/parseJwt";
 import "./EditProductPage.scss";
 
 export default function EditProductPage() {
-  const { id: partnerId, productId } = useParams<{ id: string; productId: string }>();
+  const { id: urlPartnerId, productId } = useParams<{ id: string; productId: string }>();
+  const { partnerId: contextId, token } = usePartnerContext();
+  const partnerId = urlPartnerId || contextId;
   const navigate = useNavigate();
   const [loading, setLoading] = useState(false);
   const [fetching, setFetching] = useState(true);
+
+  const decoded = parseJwt(token || "");
+  const role = (decoded?.role || "").toLowerCase();
+  const isAdmin = role === "admin" || role === "super_admin";
   const [existingImages, setExistingImages] = useState<string[]>([]);
 
   const {
@@ -48,7 +56,11 @@ export default function EditProductPage() {
           isShown: product.isShown || false,
           isOneOfAKind: product.isOneOfAKind || false,
           shippingAvailable: product.shippingAvailable || false,
-          customizable: product.customizable || false,
+          shippingPrice: product.shippingPrice !== undefined ? product.shippingPrice.toString() : "",
+          locationGe: product.locationGe || "",
+          locationEn: product.locationEn || "",
+          dimensions: product.dimensions || "",
+          weight: product.weight !== undefined ? product.weight.toString() : "",
           owner: product.owner || "",
         });
         setExistingImages(product.images || []);
@@ -79,7 +91,7 @@ export default function EditProductPage() {
       setLoading(true);
       await updateProductRequest(partnerId, productId, submissionData);
       toast.success("პროდუქტი წარმატებით განახლდა / Product successfully updated");
-      navigate(`/partners/${partnerId}/products/${productId}`);
+      navigate(urlPartnerId ? `/partners/${partnerId}/products/${productId}` : `/profile/products/${productId}`);
     } catch (error: unknown) {
       const message = error instanceof Error 
         ? (error as unknown as { response?: { data?: { message?: string } } }).response?.data?.message || error.message 
@@ -113,6 +125,7 @@ export default function EditProductPage() {
         handleTagInputChange={handleTagInputChange as (name: "tagsGe" | "tagsEn" | "materialsGe" | "materialsEn", value: string) => void}
         handleFileChange={handleFileChange}
         onCancel={() => navigate(-1)}
+        isAdmin={isAdmin}
       />
     </div>
   );

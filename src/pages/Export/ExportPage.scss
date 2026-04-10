@@ -1,0 +1,110 @@
+@use "../../styles/colors" as colors;
+
+.export-page {
+  padding: 2rem;
+  max-width: 1200px;
+  margin: 0 auto;
+
+  &__header {
+    margin-bottom: 2.5rem;
+    
+    h1 {
+      font-size: 2rem;
+      color: colors.$color-text-primary;
+      margin-bottom: 0.5rem;
+    }
+    
+    p {
+      color: colors.$color-text-secondary;
+      font-size: 1.1rem;
+    }
+  }
+
+  &__grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 1.5rem;
+  }
+}
+
+.export-card {
+  background: white;
+  border-radius: 12px;
+  padding: 1.5rem;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+  display: flex;
+  flex-direction: column;
+  transition: transform 0.2s, box-shadow 0.2s;
+  border: 1px solid colors.$color-border;
+
+  &:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+  }
+
+  &__top {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 1rem;
+  }
+
+  &__icon {
+    font-size: 2.5rem;
+  }
+
+  &__manage-link {
+    font-size: 0.85rem;
+    color: colors.$color-accent;
+    text-decoration: none;
+    font-weight: 600;
+    padding: 0.4rem 0.6rem;
+    border: 1px solid colors.$color-accent;
+    border-radius: 6px;
+    transition: all 0.2s;
+
+    &:hover {
+      background: colors.$color-accent;
+      color: white;
+    }
+  }
+
+  &__content {
+    flex: 1;
+    margin-bottom: 1.5rem;
+
+    h3 {
+      font-size: 1.25rem;
+      margin-bottom: 0.5rem;
+      color: colors.$color-text-primary;
+    }
+
+    p {
+      color: colors.$color-text-secondary;
+      font-size: 0.95rem;
+      line-height: 1.5;
+    }
+  }
+
+  &__button {
+    background: colors.$color-accent;
+    color: white;
+    border: none;
+    padding: 0.75rem 1rem;
+    border-radius: 8px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: opacity 0.2s;
+    width: 100%;
+
+    &:hover:not(:disabled) {
+      opacity: 0.9;
+    }
+
+    &:disabled {
+      opacity: 0.7;
+      cursor: not-allowed;
+    }
+  }
+}
+

@@ -16,6 +16,12 @@ export default function NamespaceSidebar({
     <div className="namespaces-sidebar">
       <h3>კატეგორიები</h3>
       <ul>
+        <li
+          className={activeNamespace === "all" ? "active" : ""}
+          onClick={() => setActiveNamespace("all")}
+        >
+          ყველა
+        </li>
         {namespaces.map((ns) => (
           <li
             key={ns._id}

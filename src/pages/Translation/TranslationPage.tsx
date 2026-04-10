@@ -22,8 +22,8 @@ export default function TranslationPage() {
             />
           </label>
           <button
-            className="add-btn"
-            onClick={() => addForm.setIsAddMode(!addForm.isAddMode)}
+            className="add-btn add-toggle-btn"
+            onClick={addForm.toggleAddMode}
           >
             {addForm.isAddMode ? "გაუქმება" : "ახალი გასაღები"}
           </button>
@@ -60,23 +60,21 @@ export default function TranslationPage() {
             <div className="loading">იტვირთება...</div>
           ) : data.error ? (
             <div className="error">{data.error}</div>
-          ) : list.filteredKeys.length === 0 ? (
+          ) : list.items.length === 0 ? (
             <div className="no-data">თარგმანები ვერ მოიძებნა</div>
           ) : (
             <>
               <TranslationList
-                filteredKeys={list.filteredKeys}
-                translations={list.currentNamespaceTranslations}
-                rawTranslations={data.rawTranslations}
-                activeNamespace={list.activeNamespace}
+                items={list.items}
                 editingId={editForm.editingId}
                 editGe={editForm.editGe}
                 setEditGe={editForm.setEditGe}
                 editEn={editForm.editEn}
                 setEditEn={editForm.setEditEn}
+                editErrors={editForm.editErrors}
                 onEdit={editForm.startEditing}
                 onSave={editForm.onSubmit}
-                onCancel={() => editForm.setEditingId(null)}
+                onCancel={editForm.onCancel}
                 onDelete={actions.handleDeleteTranslation}
                 selectedIds={list.selectedIds}
                 onSelectChange={actions.handleSelectChange}

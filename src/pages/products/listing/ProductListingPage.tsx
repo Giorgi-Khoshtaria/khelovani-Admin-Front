@@ -1,4 +1,4 @@
-import { useParams, useNavigate } from "react-router-dom";
+import { useParams, useNavigate, useLocation } from "react-router-dom";
 import { useProductListing } from "@/hooks/products/useProductListing";
 import "./ProductListingPage.scss";
 import type { Product } from "@/types/productTypes";
@@ -9,6 +9,7 @@ import { ProductTableRow } from "@/components/products/listing/ProductTableRow";
 export default function ProductListingPage() {
   const { id } = useParams<{ id: string }>();
   const navigate = useNavigate();
+  const location = useLocation();
   const {
     products,
     loading,
@@ -34,25 +35,37 @@ export default function ProductListingPage() {
     await handleToggleVisibility(product);
   };
 
+  const isProfileMode = location.pathname.startsWith("/profile");
+
   const onEdit = (productId: string) => {
-    navigate(`/partners/${id}/products/${productId}/edit`);
+    const editPath = isProfileMode 
+      ? `/profile/products/${productId}/edit`
+      : `/partners/${id}/products/${productId}/edit`;
+    navigate(editPath);
   };
 
   const onRowClick = (product: Product) => {
-    navigate(id ? `/partners/${id}/products/${product._id}` : `/products/${product._id}`);
+    if (isProfileMode) {
+      navigate(`/profile/products/${product._id}`);
+    } else {
+      navigate(id ? `/partners/${id}/products/${product._id}` : `/products/${product._id}`);
+    }
   };
 
   return (
     <div className="product-listing-page">
       <div className="page-header">
         <div className="header-title">
-          <button className="back-btn" onClick={() => navigate(id ? `/partners/${id}` : "/partners")}>
-            ← უკან {id ? "პროფილზე" : "პარტნიორების სიაზე"}
+          <button className="back-btn" onClick={() => {
+            if (isProfileMode) navigate("/profile");
+            else navigate(id ? `/partners/${id}` : "/partners");
+          }}>
+            ← უკან {isProfileMode ? "პროფილზე" : id ? "პროფილზე" : "პარტნიორების სიაზე"}
           </button>
-          <h1>{id ? "პროდუქტები / Products" : "ყველა პროდუქტი / All Products"}</h1>
+          <h1>{id || isProfileMode ? "პროდუქტები / Products" : "ყველა პროდუქტი / All Products"}</h1>
         </div>
-        {!isAdmin && id && (
-          <button className="add-product-btn" onClick={() => navigate(`/partners/${id}/products/add`)}>
+        {!isAdmin && (id || isProfileMode) && (
+          <button className="add-product-btn" onClick={() => navigate(isProfileMode ? "/profile/products/add" : `/partners/${id}/products/add`)}>
             + პროდუქტის დამატება / Add Product
           </button>
         )}

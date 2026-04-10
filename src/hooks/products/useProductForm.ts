@@ -21,7 +21,11 @@ export const useProductForm = (initialData?: Partial<CreateProductInput>) => {
     isShown: false,
     isOneOfAKind: false,
     shippingAvailable: false,
-    customizable: false,
+    shippingPrice: "",
+    locationGe: "",
+    locationEn: "",
+    dimensions: "",
+    weight: "",
     owner: "",
     ...initialData,
   });
@@ -90,6 +94,8 @@ export const useProductForm = (initialData?: Partial<CreateProductInput>) => {
       ...formData,
       price: Number(formData.price || 0),
       stockQuantity: Number(formData.stockQuantity || 0),
+      shippingPrice: formData.shippingPrice ? Number(formData.shippingPrice) : undefined,
+      weight: formData.weight ? Number(formData.weight) : undefined,
     } as unknown as AddProductFormData;
 
     const validationErrors = validateAddProductForm(submissionData);

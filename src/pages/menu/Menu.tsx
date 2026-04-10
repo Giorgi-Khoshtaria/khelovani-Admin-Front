@@ -1,9 +1,5 @@
 import { useState, useEffect, useCallback } from "react";
-import { useNavigate } from "react-router-dom";
-import { usePartnerContext } from "@/context/PartnerContext";
-import { parseJwt } from "@/utils/parseJwt";
 import { toast } from "react-toastify";
-import { useNavigateToLogin } from "@/hooks/auth/useNavigateToLogin";
 import {
   getMenuItemsRequest,
   createMenuItemRequest,
@@ -27,19 +23,9 @@ const EMPTY_FORM = {
 type FormState = typeof EMPTY_FORM;
 
 function Menu() {
-  useNavigateToLogin();
-  const navigate = useNavigate();
-  const { token, partnerId } = usePartnerContext();
-
-  useEffect(() => {
-    const decoded = parseJwt(token || "");
-    const role = decoded?.role;
-    if (role === "organisation" && partnerId) {
-      navigate(`/partners/${partnerId}`, { replace: true });
-    }
-  }, [token, partnerId, navigate]);
-
   const [items, setItems] = useState<MenuItem[]>([]);
+
+
   const [isLoading, setIsLoading] = useState(true);
   const [showModal, setShowModal] = useState(false);
   const [editingItem, setEditingItem] = useState<MenuItem | null>(null);

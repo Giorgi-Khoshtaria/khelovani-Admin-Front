@@ -5,7 +5,7 @@ import { getErrorMessage } from "@/utils/handleApiError";
 
 export default function useAddTranslationForm(
   defaultNamespace: string,
-  onSuccess: () => void,
+  onSuccess: (msg?: string) => void,
   onError: (msg: string) => void,
 ) {
   const [isAddMode, setIsAddMode] = useState(false);
@@ -15,18 +15,32 @@ export default function useAddTranslationForm(
   const [selectedNamespaceForAdd, setSelectedNamespaceForAdd] = useState("");
   const [formErrors, setFormErrors] = useState<Record<string, string>>({});
 
+  const resetForm = () => {
+    setNewKey("");
+    setNewGe("");
+    setNewEn("");
+    setFormErrors({});
+  };
+
+  const toggleAddMode = () => {
+    if (isAddMode) {
+      resetForm();
+    }
+    setIsAddMode(!isAddMode);
+  };
+
   const handleAddTranslation = async (e: React.FormEvent) => {
     e.preventDefault();
     try {
       const namespace = selectedNamespaceForAdd || defaultNamespace;
       const errors = validateTranslationForm({
-        namespace,
         key: newKey,
         ge: newGe,
         en: newEn,
       });
 
       if (Object.keys(errors).length > 0) {
+        console.log("Validation Errors:", errors);
         setFormErrors(errors);
         return;
       }
@@ -42,7 +56,7 @@ export default function useAddTranslationForm(
       setNewKey("");
       setNewGe("");
       setNewEn("");
-      onSuccess();
+      onSuccess("თარგმანი წარმატებით დაემატა");
     } catch (err) {
       onError(getErrorMessage(err, "დამატება ვერ მოხერხდა"));
     }
@@ -60,6 +74,7 @@ export default function useAddTranslationForm(
     setNewEn,
     setSelectedNamespaceForAdd,
     setIsAddMode,
+    toggleAddMode,
     onSubmit: handleAddTranslation,
   };
 }

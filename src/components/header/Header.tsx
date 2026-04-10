@@ -25,7 +25,7 @@ function Header() {
         </h2>
       </div>
       <div className="header__content">
-        <button onClick={logout}>გასვლა</button>
+        <button onClick={logout} className="logout-btn">გასვლა</button>
       </div>
     </div>
   );

@@ -13,38 +13,65 @@ export default function SideManu() {
 
   const links: { path: string; label: string }[] = [];
 
-  const hasPermission = (p: string) => permissions.includes(p) || role === "super_admin" || role === "admin";
+  const hasPermission = (p: string) =>
+    permissions.includes(p) || role === "admin";
 
   // Admin / Moderator Links
-  if (hasPermission("menu.manage")) links.push({ path: "/menu", label: "მენიუ" });
-  if (hasPermission("users.list")) links.push({ path: "/partners", label: "პარტნიორების სია" });
-  if (hasPermission("products.viewAll")) links.push({ path: "/products", label: "ყველა პროდუქტი" });
-  if (hasPermission("translations.read")) links.push({ path: "/translations", label: "თარგმანები" });
-  if (hasPermission("roles.read")) links.push({ path: "/roles", label: "როლები" });
+  if (hasPermission("menu.manage"))
+    links.push({ path: "/menu", label: "მენიუ" });
+  if (hasPermission("users.list"))
+    links.push({ path: "/partners", label: "პარტნიორების სია" });
+  if (hasPermission("products.viewAll"))
+    links.push({ path: "/products", label: "ყველა პროდუქტი" });
+  if (hasPermission("translations.read"))
+    links.push({ path: "/translations", label: "თარგმანები" });
+  if (hasPermission("roles.read"))
+    links.push({ path: "/roles", label: "როლები" });
+  if (role === "admin") links.push({ path: "/export", label: "ექსპორტი" });
 
   // Organisation / Partner Links
   if (role === "organisation" && partnerId) {
-    if (permissions.includes("organization.profile.view") || permissions.includes("organization.profile.edit") || permissions.length === 0) {
-      links.push({ path: `/partners/${partnerId}`, label: "ჩემი პროფილი" });
+    if (
+      permissions.includes("organization.profile.view") ||
+      permissions.includes("organization.profile.edit") ||
+      permissions.length === 0
+    ) {
+      links.push({ path: "/profile", label: "ჩემი პროფილი" });
     }
-    if (permissions.includes("organization.products.view") || permissions.includes("organization.products.create") || permissions.length === 0) {
-      links.push({ path: `/partners/${partnerId}/products`, label: "ჩემი პროდუქტები" });
+    if (
+      permissions.includes("organization.products.view") ||
+      permissions.includes("organization.products.create") ||
+      permissions.length === 0
+    ) {
+      links.push({ path: "/profile/products", label: "ჩემი პროდუქტები" });
     }
   }
 
   const isActive = (linkPath: string) => {
     if (location.pathname === linkPath) return true;
-    
+
     // Admin /partners highlighting
     if (linkPath === "/partners" && location.pathname.startsWith("/partners")) {
       return true;
     }
-    
-    // Org /products highlighting (includes /products/add)
-    if (linkPath.endsWith("/products") && location.pathname.startsWith(linkPath)) {
+
+    // Profile /products highlighting
+    if (linkPath === "/profile" && location.pathname === "/profile")
+      return true;
+    if (
+      linkPath === "/profile/products" &&
+      location.pathname.startsWith("/profile/products")
+    )
+      return true;
+
+    // Org legacy paths (in case they land there via direct link)
+    if (
+      linkPath.endsWith("/products") &&
+      location.pathname.startsWith(linkPath)
+    ) {
       return true;
     }
-    
+
     return false;
   };
 

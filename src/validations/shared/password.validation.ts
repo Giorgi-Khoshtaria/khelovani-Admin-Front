@@ -1,4 +1,9 @@
+import { z } from "zod";
+import { validateWithZod } from "./zodUtils";
+
+export const passwordSchema = z.string().min(1, "პაროლი აუცილებელია");
+
 export const validatePassword = (password?: string): string | null => {
-  if (!password || password.trim() === "") return "პაროლი აუცილებელია";
-  return null;
+  const errors = validateWithZod(passwordSchema, password);
+  return errors[""] || null;
 };

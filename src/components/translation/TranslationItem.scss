@@ -34,16 +34,32 @@
       word-break: break-all;
     }
 
-    input {
-      width: 100%;
-      padding: 6px 10px;
-      border: 1px solid $color-border;
-      border-radius: 4px;
-      font-size: 14px;
-      outline: none;
+    .edit-cell {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
 
-      &:focus {
-        border-color: $color-text-primary;
+      input {
+        width: 100%;
+        padding: 6px 10px;
+        border: 1px solid $color-border;
+        border-radius: 4px;
+        font-size: 14px;
+        outline: none;
+
+        &:focus {
+          border-color: $color-text-primary;
+        }
+
+        &.input-error {
+          border-color: #d32f2f !important;
+        }
+      }
+
+      .error-text {
+        color: #d32f2f;
+        font-size: 11px;
+        line-height: 1.2;
       }
     }
 

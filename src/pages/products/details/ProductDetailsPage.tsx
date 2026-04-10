@@ -97,6 +97,12 @@ const ProductDetailsPage = () => {
             />
 
             <div className="additional-info">
+              {product.isOneOfAKind && (
+                <div className="info-item highlight">
+                  <span className="label">უნიკალური / Unique:</span>
+                  <span className="value">დიახ / Yes (One of a Kind)</span>
+                </div>
+              )}
               {product.locationGe && (
                 <div className="info-item">
                   <span className="label">მდებარეობა / Location:</span>
@@ -104,6 +110,26 @@ const ProductDetailsPage = () => {
                     {product.locationGe}{" "}
                     {product.locationEn && `(${product.locationEn})`}
                   </span>
+                </div>
+              )}
+              <div className="info-item">
+                <span className="label">ტრანსპორტირება / Shipping:</span>
+                <span className="value">
+                  {product.shippingAvailable 
+                    ? `ხელმისაწვდომია (${product.shippingPrice || 0} GEL) / Available` 
+                    : "არა / Not available"}
+                </span>
+              </div>
+              {product.dimensions && (
+                <div className="info-item">
+                  <span className="label">ზომები / Dimensions:</span>
+                  <span className="value">{product.dimensions}</span>
+                </div>
+              )}
+              {product.weight && (
+                <div className="info-item">
+                  <span className="label">წონა / Weight:</span>
+                  <span className="value">{product.weight} კგ / kg</span>
                 </div>
               )}
               <div className="info-item">

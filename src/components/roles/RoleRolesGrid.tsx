@@ -1,4 +1,4 @@
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import type { Role } from "@/types/role.types";
 import "./RoleRolesGrid.scss";
 
@@ -8,10 +8,16 @@ interface RoleRolesGridProps {
 }
 
 export function RoleRolesGrid({ roles, onDeleteRole }: RoleRolesGridProps) {
+  const navigate = useNavigate();
+
   return (
     <div className="roles-grid">
       {roles.map((role) => (
-        <div key={role._id} className="role-card">
+        <div 
+          key={role._id} 
+          className="role-card"
+          onClick={() => navigate(`/roles/${role._id}`)}
+        >
           <div className="role-card__header">
             <h3>{role.name}</h3>
             <span
@@ -30,7 +36,10 @@ export function RoleRolesGrid({ roles, onDeleteRole }: RoleRolesGridProps) {
               {role.name !== "super_admin" && (
                 <button
                   className="btn-danger-sm"
-                  onClick={() => onDeleteRole(role._id)}
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    onDeleteRole(role._id);
+                  }}
                 >
                   წაშლა
                 </button>
@@ -42,3 +51,4 @@ export function RoleRolesGrid({ roles, onDeleteRole }: RoleRolesGridProps) {
     </div>
   );
 }
+

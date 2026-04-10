@@ -1,9 +1,8 @@
 export const PartnerStatus = {
-  PENDING: "pending",
-  APPROVED: "approved",
-  REJECTED: "rejected",
-  BANNED: "banned",
+  PENDING: "PENDING",
+  APPROVED: "APPROVED",
+  BANNED: "BANNED",
 } as const;
 
-export type PartnerStatus = typeof PartnerStatus[keyof typeof PartnerStatus];
+export type PartnerStatus = (typeof PartnerStatus)[keyof typeof PartnerStatus];
 

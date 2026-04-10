@@ -5,14 +5,13 @@ const BACKEND_URL = import.meta.env.VITE_BACKEND_API_URL;
 const getToken = () => localStorage.getItem("adminToken");
 
 const getProductUrl = (partnerId?: string, productId?: string) => {
-  if (partnerId) {
-    return productId 
-      ? `${BACKEND_URL}/api/admin/partners/${partnerId}/products/${productId}`
-      : `${BACKEND_URL}/api/admin/partners/${partnerId}/products`;
+  if (productId) {
+    return `${BACKEND_URL}/api/admin/products/${productId}`;
   }
-  return productId
-    ? `${BACKEND_URL}/api/admin/partners/products/${productId}`
-    : `${BACKEND_URL}/api/admin/partners/products/all`;
+  if (partnerId) {
+    return `${BACKEND_URL}/api/admin/products/partner/${partnerId}`;
+  }
+  return `${BACKEND_URL}/api/admin/products`;
 };
 
 const createProductFormData = (data: Partial<AddProductFormData>) => {
@@ -24,14 +23,17 @@ const createProductFormData = (data: Partial<AddProductFormData>) => {
 
   const fields: (keyof AddProductFormData)[] = [
     "titleGe", "titleEn", "descriptionGe", "descriptionEn", 
-    "category", "price", "currency", "stockQuantity", "condition"
+    "category", "price", "currency", "stockQuantity", "condition",
+    "shippingPrice", "weight", "locationGe", "locationEn", "dimensions"
   ];
 
   fields.forEach(field => {
-    if (data[field] !== undefined) formData.append(field, data[field]!.toString());
+    if (data[field] !== undefined && data[field] !== null) {
+      formData.append(field, data[field]!.toString());
+    }
   });
 
-  const booleanFields: (keyof AddProductFormData)[] = ["isShown", "isOneOfAKind", "shippingAvailable", "customizable"];
+  const booleanFields: (keyof AddProductFormData)[] = ["isShown", "isOneOfAKind", "shippingAvailable"];
   booleanFields.forEach(field => {
     if (data[field] !== undefined) formData.append(field, data[field] ? "true" : "false");
   });
@@ -80,7 +82,7 @@ export const deleteProductRequest = async (partnerId: string | undefined, produc
 
 export const updateProductRequest = async (partnerId: string | undefined, productId: string, data: Partial<AddProductFormData>, lang: string = "ge") => {
   const formData = createProductFormData(data);
-  const response = await axios.put(`${getProductUrl(partnerId, productId)}?lang=${lang}`, formData, {
+  const response = await axios.patch(`${getProductUrl(partnerId, productId)}?lang=${lang}`, formData, {
     headers: { Authorization: `Bearer ${getToken()}`, "Content-Type": "multipart/form-data" },
   });
   return response.data;

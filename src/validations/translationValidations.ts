@@ -1,26 +1,34 @@
-export const validateTranslationForm = (data: {
-  namespace?: string;
-  key?: string;
-  ge?: string;
-  en?: string;
-}): Record<string, string> => {
-  const errors: Record<string, string> = {};
+import { z } from "zod";
+import { validateWithZod } from "./shared/zodUtils";
 
-  if (!data.namespace || data.namespace.trim() === "") {
-    errors.namespace = "ნეიმსპეისი სავალდებულოა";
-  }
+const xssRegex = /<script|iframe|object|embed|base|style|meta|link|on\w+\s*=|javascript:/i;
 
-  if (!data.key || data.key.trim() === "") {
-    errors.key = "გასაღები სავალდებულოა";
-  }
+export const translationSchema = z.object({
+  key: z
+    .string()
+    .min(1, "გასაღები სავალდებულოა / Key is required")
+    .min(2, "გასაღები უნდა იყოს მინიმუმ 2 სიმბოლო / Key must be at least 2 characters")
+    .max(100, "გასაღები უნდა იყოს მაქსიმუმ 100 სიმბოლო / Key must not exceed 100 characters"),
+  ge: z
+    .string()
+    .min(1, "ქართული თარგმანი სავალდებულოა / Georgian translation is required")
+    .max(200, "თარგმანი არ უნდა აღემატებოდეს 200 სიმბოლოს / Translation must not exceed 200 characters")
+    .refine((val) => !xssRegex.test(val), {
+      message: "აღმოჩენილია არასასურველი სიმბოლოები (XSS) / Dangerous characters detected (XSS)",
+    }),
+  en: z
+    .string()
+    .min(1, "ინგლისური თარგმანი სავალდებულოა / English translation is required")
+    .max(200, "თარგმანი არ უნდა აღემატებოდეს 200 სიმბოლოს / Translation must not exceed 200 characters")
+    .refine((val) => !xssRegex.test(val), {
+      message: "აღმოჩენილია არასასურველი სიმბოლოები (XSS) / Dangerous characters detected (XSS)",
+    }),
+});
 
-  if (!data.ge || data.ge.trim() === "") {
-    errors.ge = "ქართული თარგმანი სავალდებულოა";
-  }
 
-  if (!data.en || data.en.trim() === "") {
-    errors.en = "ინგლისური თარგმანი სავალდებულოა";
-  }
+export type TranslationFormData = z.infer<typeof translationSchema>;
+export type TranslationFormInput = z.input<typeof translationSchema>;
 
-  return errors;
+export const validateTranslationForm = (data: Partial<TranslationFormInput>) => {
+  return validateWithZod(translationSchema, data);
 };

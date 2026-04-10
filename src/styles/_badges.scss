@@ -9,19 +9,23 @@
   text-transform: capitalize;
   white-space: nowrap;
 
-  &.pending {
+  &.pending,
+  &.PENDING {
     background-color: #fef3c7;
     color: #d97706;
   }
-  &.approved {
+  &.approved,
+  &.APPROVED {
     background-color: #d1fae5;
     color: #059669;
   }
-  &.rejected {
+  &.rejected,
+  &.REJECTED {
     background-color: #fee2e2;
     color: #dc2626;
   }
-  &.banned {
+  &.banned,
+  &.BANNED {
     background-color: #374151;
     color: #f9fafb;
   }

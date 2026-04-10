@@ -13,7 +13,9 @@ interface PartnerHeaderProps {
   onCancel: () => void;
   onEdit: () => void;
   onDelete: () => void;
-  onStatusUpdate: (newStatus: typeof PartnerStatus.APPROVED | typeof PartnerStatus.REJECTED | typeof PartnerStatus.BANNED) => void;
+  onStatusUpdate: (
+    newStatus: typeof PartnerStatus.APPROVED | typeof PartnerStatus.BANNED,
+  ) => void;
 }
 
 export function PartnerHeader({
@@ -37,10 +39,6 @@ export function PartnerHeader({
             ← უკან
           </button>
         )}
-        <h1>
-          {partner.companyNameGe}
-          <span className="eng-name">({partner.companyNameEn})</span>
-        </h1>
       </div>
 
       <div className="header-actions">
@@ -48,7 +46,11 @@ export function PartnerHeader({
           <>
             {isEditing ? (
               <div className="edit-actions">
-                <button className="save-btn" onClick={onSave} disabled={updating}>
+                <button
+                  className="save-btn"
+                  onClick={onSave}
+                  disabled={updating}
+                >
                   {updating ? "ინახება..." : "შენახვა"}
                 </button>
                 <button
@@ -64,7 +66,11 @@ export function PartnerHeader({
                 <button className="edit-btn" onClick={onEdit}>
                   რედაქტირება
                 </button>
-                <button className="delete-btn" onClick={onDelete} disabled={updating}>
+                <button
+                  className="delete-btn"
+                  onClick={onDelete}
+                  disabled={updating}
+                >
                   წაშლა
                 </button>
               </div>
@@ -87,7 +93,7 @@ export function PartnerHeader({
               partner.status === PartnerStatus.APPROVED) && (
               <button
                 className="reject-btn"
-                onClick={() => onStatusUpdate(PartnerStatus.REJECTED)}
+                onClick={onDelete}
                 disabled={updating}
               >
                 {updating ? "..." : "უარყოფა"}
@@ -114,7 +120,7 @@ export function PartnerHeader({
                 ? "დადასტურებული"
                 : partner.status === PartnerStatus.BANNED
                   ? "დაბლოკილი"
-                  : "უარყოფილი"}
+                  : ""}
           </div>
         )}
       </div>

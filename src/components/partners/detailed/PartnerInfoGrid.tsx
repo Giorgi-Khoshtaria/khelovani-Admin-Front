@@ -1,6 +1,8 @@
 import React from "react";
-import TextInput from "@/lib/ui/TextInput";
-import TextareaInput from "@/lib/ui/TextareaInput";
+import TextInput from "@/components/ui/TextInput";
+import TextareaInput from "@/components/ui/TextareaInput";
+import SelectInput from "@/components/ui/SelectInput";
+import { CITY_OPTIONS } from "@/components/ui/CityOptions";
 import type { Partner } from "@/types/partner.types";
 import "./PartnerInfoGrid.scss";
 
@@ -9,7 +11,11 @@ interface PartnerInfoGridProps {
   isEditing: boolean;
   isAdmin: boolean;
   editForm: Partial<Partner>;
-  onChange: (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => void;
+  onChange: (
+    e: React.ChangeEvent<
+      HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement
+    >,
+  ) => void;
   errors: Record<string, string>;
 }
 
@@ -29,28 +35,48 @@ export function PartnerInfoGrid({
           <TextInput
             id="identificationCode"
             label="საიდენტიფიკაციო კოდი"
-            value={isEditing ? editForm.identificationCode || "" : partner.identificationCode}
+            value={
+              isEditing
+                ? editForm.identificationCode || ""
+                : partner.identificationCode
+            }
             onChange={onChange}
             readOnly={!isAdmin}
+            error={errors.identificationCode}
             fullWidth
           />
           <TextInput
             id="contactPerson"
             label="საკონტაქტო პირი"
-            value={isEditing ? editForm.contactPerson || "" : partner.contactPerson}
+            value={
+              isEditing ? editForm.contactPerson || "" : partner.contactPerson
+            }
             onChange={onChange}
             readOnly={!isEditing}
+            error={errors.contactPerson}
             fullWidth
           />
           <div className="form-row">
-            <TextInput
-              id="city"
-              label="ქალაქი"
-              value={isEditing ? editForm.city || "" : partner.city}
-              onChange={onChange}
-              readOnly={!isEditing}
-              fullWidth
-            />
+            {isEditing ? (
+              <SelectInput
+                id="city"
+                label="ქალაქი"
+                value={editForm.city || ""}
+                onChange={onChange}
+                options={CITY_OPTIONS}
+                error={errors.city}
+                fullWidth
+              />
+            ) : (
+              <TextInput
+                id="city"
+                label="ქალაქი"
+                value={partner.city}
+                onChange={onChange}
+                readOnly={true}
+                fullWidth
+              />
+            )}
           </div>
           <TextInput
             id="address"
@@ -117,7 +143,9 @@ export function PartnerInfoGrid({
           <TextInput
             id="instagram"
             label="Instagram"
-            value={isEditing ? editForm.instagram || "" : partner.instagram || ""}
+            value={
+              isEditing ? editForm.instagram || "" : partner.instagram || ""
+            }
             onChange={onChange}
             readOnly={!isEditing}
             placeholder="Instagram URL"
@@ -141,7 +169,9 @@ export function PartnerInfoGrid({
           <TextareaInput
             id="description"
             label="აღწერა"
-            value={(isEditing ? editForm.description : partner.description) || ""}
+            value={
+              (isEditing ? editForm.description : partner.description) || ""
+            }
             onChange={onChange}
             readOnly={!isEditing}
             fullWidth
@@ -150,7 +180,9 @@ export function PartnerInfoGrid({
           <TextareaInput
             id="descriptionEn"
             label="აღწერა (ინგლისურად)"
-            value={(isEditing ? editForm.descriptionEn : partner.descriptionEn) || ""}
+            value={
+              (isEditing ? editForm.descriptionEn : partner.descriptionEn) || ""
+            }
             onChange={onChange}
             readOnly={!isEditing}
             fullWidth

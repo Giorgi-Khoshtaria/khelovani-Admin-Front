@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import useTranslationData from "./useTranslationData";
 import useAddTranslationForm from "./useAddTranslationForm";
 import useEditTranslationForm from "./useEditTranslationForm";
+import { toast } from "react-toastify";
 import { getErrorMessage } from "@/utils/handleApiError";
 import { parseExcelTranslations } from "@/utils/translationUtils";
 import {
@@ -25,29 +26,25 @@ export default function useTranslation() {
   const [activeNamespace, setActiveNamespace] = useState<string>("all");
   const [searchQuery, setSearchQuery] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
-  const [toastError, setToastError] = useState<string | null>(null);
   const [selectedIds, setSelectedIds] = useState<string[]>([]);
 
-  const clearToastError = () => setToastError(null);
-
-
-  const handleSuccess = () => {
-    fetchData({ 
-      search: searchQuery || undefined, 
-      namespace: currentNamespace !== "all" ? currentNamespace : undefined,
+  const handleSuccess = (message: string = "წარმატებით შესრულდა") => {
+    toast.success(message);
+    fetchData({
+      search: searchQuery || undefined,
+      namespace: activeNamespace !== "all" ? activeNamespace : undefined,
       page: currentPage,
-      limit: 15
+      limit: 15,
     });
   };
 
   const handleError = (msg: string) => {
-    setToastError(msg);
+    toast.error(msg);
   };
 
+  const defaultNamespace = namespaces.length > 0 ? namespaces[0]._id : "all";
   const currentNamespace =
-    activeNamespace === "all" && namespaces.length > 0
-      ? namespaces[0]._id
-      : activeNamespace;
+    activeNamespace === "all" ? defaultNamespace : activeNamespace;
 
   const addFormHook = useAddTranslationForm(
     currentNamespace,
@@ -72,19 +69,20 @@ export default function useTranslation() {
         .filter((item) => item.namespace && item.key);
 
       if (items.length === 0) {
-        setToastError("Excel ფაილი ცარიელია ან არასწორი ფორმატია");
+        toast.error("Excel ფაილი ცარიელია ან არასწორი ფორმატია");
         return;
       }
 
       await bulkTranslationRequest({ items });
-      fetchData({ 
-        search: searchQuery || undefined, 
-        namespace: currentNamespace !== "all" ? currentNamespace : undefined,
+      toast.success("იმპორტი წარმატებით დასრულდა");
+      fetchData({
+        search: searchQuery || undefined,
+        namespace: activeNamespace !== "all" ? activeNamespace : undefined,
         page: currentPage,
-        limit: 15
+        limit: 15,
       });
     } catch (err) {
-      setToastError(getErrorMessage(err, "იმპორტის დროს დაფიქსირდა შეცდომა"));
+      toast.error(getErrorMessage(err, "იმპორტის დროს დაფიქსირდა შეცდომა"));
     }
   };
 
@@ -92,20 +90,21 @@ export default function useTranslation() {
     if (!window.confirm("ნამდვილად გსურთ ამ თარგმანის წაშლა?")) return;
     try {
       await deleteTranslationRequest(id);
-      fetchData({ 
-        search: searchQuery || undefined, 
-        namespace: currentNamespace !== "all" ? currentNamespace : undefined,
+      toast.success("თარგმანი წარმატებით წაიშალა");
+      fetchData({
+        search: searchQuery || undefined,
+        namespace: activeNamespace !== "all" ? activeNamespace : undefined,
         page: currentPage,
-        limit: 15
+        limit: 15,
       });
     } catch (err) {
-      setToastError(getErrorMessage(err, "წაშლა ვერ მოხერხდა"));
+      toast.error(getErrorMessage(err, "წაშლა ვერ მოხერხდა"));
     }
   };
 
   const handleSelectChange = (id: string, checked: boolean) => {
     setSelectedIds((prev) =>
-      checked ? [...prev, id] : prev.filter((item) => item !== id)
+      checked ? [...prev, id] : prev.filter((item) => item !== id),
     );
   };
 
@@ -113,45 +112,50 @@ export default function useTranslation() {
     setSelectedIds((prev) =>
       checked
         ? Array.from(new Set([...prev, ...ids]))
-        : prev.filter((id) => !ids.includes(id))
+        : prev.filter((id) => !ids.includes(id)),
     );
   };
 
   const handleBulkDelete = async () => {
     if (selectedIds.length === 0) return;
-    if (!window.confirm(`ნამდვილად გსურთ ${selectedIds.length} თარგმანის წაშლა?`)) return;
+    if (
+      !window.confirm(`ნამდვილად გსურთ ${selectedIds.length} თარგმანის წაშლა?`)
+    )
+      return;
 
     try {
       await bulkDeleteTranslationRequest(selectedIds);
       setSelectedIds([]);
-      fetchData({ 
-        search: searchQuery || undefined, 
-        namespace: currentNamespace !== "all" ? currentNamespace : undefined,
+      toast.success(`${selectedIds.length} თარგმანი წარმატებით წაიშალა`);
+      fetchData({
+        search: searchQuery || undefined,
+        namespace: activeNamespace !== "all" ? activeNamespace : undefined,
         page: currentPage,
-        limit: 15
+        limit: 15,
       });
     } catch (err) {
-      setToastError(getErrorMessage(err, "ჯგუფური წაშლის დროს დაფიქსირდა შეცდომა"));
+      toast.error(
+        getErrorMessage(err, "ჯგუფური წაშლის დროს დაფიქსირდა შეცდომა"),
+      );
     }
   };
 
   // API fetch for search and namespace to handle filtration on backend
   useEffect(() => {
     const delayDebounceFn = setTimeout(() => {
-      fetchData({ 
-        search: searchQuery || undefined, 
+      fetchData({
+        search: searchQuery || undefined,
         namespace: activeNamespace !== "all" ? activeNamespace : undefined,
         page: currentPage,
-        limit: 15
+        limit: 15,
       });
-    }, 500);
+    }, 300);
 
     return () => clearTimeout(delayDebounceFn);
   }, [searchQuery, activeNamespace, currentPage, fetchData]);
 
-  const currentNamespaceTranslations = translations[currentNamespace] || {};
-  // Backend filters already, so just extract keys directly
-  const filteredKeys = Object.keys(currentNamespaceTranslations);
+  // Backend filters already, so just use rawTranslations directly
+  const items = rawTranslations;
 
   return {
     data: {
@@ -162,14 +166,13 @@ export default function useTranslation() {
       error,
     },
     list: {
-      activeNamespace: currentNamespace,
+      activeNamespace: activeNamespace,
       searchQuery,
       currentPage,
       setCurrentPage,
       totalCount,
       totalPages,
-      filteredKeys,
-      currentNamespaceTranslations,
+      items,
       selectedIds,
     },
     addForm: {
@@ -184,16 +187,19 @@ export default function useTranslation() {
       setNewEn: addFormHook.setNewEn,
       setSelectedNamespaceForAdd: addFormHook.setSelectedNamespaceForAdd,
       setIsAddMode: addFormHook.setIsAddMode,
+      toggleAddMode: addFormHook.toggleAddMode,
       onSubmit: addFormHook.onSubmit,
     },
     editForm: {
       editingId: editFormHook.editingId,
       editGe: editFormHook.editGe,
       editEn: editFormHook.editEn,
+      editErrors: editFormHook.editErrors,
       setEditGe: editFormHook.setEditGe,
       setEditEn: editFormHook.setEditEn,
       setEditingId: editFormHook.setEditingId,
       startEditing: editFormHook.start,
+      onCancel: editFormHook.cancel,
       onSubmit: editFormHook.submit,
     },
     actions: {
@@ -212,7 +218,5 @@ export default function useTranslation() {
       handleBulkDelete,
       fetchData,
     },
-    toastError,
-    clearToastError,
   };
 }

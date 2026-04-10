@@ -35,7 +35,7 @@ export function MenuModal({
     <div className="modal-overlay" onClick={onClose}>
       <div className="modal-content" onClick={(e) => e.stopPropagation()}>
         <h2>{editingItem ? "ელემენტის რედაქტირება" : "ელემენტის დამატება"}</h2>
-        <form onSubmit={onSubmit}>
+        <form onSubmit={onSubmit} noValidate>
           <div className="form-group">
             <label>სახელი (ქართული)</label>
             <input
@@ -45,7 +45,7 @@ export function MenuModal({
               placeholder="მთავარი"
               className={errors.labelKa ? "input-error" : ""}
             />
-            {errors.labelKa && <span className="error-text">{errors.labelKa}</span>}
+            {errors.labelKa && <span className="error-text" data-testid="error-labelKa">{errors.labelKa}</span>}
           </div>
           <div className="form-group">
             <label>სახელი (ინგლისური)</label>
@@ -56,7 +56,7 @@ export function MenuModal({
               placeholder="Home"
               className={errors.labelEn ? "input-error" : ""}
             />
-            {errors.labelEn && <span className="error-text">{errors.labelEn}</span>}
+            {errors.labelEn && <span className="error-text" data-testid="error-labelEn">{errors.labelEn}</span>}
           </div>
           <div className="form-group">
             <label>ლინკი (href)</label>
@@ -67,7 +67,7 @@ export function MenuModal({
               placeholder="/about"
               className={errors.href ? "input-error" : ""}
             />
-            {errors.href && <span className="error-text">{errors.href}</span>}
+            {errors.href && <span className="error-text" data-testid="error-href">{errors.href}</span>}
           </div>
           <div className="form-group">
             <label>რიგითობა (order)</label>
@@ -79,7 +79,7 @@ export function MenuModal({
               min={0}
               className={errors.order ? "input-error" : ""}
             />
-            {errors.order && <span className="error-text">{errors.order}</span>}
+            {errors.order && <span className="error-text" data-testid="error-order">{errors.order}</span>}
           </div>
           <div className="form-group form-group--checkbox">
             <label>

@@ -29,10 +29,11 @@ export default function PartnerDetailedPage() {
 
   const decoded = parseJwt(token || "");
   const userRole = decoded?.role;
-  const isAdmin = userRole === "admin" || userRole === "super_admin";
+  const isAdmin = userRole === "admin";
   const isOwnProfile = contextId === id;
 
   const [partner, setPartner] = useState<Partner | null>(null);
+
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
   const [updating, setUpdating] = useState(false);
@@ -65,7 +66,7 @@ export default function PartnerDetailedPage() {
   }, [id]);
 
   const handleStatusUpdate = async (
-    newStatus: typeof PartnerStatus.APPROVED | typeof PartnerStatus.REJECTED | typeof PartnerStatus.BANNED,
+    newStatus: typeof PartnerStatus.APPROVED | typeof PartnerStatus.BANNED,
   ) => {
     if (!id || !partner) return;
 
@@ -82,7 +83,7 @@ export default function PartnerDetailedPage() {
   };
 
   const handleChange = (
-    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
+    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>,
   ) => {
     const { id, value } = e.target;
     setEditForm((prev) => ({ ...prev, [id]: value }));
@@ -100,7 +101,10 @@ export default function PartnerDetailedPage() {
 
     const errors = validatePartnerForm({
       companyNameGe: editForm.companyNameGe || "",
-      companyNameEn: editForm.companyNameEn,
+      companyNameEn: editForm.companyNameEn || "",
+      identificationCode: editForm.identificationCode || "",
+      contactPerson: editForm.contactPerson || "",
+      city: editForm.city || "",
       phone: editForm.phone || "",
       email: editForm.email || "",
       address: editForm.address || "",

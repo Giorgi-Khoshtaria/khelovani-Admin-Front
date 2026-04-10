@@ -7,37 +7,44 @@ import "./PartnerCard.scss";
 interface PartnerCardProps {
   partner: PartnerData;
   onDelete?: () => void;
+  isSelected?: boolean;
+  onSelect?: (id: string, selected: boolean) => void;
 }
 
-export default function PartnerCard({ partner, onDelete }: PartnerCardProps) {
+export default function PartnerCard({
+  partner,
+  onDelete,
+  isSelected,
+  onSelect,
+}: PartnerCardProps) {
   return (
-    <div className="partner-card">
+    <div className={`partner-card ${isSelected ? "selected" : ""}`}>
       <div className="partner-card__header">
-        <h3 className="partner-card__name">{partner.companyNameGe}</h3>
+        <div className="partner-card__header-left">
+          {onSelect && (
+            <input
+              type="checkbox"
+              checked={isSelected}
+              onChange={(e) => onSelect(partner._id, e.target.checked)}
+              className="partner-card__checkbox"
+            />
+          )}
+          <h3 className="partner-card__name">{partner.companyNameGe}</h3>
+        </div>
         <span className={`status-badge ${partner.status}`}>
           {partner.status === PartnerStatus.PENDING
             ? "მოლოდინი"
             : partner.status === PartnerStatus.APPROVED
               ? "დადასტურებული"
-              : partner.status === PartnerStatus.BANNED
-                ? "დაბლოკილი"
-                : "უარყოფილი"}
+              : "დაბლოკილი"}
         </span>
       </div>
       <div className="partner-card__body">
-        {partner.status === PartnerStatus.REJECTED ? (
-          <p className="partner-card__id">
-            <strong>საიდენტიფიკაციო კოდი:</strong>{" "}
-            {partner.identificationCode || "N/A"}
-          </p>
-        ) : (
           <p className="partner-card__email">
             <strong>Ელ-ფოსტა:</strong> {partner.email}
           </p>
-        )}
       </div>
-      {partner.status !== PartnerStatus.REJECTED && (
-        <div className="partner-card__footer">
+      <div className="partner-card__footer">
           <Link to={`/partners/${partner._id}`} className="view-details-btn">
             დეტალურად
           </Link>
@@ -50,6 +57,7 @@ export default function PartnerCard({ partner, onDelete }: PartnerCardProps) {
                   const { deletePartnerRequest } =
                     await import("@/apiCalls/partnerApiCalls/getPartner.req");
                   await deletePartnerRequest(partner._id);
+                  toast.success("პარტნიორი წარმატებით წაიშალა");
                   if (onDelete) onDelete();
                 } catch (error) {
                   console.error("Failed to delete partner:", error);
@@ -60,8 +68,7 @@ export default function PartnerCard({ partner, onDelete }: PartnerCardProps) {
           >
             წაშლა
           </button>
-        </div>
-      )}
+      </div>
     </div>
   );
 }

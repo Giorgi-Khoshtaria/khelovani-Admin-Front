@@ -18,6 +18,8 @@ export const getPartnerByIdRequest = async (id: string) => {
 export const getAllPartnerRequest = async (
   search?: string,
   status?: string,
+  page: number = 1,
+  limit: number = 10,
 ) => {
   const BACKEND_URL = import.meta.env.VITE_BACKEND_API_URL;
   const token = localStorage.getItem("adminToken");
@@ -26,6 +28,8 @@ export const getAllPartnerRequest = async (
     params: {
       ...(search ? { search } : {}),
       ...(status && status !== "all" ? { status } : {}),
+      page,
+      limit,
     },
     headers: {
       Authorization: `Bearer ${token}`,
@@ -106,6 +110,23 @@ export const uploadPartnerPhotoRequest = async (id: string, file: File) => {
       headers: {
         Authorization: `Bearer ${token}`,
         "Content-Type": "multipart/form-data",
+      },
+    },
+  );
+
+  return response.data;
+};
+
+export const bulkDeletePartnersRequest = async (ids: string[]) => {
+  const BACKEND_URL = import.meta.env.VITE_BACKEND_API_URL;
+  const token = localStorage.getItem("adminToken");
+
+  const response = await axios.post(
+    `${BACKEND_URL}/api/admin/partners/bulk-delete`,
+    { ids },
+    {
+      headers: {
+        Authorization: `Bearer ${token}`,
       },
     },
   );

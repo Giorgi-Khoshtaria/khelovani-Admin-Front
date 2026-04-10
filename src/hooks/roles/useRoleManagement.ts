@@ -11,8 +11,8 @@ import {
   deletePermissionRequest,
 } from "@/apiCalls/roleApiCalls/permission.req";
 import type { Role, Permission } from "@/types/role.types";
-import { useFormHandler } from "@/hooks/utils/useFormHandler";
-import { useDebounce } from "@/hooks/utils/useDebounce";
+import { useFormHandler } from "@/hooks/useFormHandler";
+import { useDebounce } from "@/hooks/useDebounce";
 import { getErrorMessage } from "@/utils/handleApiError";
 import { toast } from "react-toastify";
 

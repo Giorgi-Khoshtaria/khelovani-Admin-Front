@@ -8,6 +8,7 @@ interface TranslationItemProps {
   setEditGe: (value: string) => void;
   editEn: string;
   setEditEn: (value: string) => void;
+  editErrors: Record<string, string>;
   onEdit: () => void;
   onSave: () => void;
   onCancel: () => void;
@@ -24,6 +25,7 @@ export default function TranslationItem({
   setEditGe,
   editEn,
   setEditEn,
+  editErrors,
   onEdit,
   onSave,
   onCancel,
@@ -39,22 +41,38 @@ export default function TranslationItem({
       <div className="col col-key">{translationKey}</div>
       <div className="col">
         {isEditing ? (
-          <input
-            type="text"
-            value={editGe}
-            onChange={(e) => setEditGe(e.target.value)}
-          />
+          <div className="edit-cell">
+            <input
+              type="text"
+              value={editGe}
+              onChange={(e) => setEditGe(e.target.value)}
+              className={editErrors.ge ? "input-error" : ""}
+            />
+            {editErrors.ge && (
+              <span className="error-text" data-testid="edit-ge-error">
+                {editErrors.ge}
+              </span>
+            )}
+          </div>
         ) : (
           values.ge
         )}
       </div>
       <div className="col">
         {isEditing ? (
-          <input
-            type="text"
-            value={editEn}
-            onChange={(e) => setEditEn(e.target.value)}
-          />
+          <div className="edit-cell">
+            <input
+              type="text"
+              value={editEn}
+              onChange={(e) => setEditEn(e.target.value)}
+              className={editErrors.en ? "input-error" : ""}
+            />
+            {editErrors.en && (
+              <span className="error-text" data-testid="edit-en-error">
+                {editErrors.en}
+              </span>
+            )}
+          </div>
         ) : (
           values.en
         )}

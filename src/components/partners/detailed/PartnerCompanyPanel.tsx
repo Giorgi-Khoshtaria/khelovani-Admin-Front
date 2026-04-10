@@ -1,4 +1,4 @@
-import TextInput from "@/lib/ui/TextInput";
+import TextInput from "@/components/ui/TextInput";
 import type { Partner } from "@/types/partner.types";
 import { toast } from "react-toastify";
 import "./PartnerCompanyPanel.scss";
@@ -75,12 +75,16 @@ export function PartnerCompanyPanel({
         )}
       </div>
 
-      <div 
-        className={`company-photo-box ${isOwnProfile ? 'can-edit' : ''}`}
+      <div
+        className={`company-photo-box ${isOwnProfile ? "can-edit" : ""}`}
         onClick={handlePhotoClick}
       >
         {partner.profilePhoto ? (
-          <img src={partner.profilePhoto} alt="Company Logo" className="actual-photo" />
+          <img
+            src={partner.profilePhoto}
+            alt="Company Logo"
+            className="actual-photo"
+          />
         ) : (
           <div className="photo-placeholder">
             <span>ფოტოს დამატება</span>
@@ -91,10 +95,10 @@ export function PartnerCompanyPanel({
             <span>შეცვლა</span>
           </div>
         )}
-        <input 
-          type="file" 
-          id="company-photo-input" 
-          style={{ display: 'none' }} 
+        <input
+          type="file"
+          id="company-photo-input"
+          style={{ display: "none" }}
           accept="image/*"
           onChange={handleFileChange}
         />

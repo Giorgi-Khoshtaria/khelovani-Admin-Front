@@ -1,22 +1,16 @@
-import { validateEmail } from "../shared/email.validation";
-import { validatePassword } from "../shared/password.validation";
+import { z } from "zod";
+import { validateWithZod } from "../shared/zodUtils";
+import { emailSchema } from "../shared/email.validation";
+import { passwordSchema } from "../shared/password.validation";
+
+export const loginSchema = z.object({
+  email: emailSchema,
+  password: passwordSchema,
+});
 
 export const validateLoginForm = (
   email?: string,
   password?: string,
 ): Record<string, string> => {
-  const errors: Record<string, string> = {};
-
-  const emailError = validateEmail(email);
-  const passwordError = validatePassword(password);
-
-  if (emailError) {
-    errors.email = emailError;
-  }
-
-  if (passwordError) {
-    errors.password = passwordError;
-  }
-
-  return errors;
+  return validateWithZod(loginSchema, { email, password });
 };

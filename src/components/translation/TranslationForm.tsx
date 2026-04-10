@@ -39,6 +39,7 @@ export default function TranslationForm({
       <div className="form-group">
         <label>ნეიმსპეისი (Namespace):</label>
         <select
+          id="namespace"
           value={selectedNamespace}
           onChange={(e) => setSelectedNamespace(e.target.value)}
         >
@@ -52,32 +53,47 @@ export default function TranslationForm({
       <div className="form-group">
         <label>გასაღები (Key):</label>
         <input
+          id="key"
           type="text"
           placeholder="მაგ: save_button"
           value={newKey}
           onChange={(e) => setNewKey(e.target.value)}
         />
-        {formErrors.key && <span className="error-text">{formErrors.key}</span>}
+        {formErrors.key && (
+          <span className="error-text" data-testid="key-error">
+            {formErrors.key}
+          </span>
+        )}
       </div>
       <div className="form-group">
         <label>ქართული (GE):</label>
-        <input
-          type="text"
+        <textarea
+          id="ge"
           placeholder="შენახვა"
           value={newGe}
           onChange={(e) => setNewGe(e.target.value)}
+          rows={3}
         />
-        {formErrors.ge && <span className="error-text">{formErrors.ge}</span>}
+        {formErrors.ge && (
+          <span className="error-text" data-testid="ge-error">
+            {formErrors.ge}
+          </span>
+        )}
       </div>
       <div className="form-group">
         <label>ინგლისური (EN):</label>
-        <input
-          type="text"
+        <textarea
+          id="en"
           placeholder="Save"
           value={newEn}
           onChange={(e) => setNewEn(e.target.value)}
+          rows={3}
         />
-        {formErrors.en && <span className="error-text">{formErrors.en}</span>}
+        {formErrors.en && (
+          <span className="error-text" data-testid="en-error">
+            {formErrors.en}
+          </span>
+        )}
       </div>
       <button type="submit" className="submit-btn">
         დამატება
