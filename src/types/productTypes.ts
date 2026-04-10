@@ -69,7 +69,8 @@ export const ProductCategory = {
   OTHER: "other",
 } as const;
 
-export type ProductCategory = (typeof ProductCategory)[keyof typeof ProductCategory];
+export type ProductCategory =
+  (typeof ProductCategory)[keyof typeof ProductCategory];
 
 export const PRODUCT_CATEGORY_LABELS: Record<
   ProductCategory,
