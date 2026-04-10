@@ -39,12 +39,13 @@ export interface AddProductFormData extends Omit<
  */
 export interface CreateProductInput extends Omit<
   AddProductFormData,
-  "price" | "stockQuantity" | "shippingPrice" | "weight"
+  "price" | "stockQuantity" | "shippingPrice" | "weight" | "category"
 > {
   price: number | string;
   stockQuantity: number | string;
   shippingPrice: number | string;
   weight: number | string;
+  category: ProductCategory | "";
 }
 export const ProductCategory = {
   JEWELRY: "jewelry",
