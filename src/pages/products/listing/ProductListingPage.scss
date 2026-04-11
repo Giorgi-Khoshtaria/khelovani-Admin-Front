@@ -53,5 +53,40 @@
     flex-direction: column;
     overflow: hidden;
   }
+
+  .pagination {
+    margin-top: 24px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 20px;
+    padding: 20px 0;
+
+    button {
+      @extend .btn-outline;
+      padding: 8px 20px;
+      font-size: 14px;
+      min-width: 100px;
+      
+      &:disabled {
+        opacity: 0.4;
+        cursor: not-allowed;
+        &:hover {
+          background-color: transparent;
+          color: inherit;
+        }
+      }
+    }
+
+    .page-info {
+      font-size: 14px;
+      font-weight: 600;
+      color: colors.$color-text-secondary;
+      background-color: colors.$color-white;
+      padding: 8px 16px;
+      border-radius: 8px;
+      border: 1px solid colors.$color-border;
+    }
+  }
 }
 

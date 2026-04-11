@@ -22,6 +22,12 @@ export const useProductListing = (id?: string) => {
   const [search, setSearch] = useState("");
   const [category, setCategory] = useState("all");
 
+  // Pagination state
+  const [currentPage, setCurrentPage] = useState(1);
+  const [totalPages, setTotalPages] = useState(1);
+  const [totalCount, setTotalCount] = useState(0);
+  const limit = 10;
+
   // Admin filter by organization
   const [selectedPartnerId, setSelectedPartnerId] = useState("");
   const [partners, setPartners] = useState<{ _id: string; name: string }[]>([]);
@@ -57,16 +63,24 @@ export const useProductListing = (id?: string) => {
           search,
           category,
           selectedPartnerId,
+          currentPage,
+          limit,
         );
-        setProducts(data);
+        setProducts(data.products || []);
+        setTotalPages(data.totalPages || 1);
+        setTotalCount(data.totalCount || 0);
       } catch {
         toast.error("შეცდომა პროდუქტების ჩატვირთვისას");
       } finally {
         if (showLoading) setLoading(false);
       }
     },
-    [id, search, category, selectedPartnerId, isAdmin, userData],
+    [id, search, category, selectedPartnerId, isAdmin, userData, currentPage],
   );
+
+  useEffect(() => {
+    setCurrentPage(1);
+  }, [search, category, selectedPartnerId]);
 
   useEffect(() => {
     fetchProducts();
@@ -149,5 +163,9 @@ export const useProductListing = (id?: string) => {
     handleDelete,
     handleToggleVisibility,
     fetchProducts,
+    currentPage,
+    setCurrentPage,
+    totalPages,
+    totalCount,
   };
 };

@@ -23,6 +23,9 @@ export default function ProductListingPage() {
     isAdmin,
     handleDelete,
     handleToggleVisibility,
+    currentPage,
+    setCurrentPage,
+    totalPages,
   } = useProductListing(id);
 
   const onDelete = async (e: React.MouseEvent, productId: string) => {
@@ -104,6 +107,28 @@ export default function ProductListingPage() {
               onRowClick={() => onRowClick(product)}
             />
           ))}
+
+          {totalPages > 1 && (
+            <div className="pagination">
+              <button
+                disabled={currentPage === 1}
+                onClick={() => setCurrentPage((p: number) => Math.max(1, p - 1))}
+              >
+                წინა / Prev
+              </button>
+              <span className="page-info">
+                გვერდი {currentPage} / {totalPages}
+              </span>
+              <button
+                disabled={currentPage === totalPages}
+                onClick={() =>
+                  setCurrentPage((p: number) => Math.min(totalPages, p + 1))
+                }
+              >
+                შემდეგი / Next
+              </button>
+            </div>
+          )}
         </div>
       )}
     </div>

@@ -54,12 +54,21 @@ export const addProductRequest = async (partnerId: string, data: AddProductFormD
   return response.data;
 };
 
-export const getProductsRequest = async (partnerId?: string, search?: string, category?: string, filterPartnerId?: string) => {
+export const getProductsRequest = async (
+  partnerId?: string,
+  search?: string,
+  category?: string,
+  filterPartnerId?: string,
+  page: number = 1,
+  limit: number = 10,
+) => {
   const response = await axios.get(getProductUrl(partnerId), {
-    params: { 
-      ...(search ? { search } : {}), 
+    params: {
+      ...(search ? { search } : {}),
       ...(category && category !== "all" ? { category } : {}),
-      ...(filterPartnerId ? { partnerId: filterPartnerId } : {})
+      ...(filterPartnerId ? { partnerId: filterPartnerId } : {}),
+      page,
+      limit,
     },
     headers: { Authorization: `Bearer ${getToken()}` },
   });
