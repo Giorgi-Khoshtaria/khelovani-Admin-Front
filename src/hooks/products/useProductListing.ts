@@ -9,6 +9,7 @@ import { toast } from "react-toastify";
 import type { Product } from "@/types/productTypes";
 import { parseJwt } from "@/utils/parseJwt";
 import type { Partner } from "@/types/partner.types";
+import { useDebounce } from "@/hooks/useDebounce";
 
 interface TokenPayload {
   id: string;
@@ -20,6 +21,7 @@ export const useProductListing = (id?: string) => {
   const [products, setProducts] = useState<Product[]>([]);
   const [loading, setLoading] = useState(true);
   const [search, setSearch] = useState("");
+  const debouncedSearch = useDebounce(search, 500);
   const [category, setCategory] = useState("all");
 
   // Pagination state
@@ -36,7 +38,8 @@ export const useProductListing = (id?: string) => {
     const token = localStorage.getItem("adminToken");
     if (!token) return null;
     try {
-      return parseJwt(token) as TokenPayload;
+      const decoded = parseJwt(token);
+      return decoded as TokenPayload;
     } catch {
       return null;
     }
@@ -60,7 +63,7 @@ export const useProductListing = (id?: string) => {
         const effectiveId = id || (!isAdmin ? userData?.id : undefined);
         const data = await getProductsRequest(
           effectiveId,
-          search,
+          debouncedSearch,
           category,
           selectedPartnerId,
           currentPage,
@@ -75,12 +78,12 @@ export const useProductListing = (id?: string) => {
         if (showLoading) setLoading(false);
       }
     },
-    [id, search, category, selectedPartnerId, isAdmin, userData, currentPage],
+    [id, debouncedSearch, category, selectedPartnerId, isAdmin, userData?.id, currentPage],
   );
 
   useEffect(() => {
     setCurrentPage(1);
-  }, [search, category, selectedPartnerId]);
+  }, [debouncedSearch, category, selectedPartnerId]);
 
   useEffect(() => {
     fetchProducts();
@@ -88,7 +91,7 @@ export const useProductListing = (id?: string) => {
 
   useEffect(() => {
     // Fetch partners for the dropdown if admin is in global view
-    const fetchPartners = async () => {
+    const loadPartners = async () => {
       if (isAdmin && !id) {
         try {
           const data = await getAllPartnerRequest();
@@ -103,7 +106,7 @@ export const useProductListing = (id?: string) => {
         }
       }
     };
-    fetchPartners();
+    loadPartners();
   }, [isAdmin, id]);
 
   const handleDelete = async (productId: string) => {

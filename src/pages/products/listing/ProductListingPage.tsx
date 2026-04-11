@@ -26,6 +26,7 @@ export default function ProductListingPage() {
     currentPage,
     setCurrentPage,
     totalPages,
+    totalCount,
   } = useProductListing(id);
 
   const onDelete = async (e: React.MouseEvent, productId: string) => {
@@ -66,6 +67,7 @@ export default function ProductListingPage() {
             ← უკან {isProfileMode ? "პროფილზე" : id ? "პროფილზე" : "პარტნიორების სიაზე"}
           </button>
           <h1>{id || isProfileMode ? "პროდუქტები / Products" : "ყველა პროდუქტი / All Products"}</h1>
+          {totalCount > 0 && <span className="count-badge">{totalCount}</span>}
         </div>
         {!isAdmin && (id || isProfileMode) && (
           <button className="add-product-btn" onClick={() => navigate(isProfileMode ? "/profile/products/add" : `/partners/${id}/products/add`)}>

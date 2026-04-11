@@ -37,9 +37,9 @@ export const ProductFilters: React.FC<ProductFiltersProps> = ({
 
       {isAdmin && !id && (
         <select
-          className="category-select"
+          className="organization-select"
           value={selectedPartnerId}
-          onChange={(e) => onPartnerChange(e.target.value)}
+          onChange={(e: React.ChangeEvent<HTMLSelectElement>) => onPartnerChange(e.target.value)}
         >
           <option value="">ყველა ორგანიზაცია / All Organizations</option>
           {partners.map((p) => (
@@ -52,7 +52,7 @@ export const ProductFilters: React.FC<ProductFiltersProps> = ({
 
       <CategorySelect
         value={category}
-        onChange={(e) => onCategoryChange(e.target.value)}
+        onChange={(e: React.ChangeEvent<HTMLSelectElement>) => onCategoryChange(e.target.value)}
         includeAll={true}
         className="category-select"
       />
