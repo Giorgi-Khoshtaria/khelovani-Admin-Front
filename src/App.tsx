@@ -2,21 +2,24 @@ import "@/styles/globals.scss";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import Layout from "./layout/Layout";
-import LoginPage from "./pages/Login/loginPage";
+import LoginPage from "./pages/login/loginPage";
+
 import {
   createBrowserRouter,
   RouterProvider,
   Navigate,
 } from "react-router-dom";
-import Menu from "./pages/Menu/Menu";
-import PartnerDetailedPage from "./pages/PartnerDetailed/PartnerDetailedPage";
+import Menu from "./pages/menu/Menu";
+import PartnerDetailedPage from "./pages/partnerDetailed/PartnerDetailedPage";
 import { PartnerProvider } from "./context/PartnerProvider";
-import PartnerListing from "./pages/PartnerListings/PartnerListing";
+import PartnerListing from "./pages/partnerListings/PartnerListing";
+
 import TranslationPage from "./pages/Translation/TranslationPage";
-import ProductListingPage from "./pages/Products/listing/ProductListingPage";
-import AddProductPage from "./pages/Products/add/AddProductPage";
-import ProductDetailsPage from "./pages/Products/details/ProductDetailsPage";
-import EditProductPage from "./pages/Products/edit/EditProductPage";
+import ProductListingPage from "./pages/products/listing/ProductListingPage";
+import AddProductPage from "./pages/products/add/AddProductPage";
+import ProductDetailsPage from "./pages/products/details/ProductDetailsPage";
+import EditProductPage from "./pages/products/edit/EditProductPage";
+
 import RoleManagement from "./pages/Roles/RoleManagement";
 import RoleDetailedPage from "./pages/Roles/RoleDetailedPage";
 import { usePartnerContext } from "./context/PartnerContext";
