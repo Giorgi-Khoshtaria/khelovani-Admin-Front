@@ -17,8 +17,7 @@ export default function AddProductPage() {
   const navigate = useNavigate();
   const [loading, setLoading] = useState(false);
 
-  const role = (decoded?.role || "").toLowerCase();
-  const isAdmin = role === "admin" || role === "super_admin";
+  const isAdmin = decoded?.role === "admin" || decoded?.role === "super_admin";
 
   const {
     formData,

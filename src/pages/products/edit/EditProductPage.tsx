@@ -20,8 +20,7 @@ export default function EditProductPage() {
   const decoded = parseJwt(token || "");
   const contextId = decoded?.id;
   const partnerId = urlPartnerId || contextId;
-  const role = (decoded?.role || "").toLowerCase();
-  const isAdmin = role === "admin";
+  const isAdmin = decoded?.role === "admin";
 
   const navigate = useNavigate();
   const [loading, setLoading] = useState(false);

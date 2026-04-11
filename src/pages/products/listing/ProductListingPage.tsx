@@ -64,7 +64,7 @@ export default function ProductListingPage() {
             if (isProfileMode) navigate("/profile");
             else navigate(id ? `/partners/${id}` : "/partners");
           }}>
-            ← უკან {isProfileMode ? "პროფილზე" : id ? "პროფილზე" : "პარტნიორების სიაზე"}
+            ← უკან {isProfileMode ? "პროფილზე" : id ? "პარტნიორის პროფილზე" : "პარტნიორების სიაზე"}
           </button>
           <h1>{id || isProfileMode ? "პროდუქტები / Products" : "ყველა პროდუქტი / All Products"}</h1>
           {totalCount > 0 && <span className="count-badge">{totalCount}</span>}
