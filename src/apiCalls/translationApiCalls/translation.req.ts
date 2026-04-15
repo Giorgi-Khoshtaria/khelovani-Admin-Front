@@ -1,5 +1,4 @@
-import axios from "axios";
-
+import api from "../api";
 const getAuthHeaders = () => {
   const token = localStorage.getItem("adminToken");
   return {
@@ -13,16 +12,17 @@ export const getTranslationsRequest = async (params: {
   limit?: number;
   namespace?: string;
 }) => {
-  const BACKEND_URL = import.meta.env.VITE_BACKEND_API_URL;
-  const response = await axios.get(`${BACKEND_URL}/api/admin/translations`, {
+  const response = await api.get(`/api/admin/translations`, {
     params,
+    headers: getAuthHeaders(),
   });
   return response.data;
 };
 
 export const getNamespacesRequest = async () => {
-  const BACKEND_URL = import.meta.env.VITE_BACKEND_API_URL;
-  const response = await axios.get(`${BACKEND_URL}/api/admin/translations/namespaces`);
+  const response = await api.get(`/api/admin/translations/namespaces`, {
+    headers: getAuthHeaders(),
+  });
   return response.data;
 };
 
@@ -31,8 +31,7 @@ export const addTranslationRequest = async (data: {
   key: string;
   translations: { ge: string; en: string };
 }) => {
-  const BACKEND_URL = import.meta.env.VITE_BACKEND_API_URL;
-  const response = await axios.post(`${BACKEND_URL}/api/admin/translations`, data, {
+  const response = await api.post(`/api/admin/translations`, data, {
     headers: getAuthHeaders(),
   });
   return response.data;
@@ -40,18 +39,16 @@ export const addTranslationRequest = async (data: {
 
 export const updateTranslationRequest = async (
   id: string,
-  data: { translations: { ge: string; en: string } }
+  data: { translations: { ge: string; en: string } },
 ) => {
-  const BACKEND_URL = import.meta.env.VITE_BACKEND_API_URL;
-  const response = await axios.put(`${BACKEND_URL}/api/admin/translations/${id}`, data, {
+  const response = await api.put(`/api/admin/translations/${id}`, data, {
     headers: getAuthHeaders(),
   });
   return response.data;
 };
 
 export const deleteTranslationRequest = async (id: string) => {
-  const BACKEND_URL = import.meta.env.VITE_BACKEND_API_URL;
-  const response = await axios.delete(`${BACKEND_URL}/api/admin/translations/${id}`, {
+  const response = await api.delete(`/api/admin/translations/${id}`, {
     headers: getAuthHeaders(),
   });
   return response.data;
@@ -60,17 +57,19 @@ export const deleteTranslationRequest = async (id: string) => {
 export const bulkTranslationRequest = async (data: {
   items: Array<{ namespace: string; key: string; ge: string; en: string }>;
 }) => {
-  const BACKEND_URL = import.meta.env.VITE_BACKEND_API_URL;
-  const response = await axios.post(`${BACKEND_URL}/api/admin/translations/bulk`, data, {
+  const response = await api.post(`/api/admin/translations/bulk`, data, {
     headers: getAuthHeaders(),
   });
   return response.data;
 };
 
 export const bulkDeleteTranslationRequest = async (ids: string[]) => {
-  const BACKEND_URL = import.meta.env.VITE_BACKEND_API_URL;
-  const response = await axios.post(`${BACKEND_URL}/api/admin/translations/bulk-delete`, { ids }, {
-    headers: getAuthHeaders(),
-  });
+  const response = await api.post(
+    `/api/admin/translations/bulk-delete`,
+    { ids },
+    {
+      headers: getAuthHeaders(),
+    },
+  );
   return response.data;
 };

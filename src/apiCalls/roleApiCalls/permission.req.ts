@@ -1,6 +1,5 @@
-import axios from "axios";
 import type { Permission } from "../../types/role.types";
-
+import api from "../api";
 const getAuthHeaders = () => {
   const token = localStorage.getItem("adminToken");
   return {
@@ -9,15 +8,13 @@ const getAuthHeaders = () => {
   };
 };
 
-const BACKEND_URL = import.meta.env.VITE_BACKEND_API_URL;
-
 export const getPermissionsRequest = async (
   search?: string,
   category?: string,
   sortBy?: string,
-  sortOrder?: string
+  sortOrder?: string,
 ): Promise<Permission[]> => {
-  const response = await axios.get(`${BACKEND_URL}/api/admin/permissions`, {
+  const response = await api.get(`/api/admin/permissions`, {
     headers: getAuthHeaders(),
     params: { search, category, sortBy, sortOrder },
   });
@@ -25,21 +22,24 @@ export const getPermissionsRequest = async (
 };
 
 export const createPermissionRequest = async (data: Partial<Permission>) => {
-  const response = await axios.post(`${BACKEND_URL}/api/admin/permissions`, data, {
+  const response = await api.post(`/api/admin/permissions`, data, {
     headers: getAuthHeaders(),
   });
   return response.data;
 };
 
-export const updatePermissionRequest = async (id: string, data: Partial<Permission>) => {
-  const response = await axios.put(`${BACKEND_URL}/api/admin/permissions/${id}`, data, {
+export const updatePermissionRequest = async (
+  id: string,
+  data: Partial<Permission>,
+) => {
+  const response = await api.put(`/api/admin/permissions/${id}`, data, {
     headers: getAuthHeaders(),
   });
   return response.data;
 };
 
 export const deletePermissionRequest = async (id: string) => {
-  const response = await axios.delete(`${BACKEND_URL}/api/admin/permissions/${id}`, {
+  const response = await api.delete(`/api/admin/permissions/${id}`, {
     headers: getAuthHeaders(),
   });
   return response.data;

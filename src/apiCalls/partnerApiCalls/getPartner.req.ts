@@ -1,12 +1,11 @@
 import axios from "axios";
 import { PartnerStatus } from "@/lib/status/partnerStatus";
 import type { Partner } from "@/types/partner.types";
-
+import api from "../api";
 export const getPartnerByIdRequest = async (id: string) => {
-  const BACKEND_URL = import.meta.env.VITE_BACKEND_API_URL;
   const token = localStorage.getItem("adminToken");
 
-  const response = await axios.get(`${BACKEND_URL}/api/admin/partners/${id}`, {
+  const response = await api.get(`/api/admin/partners/${id}`, {
     headers: {
       Authorization: `Bearer ${token}`,
     },
@@ -21,10 +20,9 @@ export const getAllPartnerRequest = async (
   page: number = 1,
   limit: number = 10,
 ) => {
-  const BACKEND_URL = import.meta.env.VITE_BACKEND_API_URL;
   const token = localStorage.getItem("adminToken");
 
-  const response = await axios.get(`${BACKEND_URL}/api/admin/partners`, {
+  const response = await api.get(`/api/admin/partners`, {
     params: {
       ...(search ? { search } : {}),
       ...(status && status !== "all" ? { status } : {}),
@@ -43,11 +41,10 @@ export const updatePartnerStatus = async (
   id: string,
   status: PartnerStatus,
 ) => {
-  const BACKEND_URL = import.meta.env.VITE_BACKEND_API_URL;
   const token = localStorage.getItem("adminToken");
 
-  const response = await axios.patch(
-    `${BACKEND_URL}/api/admin/partners/${id}/status`,
+  const response = await api.patch(
+    `/api/admin/partners/${id}/status`,
     {
       status,
     },
@@ -65,46 +62,36 @@ export const updatePartnerRequest = async (
   id: string,
   updateData: Partial<Partner>,
 ) => {
-  const BACKEND_URL = import.meta.env.VITE_BACKEND_API_URL;
   const token = localStorage.getItem("adminToken");
 
-  const response = await axios.patch(
-    `${BACKEND_URL}/api/admin/partners/${id}`,
-    updateData,
-    {
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
+  const response = await axios.patch(`/api/admin/partners/${id}`, updateData, {
+    headers: {
+      Authorization: `Bearer ${token}`,
     },
-  );
+  });
 
   return response.data;
 };
 
 export const deletePartnerRequest = async (id: string) => {
-  const BACKEND_URL = import.meta.env.VITE_BACKEND_API_URL;
   const token = localStorage.getItem("adminToken");
 
-  const response = await axios.delete(
-    `${BACKEND_URL}/api/admin/partners/${id}`,
-    {
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
+  const response = await api.delete(`/api/admin/partners/${id}`, {
+    headers: {
+      Authorization: `Bearer ${token}`,
     },
-  );
+  });
 
   return response.data;
 };
 export const uploadPartnerPhotoRequest = async (id: string, file: File) => {
-  const BACKEND_URL = import.meta.env.VITE_BACKEND_API_URL;
   const token = localStorage.getItem("adminToken");
 
   const formData = new FormData();
   formData.append("image", file);
 
-  const response = await axios.patch(
-    `${BACKEND_URL}/api/admin/partners/${id}/photo`,
+  const response = await api.patch(
+    `/api/admin/partners/${id}/photo`,
     formData,
     {
       headers: {
@@ -118,11 +105,10 @@ export const uploadPartnerPhotoRequest = async (id: string, file: File) => {
 };
 
 export const bulkDeletePartnersRequest = async (ids: string[]) => {
-  const BACKEND_URL = import.meta.env.VITE_BACKEND_API_URL;
   const token = localStorage.getItem("adminToken");
 
-  const response = await axios.post(
-    `${BACKEND_URL}/api/admin/partners/bulk-delete`,
+  const response = await api.post(
+    `/api/admin/partners/bulk-delete`,
     { ids },
     {
       headers: {
