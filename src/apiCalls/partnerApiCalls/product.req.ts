@@ -1,16 +1,14 @@
 import api from "../api";
 import type { AddProductFormData } from "@/types/productTypes";
 
-const getToken = () => localStorage.getItem("adminToken");
-
 const getProductUrl = (partnerId?: string, productId?: string) => {
   if (productId) {
-    return `/api/admin/products/${productId}`;
+    return `/api/products/${productId}`;
   }
   if (partnerId) {
-    return `/api/admin/products/partner/${partnerId}`;
+    return `/api/products/partner/${partnerId}`;
   }
-  return `/api/admin/products`;
+  return `/api/products`;
 };
 
 const createProductFormData = (data: Partial<AddProductFormData>) => {
@@ -77,10 +75,7 @@ export const addProductRequest = async (
     `${getProductUrl(partnerId)}?lang=${lang}`,
     formData,
     {
-      headers: {
-        Authorization: `Bearer ${getToken()}`,
-        "Content-Type": "multipart/form-data",
-      },
+      headers: { "Content-Type": "multipart/form-data" },
     },
   );
   return response.data;
@@ -102,7 +97,6 @@ export const getProductsRequest = async (
       page,
       limit,
     },
-    headers: { Authorization: `Bearer ${getToken()}` },
   });
   return response.data;
 };
@@ -111,9 +105,7 @@ export const getProductDetailsRequest = async (
   partnerId?: string,
   productId?: string,
 ) => {
-  const response = await api.get(getProductUrl(partnerId, productId), {
-    headers: { Authorization: `Bearer ${getToken()}` },
-  });
+  const response = await api.get(getProductUrl(partnerId, productId));
   return response.data;
 };
 
@@ -121,9 +113,7 @@ export const deleteProductRequest = async (
   partnerId: string | undefined,
   productId: string,
 ) => {
-  const response = await api.delete(getProductUrl(partnerId, productId), {
-    headers: { Authorization: `Bearer ${getToken()}` },
-  });
+  const response = await api.delete(getProductUrl(partnerId, productId));
   return response.data;
 };
 
@@ -138,10 +128,7 @@ export const updateProductRequest = async (
     `${getProductUrl(partnerId, productId)}?lang=${lang}`,
     formData,
     {
-      headers: {
-        Authorization: `Bearer ${getToken()}`,
-        "Content-Type": "multipart/form-data",
-      },
+      headers: { "Content-Type": "multipart/form-data" },
     },
   );
   return response.data;
