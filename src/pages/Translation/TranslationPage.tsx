@@ -1,6 +1,7 @@
 import TranslationForm from "@/components/translation/TranslationForm";
 import NamespaceSidebar from "@/components/translation/NamespaceSidebar";
 import TranslationList from "@/components/translation/TranslationList";
+import TranslationEditModal from "@/components/translation/TranslationEditModal";
 import useTranslation from "../../hooks/translations/useTranslation";
 import "./TranslationPage.scss";
 
@@ -9,6 +10,26 @@ export default function TranslationPage() {
 
   return (
     <div className="translation-page">
+      {/* ... prev header code ... */}
+      <TranslationEditModal
+        isOpen={!!editForm.editingId}
+        onClose={editForm.onCancel}
+        onSave={editForm.onSubmit}
+        data={{
+          id: editForm.editingId,
+          ge: editForm.editGe,
+          en: editForm.editEn,
+          key: editForm.editKey,
+          namespace: editForm.editNamespace,
+          errors: editForm.editErrors,
+        }}
+        setGe={editForm.setEditGe}
+        setEn={editForm.setEditEn}
+        setKey={editForm.setEditKey}
+        setNamespace={editForm.setEditNamespace}
+        namespaces={data.namespaces}
+      />
+
       <div className="page-header">
         <h1>თარგმანების მართვა</h1>
         <div className="header-actions">
@@ -50,7 +71,10 @@ export default function TranslationPage() {
               onChange={(e) => actions.setSearchQuery(e.target.value)}
             />
             {list.selectedIds.length > 0 && (
-              <button className="bulk-delete-btn" onClick={actions.handleBulkDelete}>
+              <button
+                className="bulk-delete-btn"
+                onClick={actions.handleBulkDelete}
+              >
                 წაშლა ({list.selectedIds.length})
               </button>
             )}
@@ -66,19 +90,12 @@ export default function TranslationPage() {
             <>
               <TranslationList
                 items={list.items}
-                editingId={editForm.editingId}
-                editGe={editForm.editGe}
-                setEditGe={editForm.setEditGe}
-                editEn={editForm.editEn}
-                setEditEn={editForm.setEditEn}
-                editErrors={editForm.editErrors}
                 onEdit={editForm.startEditing}
-                onSave={editForm.onSubmit}
-                onCancel={editForm.onCancel}
                 onDelete={actions.handleDeleteTranslation}
                 selectedIds={list.selectedIds}
                 onSelectChange={actions.handleSelectChange}
                 onSelectAll={actions.handleSelectAll}
+                namespaces={data.namespaces}
               />
 
               {list.totalPages > 1 && (

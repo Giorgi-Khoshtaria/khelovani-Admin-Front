@@ -4,39 +4,22 @@ import "./TranslationList.scss";
 
 interface TranslationListProps {
   items: RawTranslation[];
-  editingId: string | null;
-  editGe: string;
-  setEditGe: (value: string) => void;
-  editEn: string;
-  setEditEn: (value: string) => void;
-  editErrors: Record<string, string>;
-  onEdit: (item: {
-    _id: string;
-    translations: { ge: string; en: string };
-  }) => void;
-  onSave: (id: string) => void;
-  onCancel: () => void;
+  onEdit: (item: RawTranslation) => void;
   onDelete: (id: string) => void;
   selectedIds: string[];
   onSelectChange: (id: string, checked: boolean) => void;
   onSelectAll: (ids: string[], checked: boolean) => void;
+  namespaces: Array<{ _id: string; name: string }>;
 }
 
 export default function TranslationList({
   items,
-  editingId,
-  editGe,
-  setEditGe,
-  editEn,
-  setEditEn,
-  editErrors,
   onEdit,
-  onSave,
-  onCancel,
   onDelete,
   selectedIds,
   onSelectChange,
   onSelectAll,
+  namespaces,
 }: TranslationListProps) {
   const allFilteredIds = items.map((r) => r._id);
 
@@ -55,6 +38,7 @@ export default function TranslationList({
           />
         </div>
         <div className="col">გასაღები (Key)</div>
+        <div className="col">Namespace</div>
         <div className="col">ქართული (GE)</div>
         <div className="col">ინგლისური (EN)</div>
         <div className="col actions">მოქმედება</div>
@@ -62,7 +46,6 @@ export default function TranslationList({
       <div className="list-body">
         {items.map((item) => {
           const itemId = item._id;
-          const isEditing = editingId === itemId;
           const isChecked = selectedIds.includes(itemId);
 
           return (
@@ -70,15 +53,9 @@ export default function TranslationList({
               key={itemId}
               translationKey={item.key}
               values={item.translations}
-              isEditing={isEditing}
-              editGe={editGe}
-              setEditGe={setEditGe}
-              editEn={editEn}
-              setEditEn={setEditEn}
-              editErrors={editErrors}
-              onEdit={() => onEdit({ _id: itemId, translations: item.translations })}
-              onSave={() => onSave(itemId)}
-              onCancel={onCancel}
+              namespaceId={item.namespace}
+              namespaces={namespaces}
+              onEdit={() => onEdit(item)}
               onDelete={() => onDelete(itemId)}
               checked={isChecked}
               onSelect={(checked) => onSelectChange(itemId, checked)}

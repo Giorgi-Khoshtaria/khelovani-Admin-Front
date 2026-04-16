@@ -8,54 +8,61 @@ export default function useAddTranslationForm(
   onSuccess: (msg?: string) => void,
   onError: (msg: string) => void,
 ) {
-  const [isAddMode, setIsAddMode] = useState(false);
-  const [newKey, setNewKey] = useState("");
-  const [newGe, setNewGe] = useState("");
-  const [newEn, setNewEn] = useState("");
-  const [selectedNamespaceForAdd, setSelectedNamespaceForAdd] = useState("");
-  const [formErrors, setFormErrors] = useState<Record<string, string>>({});
+  const [formState, setFormState] = useState({
+    isAddMode: false,
+    key: "",
+    ge: "",
+    en: "",
+    selectedNamespace: "",
+    errors: {} as Record<string, string>,
+  });
 
   const resetForm = () => {
-    setNewKey("");
-    setNewGe("");
-    setNewEn("");
-    setFormErrors({});
+    setFormState((prev) => ({
+      ...prev,
+      key: "",
+      ge: "",
+      en: "",
+      errors: {},
+    }));
   };
 
   const toggleAddMode = () => {
-    if (isAddMode) {
+    if (formState.isAddMode) {
       resetForm();
     }
-    setIsAddMode(!isAddMode);
+    setFormState((prev) => ({ ...prev, isAddMode: !prev.isAddMode }));
   };
 
   const handleAddTranslation = async (e: React.FormEvent) => {
     e.preventDefault();
     try {
-      const namespace = selectedNamespaceForAdd || defaultNamespace;
+      const namespace = formState.selectedNamespace || defaultNamespace;
       const errors = validateTranslationForm({
-        key: newKey,
-        ge: newGe,
-        en: newEn,
+        key: formState.key,
+        ge: formState.ge,
+        en: formState.en,
       });
 
       if (Object.keys(errors).length > 0) {
-        console.log("Validation Errors:", errors);
-        setFormErrors(errors);
+        setFormState((prev) => ({ ...prev, errors }));
         return;
       }
-      setFormErrors({});
+      setFormState((prev) => ({ ...prev, errors: {} }));
 
       await addTranslationRequest({
         namespace,
-        key: newKey,
-        translations: { ge: newGe, en: newEn },
+        key: formState.key,
+        translations: { ge: formState.ge, en: formState.en },
       });
 
-      setIsAddMode(false);
-      setNewKey("");
-      setNewGe("");
-      setNewEn("");
+      setFormState((prev) => ({
+        ...prev,
+        isAddMode: false,
+        key: "",
+        ge: "",
+        en: "",
+      }));
       onSuccess("თარგმანი წარმატებით დაემატა");
     } catch (err) {
       onError(getErrorMessage(err, "დამატება ვერ მოხერხდა"));
@@ -63,17 +70,19 @@ export default function useAddTranslationForm(
   };
 
   return {
-    isAddMode,
-    newKey,
-    newGe,
-    newEn,
-    selectedNamespaceForAdd,
-    formErrors,
-    setNewKey,
-    setNewGe,
-    setNewEn,
-    setSelectedNamespaceForAdd,
-    setIsAddMode,
+    isAddMode: formState.isAddMode,
+    newKey: formState.key,
+    newGe: formState.ge,
+    newEn: formState.en,
+    selectedNamespaceForAdd: formState.selectedNamespace,
+    formErrors: formState.errors,
+    setNewKey: (key: string) => setFormState((prev) => ({ ...prev, key })),
+    setNewGe: (ge: string) => setFormState((prev) => ({ ...prev, ge })),
+    setNewEn: (en: string) => setFormState((prev) => ({ ...prev, en })),
+    setSelectedNamespaceForAdd: (selectedNamespace: string) =>
+      setFormState((prev) => ({ ...prev, selectedNamespace })),
+    setIsAddMode: (isAddMode: boolean) =>
+      setFormState((prev) => ({ ...prev, isAddMode })),
     toggleAddMode,
     onSubmit: handleAddTranslation,
   };

@@ -158,13 +158,12 @@ test.describe("Admin — Translations", () => {
     });
   });
 
-  test.describe("Inline Editing", () => {
-    test("✅ inline edit existing translation", async ({ asAdmin: page }) => {
+  test.describe("Modal Editing", () => {
+    test("✅ edit existing translation via modal", async ({ asAdmin: page }) => {
       const key = `edit.test.${Date.now()}`;
       await transPage.addBtn.click();
-      const namespaces = await page.locator("#namespace option");
-      const firstNamespace = await namespaces.nth(0).getAttribute("value");
-      await transPage.addBtn.click(); // Close
+      const firstNamespace = await page.locator("#namespace option").nth(0).getAttribute("value");
+      await transPage.addBtn.click(); 
 
       await transPage.createTranslation({
         namespace: firstNamespace!,
@@ -177,7 +176,6 @@ test.describe("Admin — Translations", () => {
       await page.waitForTimeout(1000);
 
       const newGe = "განახლებული";
-      await transPage.searchInput.fill("");
       await transPage.searchInput.fill(key);
       await page.waitForTimeout(1000);
 
@@ -186,6 +184,48 @@ test.describe("Admin — Translations", () => {
 
       const row = await transPage.getRowByKey(key);
       await expect(row).toContainText(newGe);
+    });
+
+    test("✅ rename translation key via modal", async ({ asAdmin: page }) => {
+      const oldKey = `rename.old.${Date.now()}`;
+      const newKey = `rename.new.${Date.now()}`;
+      await transPage.addBtn.click();
+      const firstNamespace = await page.locator("#namespace option").nth(0).getAttribute("value");
+      await transPage.addBtn.click();
+
+      await transPage.createTranslation({
+        namespace: firstNamespace!,
+        key: oldKey,
+        ge: "რედაქტირება",
+        en: "Edit",
+      });
+
+      await transPage.searchInput.fill(oldKey);
+      await page.waitForTimeout(1000);
+
+      await transPage.editRowByKey(oldKey, { key: newKey });
+      await expect(page.locator(".Toastify__toast--success")).toBeVisible();
+
+      await transPage.searchInput.fill("");
+      await transPage.searchInput.fill(newKey);
+      await page.waitForTimeout(1000);
+      await expect(await transPage.getRowByKey(newKey)).toBeVisible();
+    });
+
+    test("✅ close modal via overlay and close button", async ({ asAdmin: page }) => {
+      const row = page.locator(".item-row").first();
+      await row.locator(".edit-btn").click();
+      await expect(transPage.editModal).toBeVisible();
+
+      // Close via header button
+      await transPage.modalCloseBtn.click();
+      await expect(transPage.editModal).not.toBeVisible();
+
+      // Open and close via overlay
+      await row.locator(".edit-btn").click();
+      await expect(transPage.editModal).toBeVisible();
+      await transPage.editModal.click({ position: { x: 5, y: 5 } }); // Click top-left of overlay
+      await expect(transPage.editModal).not.toBeVisible();
     });
   });
 
@@ -262,14 +302,13 @@ test.describe("Admin — Translations", () => {
       );
     });
 
-    test("❌ validation: inline edit translation length (too long)", async ({
+    test("❌ validation: modal edit translation length (too long)", async ({
       asAdmin: page,
     }) => {
       const key = `edit.val.test.${Date.now()}`;
       await transPage.addBtn.click();
-      const namespaces = await page.locator("#namespace option");
-      const firstNamespace = await namespaces.nth(0).getAttribute("value");
-      await transPage.addBtn.click(); // Close
+      const firstNamespace = await page.locator("#namespace option").nth(0).getAttribute("value");
+      await transPage.addBtn.click();
 
       await transPage.createTranslation({
         namespace: firstNamespace!,
@@ -278,33 +317,28 @@ test.describe("Admin — Translations", () => {
         en: "Initial",
       });
 
-      await expect(page.locator(".Toastify__toast--success")).toBeVisible();
-      await page.waitForTimeout(1000);
-
-      await transPage.searchInput.fill("");
       await transPage.searchInput.fill(key);
       await page.waitForTimeout(1000);
 
       // Enter Edit Mode
       const row = await transPage.getRowByKey(key);
       await row.locator(".edit-btn").click();
+      await expect(transPage.editModal).toBeVisible();
 
       // Fill too long text (> 200)
       const longText = "a".repeat(201);
-      await row.locator('input[type="text"]').nth(0).fill(longText);
-      await row.locator('input[type="text"]').nth(1).fill(longText);
-      await row.locator(".save-btn").click();
+      await transPage.editGeInput.fill(longText);
+      await transPage.editEnInput.fill(longText);
+      await transPage.modalSaveBtn.click();
 
       // Check errors
-      await expect(row.getByTestId("edit-ge-error")).toContainText(
-        "თარგმანი არ უნდა აღემატებოდეს 200 სიმბოლოს",
-      );
-      await expect(row.getByTestId("edit-en-error")).toContainText(
+      await expect(transPage.editModal.locator(".error-text").first()).toContainText(
         "თარგმანი არ უნდა აღემატებოდეს 200 სიმბოლოს",
       );
 
       // Cancel editing
-      await row.locator(".cancel-btn").click();
+      await transPage.modalCancelBtn.click();
+      await expect(transPage.editModal).not.toBeVisible();
     });
   });
 

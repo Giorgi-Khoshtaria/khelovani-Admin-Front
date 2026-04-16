@@ -1,3 +1,4 @@
+@use "sass:color";
 @use "@/styles/colors.scss" as *;
 @use "@/styles/_buttons.scss" as *;
 
@@ -9,6 +10,10 @@
   font-size: 14px;
   background-color: $color-white;
 
+  &:hover {
+    background-color: color.adjust($color-light-gray, $lightness: 2%);
+  }
+
   &.selected {
     background-color: rgba($color-espresso, 0.05);
   }
@@ -19,29 +24,61 @@
 
   .col {
     flex: 1;
-    padding-right: 12px;
+    padding: 0 8px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
 
     &.col-checkbox {
-       flex: 0 0 40px !important;
-       max-width: 40px;
-       input { width: auto; cursor: pointer; }
+      flex: 0 0 40px !important;
+      max-width: 40px;
+      input { width: auto; cursor: pointer; }
     }
 
     &.col-key {
+      flex: 1.2;
       font-family: monospace;
       font-weight: 600;
       color: $color-text-secondary;
-      word-break: break-all;
+    }
+
+    &.col-namespace {
+      flex: 0.8;
+      .namespace-badge {
+        display: inline-block;
+        padding: 2px 8px;
+        background-color: $color-light-gray;
+        border: 1px solid $color-border;
+        border-radius: 12px;
+        font-size: 11px;
+        font-weight: 600;
+        color: $color-text-secondary;
+      }
+
+      select {
+        width: 100%;
+        padding: 4px;
+        border-radius: 4px;
+        border: 1px solid $color-border;
+      }
+    }
+
+    &:not(.col-checkbox):not(.col-key):not(.actions) {
+      cursor: pointer;
+      &:hover {
+        background-color: rgba($color-espresso, 0.03);
+      }
     }
 
     .edit-cell {
       display: flex;
       flex-direction: column;
-      gap: 4px;
+      gap: 2px;
+      width: 100%;
 
       input {
         width: 100%;
-        padding: 6px 10px;
+        padding: 4px 8px;
         border: 1px solid $color-border;
         border-radius: 4px;
         font-size: 14px;
@@ -49,6 +86,7 @@
 
         &:focus {
           border-color: $color-text-primary;
+          box-shadow: 0 0 0 2px rgba($color-espresso, 0.1);
         }
 
         &.input-error {
@@ -58,13 +96,13 @@
 
       .error-text {
         color: #d32f2f;
-        font-size: 11px;
+        font-size: 10px;
         line-height: 1.2;
       }
     }
 
     &.actions {
-      flex: 0 0 160px;
+      flex: 0 0 140px;
       text-align: right;
 
       .row-actions, .edit-actions {
@@ -74,13 +112,16 @@
 
         button {
           padding: 6px 12px;
-          font-size: 12px;
+          min-width: 32px;
+          display: flex;
+          align-items: center;
+          justify-content: center;
         }
 
-        .edit-btn { @extend .btn-secondary; }
-        .delete-btn { @extend .btn-danger; }
-        .save-btn { @extend .btn-success; }
-        .cancel-btn { @extend .btn-danger; }
+        .edit-btn { @extend .btn-secondary; font-size: 11px; }
+        .delete-btn { @extend .btn-danger; font-size: 11px;}
+        .save-btn { @extend .btn-success; font-size: 14px; }
+        .cancel-btn { @extend .btn-danger; font-size: 14px; }
       }
     }
   }

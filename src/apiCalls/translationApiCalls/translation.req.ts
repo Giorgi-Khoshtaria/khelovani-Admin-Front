@@ -15,6 +15,15 @@ export const getNamespacesRequest = async () => {
   return response.data;
 };
 
+export interface UpdateTranslationData {
+  namespace?: string;
+  key?: string;
+  translations?: {
+    ge?: string;
+    en?: string;
+  };
+}
+
 export const addTranslationRequest = async (data: {
   namespace: string;
   key: string;
@@ -26,7 +35,7 @@ export const addTranslationRequest = async (data: {
 
 export const updateTranslationRequest = async (
   id: string,
-  data: { translations: { ge: string; en: string } },
+  data: UpdateTranslationData,
 ) => {
   const response = await api.put(`/api/admin/translations/${id}`, data);
   return response.data;
