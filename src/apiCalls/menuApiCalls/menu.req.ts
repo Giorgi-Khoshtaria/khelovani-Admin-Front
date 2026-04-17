@@ -15,14 +15,14 @@ export interface MenuItem {
 
 export const getMenuItemsRequest = async (): Promise<MenuItem[]> => {
   const response = await api.get(`/api/admin/menu`);
-  return response.data;
+  return response.data.data;
 };
 
 export const createMenuItemRequest = async (
   data: Omit<MenuItem, "_id">,
 ): Promise<MenuItem> => {
   const response = await api.post(`/api/admin/menu`, data);
-  return response.data;
+  return response.data.data;
 };
 
 export const updateMenuItemRequest = async (
@@ -30,7 +30,7 @@ export const updateMenuItemRequest = async (
   data: Partial<Omit<MenuItem, "_id">>,
 ): Promise<MenuItem> => {
   const response = await api.put(`/api/admin/menu/${id}`, data);
-  return response.data;
+  return response.data.data;
 };
 
 export const deleteMenuItemRequest = async (id: string): Promise<void> => {

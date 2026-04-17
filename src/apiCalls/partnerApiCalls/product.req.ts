@@ -2,64 +2,36 @@ import api from "../api";
 import type { AddProductFormData } from "@/types/productTypes";
 
 const getProductUrl = (partnerId?: string, productId?: string) => {
-  if (productId) {
-    return `/api/products/${productId}`;
-  }
-  if (partnerId) {
-    return `/api/products/partner/${partnerId}`;
-  }
+  if (productId) return `/api/products/${productId}`;
+  if (partnerId) return `/api/products/partner/${partnerId}`;
   return `/api/products`;
 };
 
+/**
+ * Senior Refactor: Declarative FormData creation
+ */
 const createProductFormData = (data: Partial<AddProductFormData>) => {
   const formData = new FormData();
 
-  if (data.images && data.images.length > 0) {
-    data.images.forEach((file) => formData.append("images", file));
-  }
+  // 1. Images
+  data.images?.forEach((file) => formData.append("images", file));
 
-  const fields: (keyof AddProductFormData)[] = [
-    "titleGe",
-    "titleEn",
-    "descriptionGe",
-    "descriptionEn",
-    "category",
-    "price",
-    "currency",
-    "stockQuantity",
-    "condition",
-    "shippingPrice",
-    "weight",
-    "locationGe",
-    "locationEn",
-    "dimensions",
-  ];
+  // 2. Configuration for field types
+  const BOOLEAN_FIELDS = ["isShown", "isOneOfAKind", "shippingAvailable"];
+  const ARRAY_FIELDS = ["tagsGe", "tagsEn", "materialsGe", "materialsEn"];
 
-  fields.forEach((field) => {
-    if (data[field] !== undefined && data[field] !== null) {
-      formData.append(field, data[field]!.toString());
+  // 3. Process all fields
+  (Object.keys(data) as Array<keyof AddProductFormData>).forEach((key) => {
+    const value = data[key];
+    if (value === undefined || value === null || key === "images") return;
+
+    if (BOOLEAN_FIELDS.includes(key)) {
+      formData.append(key, value ? "true" : "false");
+    } else if (ARRAY_FIELDS.includes(key)) {
+      formData.append(key, JSON.stringify(value));
+    } else {
+      formData.append(key, value.toString());
     }
-  });
-
-  const booleanFields: (keyof AddProductFormData)[] = [
-    "isShown",
-    "isOneOfAKind",
-    "shippingAvailable",
-  ];
-  booleanFields.forEach((field) => {
-    if (data[field] !== undefined)
-      formData.append(field, data[field] ? "true" : "false");
-  });
-
-  const arrayFields: (keyof AddProductFormData)[] = [
-    "tagsGe",
-    "tagsEn",
-    "materialsGe",
-    "materialsEn",
-  ];
-  arrayFields.forEach((field) => {
-    if (data[field] !== undefined)
-      formData.append(field, JSON.stringify(data[field]));
   });
 
   return formData;
@@ -74,11 +46,9 @@ export const addProductRequest = async (
   const response = await api.post(
     `${getProductUrl(partnerId)}?lang=${lang}`,
     formData,
-    {
-      headers: { "Content-Type": "multipart/form-data" },
-    },
+    { headers: { "Content-Type": "multipart/form-data" } },
   );
-  return response.data;
+  return response.data.data;
 };
 
 export const getProductsRequest = async (
@@ -91,14 +61,14 @@ export const getProductsRequest = async (
 ) => {
   const response = await api.get(getProductUrl(partnerId), {
     params: {
-      ...(search ? { search } : {}),
-      ...(category && category !== "all" ? { category } : {}),
-      ...(filterPartnerId ? { partnerId: filterPartnerId } : {}),
+      ...(search && { search }),
+      ...(category && category !== "all" && { category }),
+      ...(filterPartnerId && { partnerId: filterPartnerId }),
       page,
       limit,
     },
   });
-  return response.data;
+  return { data: response.data.data, meta: response.data.meta };
 };
 
 export const getProductDetailsRequest = async (
@@ -106,7 +76,7 @@ export const getProductDetailsRequest = async (
   productId?: string,
 ) => {
   const response = await api.get(getProductUrl(partnerId, productId));
-  return response.data;
+  return response.data.data;
 };
 
 export const deleteProductRequest = async (
@@ -114,7 +84,7 @@ export const deleteProductRequest = async (
   productId: string,
 ) => {
   const response = await api.delete(getProductUrl(partnerId, productId));
-  return response.data;
+  return response.data.data;
 };
 
 export const updateProductRequest = async (
@@ -127,9 +97,7 @@ export const updateProductRequest = async (
   const response = await api.patch(
     `${getProductUrl(partnerId, productId)}?lang=${lang}`,
     formData,
-    {
-      headers: { "Content-Type": "multipart/form-data" },
-    },
+    { headers: { "Content-Type": "multipart/form-data" } },
   );
-  return response.data;
+  return response.data.data;
 };

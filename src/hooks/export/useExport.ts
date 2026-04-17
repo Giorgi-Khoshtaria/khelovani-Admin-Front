@@ -18,7 +18,7 @@ export default function useExport() {
     setLoading((prev) => ({ ...prev, translations: true }));
     try {
       const response = await getTranslationsRequest({ limit: 10000 });
-      if (response.success && response.data.raw) {
+      if (response.data?.raw) {
         const exportData = (
           response.data.raw as {
             namespace: string;
@@ -44,7 +44,7 @@ export default function useExport() {
   const handleExportRoles = async () => {
     setLoading((prev) => ({ ...prev, roles: true }));
     try {
-      const roles = await getRolesRequest();
+      const { data: roles } = await getRolesRequest();
       const exportData = roles.map((role) => ({
         Name: role.name,
         Description: role.description,
@@ -66,7 +66,7 @@ export default function useExport() {
   const handleExportPermissions = async () => {
     setLoading((prev) => ({ ...prev, permissions: true }));
     try {
-      const permissions = await getPermissionsRequest();
+      const { data: permissions } = await getPermissionsRequest();
       const exportData = permissions.map((perm) => ({
         Category: perm.category,
         Name: perm.name,

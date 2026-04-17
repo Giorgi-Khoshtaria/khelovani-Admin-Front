@@ -7,12 +7,12 @@ export const getTranslationsRequest = async (params: {
   namespace?: string;
 }) => {
   const response = await api.get(`/api/admin/translations`, { params });
-  return response.data;
+  return { data: response.data.data, meta: response.data.meta };
 };
 
 export const getNamespacesRequest = async () => {
   const response = await api.get(`/api/admin/translations/namespaces`);
-  return response.data;
+  return response.data.data;
 };
 
 export interface UpdateTranslationData {
@@ -30,7 +30,7 @@ export const addTranslationRequest = async (data: {
   translations: { ge: string; en: string };
 }) => {
   const response = await api.post(`/api/admin/translations`, data);
-  return response.data;
+  return response.data.data;
 };
 
 export const updateTranslationRequest = async (
@@ -38,24 +38,24 @@ export const updateTranslationRequest = async (
   data: UpdateTranslationData,
 ) => {
   const response = await api.put(`/api/admin/translations/${id}`, data);
-  return response.data;
+  return response.data.data;
 };
 
 export const deleteTranslationRequest = async (id: string) => {
   const response = await api.delete(`/api/admin/translations/${id}`);
-  return response.data;
+  return response.data.data;
 };
 
 export const bulkTranslationRequest = async (data: {
   items: Array<{ namespace: string; key: string; ge: string; en: string }>;
 }) => {
   const response = await api.post(`/api/admin/translations/bulk`, data);
-  return response.data;
+  return response.data.data;
 };
 
 export const bulkDeleteTranslationRequest = async (ids: string[]) => {
   const response = await api.post(`/api/admin/translations/bulk-delete`, {
     ids,
   });
-  return response.data;
+  return response.data.data;
 };

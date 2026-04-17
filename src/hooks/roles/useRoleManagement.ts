@@ -54,10 +54,10 @@ export default function useRoleManagement() {
     setLoading(true);
     try {
       if (activeTab === "roles") {
-        const data = await getRolesRequest();
+        const { data } = await getRolesRequest();
         setRoles(data);
       } else {
-        const data = await getPermissionsRequest(
+        const { data } = await getPermissionsRequest(
           debouncedSearchQuery,
           selectedCategory,
           sortField,

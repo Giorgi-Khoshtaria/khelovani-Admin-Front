@@ -33,14 +33,14 @@ export default function useTranslationData() {
           getNamespacesRequest(),
         ]);
 
-        if (transData.success) {
-          setTranslations(transData.data.grouped || {});
-          setRawTranslations(transData.data.raw || []);
-          setTotalCount(transData.data.totalCount || 0);
-          setTotalPages(transData.data.totalPages || 1);
+        if (transData) {
+          setTranslations(transData.data?.grouped || {});
+          setRawTranslations(transData.data?.raw || []);
+          setTotalCount(transData.meta?.totalCount || 0);
+          setTotalPages(transData.meta?.totalPages || 1);
         }
-        if (nsData.success) {
-          setNamespaces(nsData.data || []);
+        if (nsData) {
+          setNamespaces(nsData || []);
         }
       } catch (err) {
         setError(getErrorMessage(err, "მონაცემების ჩატვირთვა ვერ მოხერხდა"));

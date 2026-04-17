@@ -4,7 +4,7 @@ import api from "../api";
 
 export const getPartnerByIdRequest = async (id: string) => {
   const response = await api.get(`/api/admin/partners/${id}`);
-  return response.data;
+  return response.data.data;
 };
 
 export const getAllPartnerRequest = async (
@@ -21,7 +21,7 @@ export const getAllPartnerRequest = async (
       limit,
     },
   });
-  return response.data;
+  return { data: response.data.data, meta: response.data.meta };
 };
 
 export const updatePartnerStatus = async (
@@ -31,7 +31,7 @@ export const updatePartnerStatus = async (
   const response = await api.patch(`/api/admin/partners/${id}/status`, {
     status,
   });
-  return response.data;
+  return response.data.data;
 };
 
 export const updatePartnerRequest = async (
@@ -39,12 +39,12 @@ export const updatePartnerRequest = async (
   updateData: Partial<Partner>,
 ) => {
   const response = await api.patch(`/api/admin/partners/${id}`, updateData);
-  return response.data;
+  return response.data.data;
 };
 
 export const deletePartnerRequest = async (id: string) => {
   const response = await api.delete(`/api/admin/partners/${id}`);
-  return response.data;
+  return response.data.data;
 };
 
 export const uploadPartnerPhotoRequest = async (id: string, file: File) => {
@@ -60,10 +60,10 @@ export const uploadPartnerPhotoRequest = async (id: string, file: File) => {
       },
     },
   );
-  return response.data;
+  return response.data.data;
 };
 
 export const bulkDeletePartnersRequest = async (ids: string[]) => {
   const response = await api.post(`/api/admin/partners/bulk-delete`, { ids });
-  return response.data;
+  return response.data.data;
 };

@@ -68,8 +68,8 @@ export default function PartnerListing() {
           currentPage,
           limit,
         );
-        setPartners(data.partners || []);
-        setTotalPages(data.totalPages || 1);
+        setPartners(data.data || []);
+        setTotalPages(data.meta?.totalPages || 1);
       } catch (err) {
         setError(getErrorMessage(err, "პარტნიორების ჩატვირთვა ვერ მოხერხდა"));
       } finally {
@@ -92,8 +92,8 @@ export default function PartnerListing() {
         currentPage,
         limit,
       );
-      setPartners(data.partners || []);
-      setTotalPages(data.totalPages || 1);
+      setPartners(data.data || []);
+      setTotalPages(data.meta?.totalPages || 1);
       setSelectedIds([]); // Clear selection on refresh
     } catch (err) {
       console.error("Failed to refresh:", err);

@@ -18,7 +18,7 @@ export default function RoleDetailedPage() {
     if (!id) return;
     setLoading(true);
     try {
-      const [roleData, permData] = await Promise.all([
+      const [roleData, { data: permData }] = await Promise.all([
         getRoleByIdRequest(id),
         getPermissionsRequest(),
       ]);

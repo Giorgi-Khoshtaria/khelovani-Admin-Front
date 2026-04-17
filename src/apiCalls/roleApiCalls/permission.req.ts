@@ -6,16 +6,16 @@ export const getPermissionsRequest = async (
   category?: string,
   sortBy?: string,
   sortOrder?: string,
-): Promise<Permission[]> => {
+) => {
   const response = await api.get(`/api/admin/permissions`, {
     params: { search, category, sortBy, sortOrder },
   });
-  return response.data;
+  return { data: response.data.data as Permission[], meta: response.data.meta };
 };
 
 export const createPermissionRequest = async (data: Partial<Permission>) => {
   const response = await api.post(`/api/admin/permissions`, data);
-  return response.data;
+  return response.data.data;
 };
 
 export const updatePermissionRequest = async (
@@ -23,10 +23,10 @@ export const updatePermissionRequest = async (
   data: Partial<Permission>,
 ) => {
   const response = await api.put(`/api/admin/permissions/${id}`, data);
-  return response.data;
+  return response.data.data;
 };
 
 export const deletePermissionRequest = async (id: string) => {
   const response = await api.delete(`/api/admin/permissions/${id}`);
-  return response.data;
+  return response.data.data;
 };

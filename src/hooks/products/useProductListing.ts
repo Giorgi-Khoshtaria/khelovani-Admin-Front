@@ -69,9 +69,9 @@ export const useProductListing = (id?: string) => {
           currentPage,
           limit,
         );
-        setProducts(data.products || []);
-        setTotalPages(data.totalPages || 1);
-        setTotalCount(data.totalCount || 0);
+        setProducts(data.data || []);
+        setTotalPages(data.meta?.totalPages || 1);
+        setTotalCount(data.meta?.totalCount || 0);
       } catch {
         toast.error("შეცდომა პროდუქტების ჩატვირთვისას");
       } finally {
@@ -95,7 +95,7 @@ export const useProductListing = (id?: string) => {
       if (isAdmin && !id) {
         try {
           const data = await getAllPartnerRequest();
-          const partnersList = Array.isArray(data) ? data : data.partners || [];
+          const partnersList = data.data || [];
           const mapped = partnersList.map((p: Partner) => ({
             _id: p._id,
             name: p.companyNameGe || p.companyNameEn || "Unknown Organization",
