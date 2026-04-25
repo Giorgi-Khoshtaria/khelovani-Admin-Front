@@ -329,6 +329,8 @@ const ProductForm: React.FC<ProductFormProps> = ({
             <label>მასალები (GE)</label>
             <input
               type="text"
+              name="materialsGe"
+              placeholder="მასალა (GE)"
               value={tagInputs.materialsGe}
               onChange={(e) =>
                 handleTagInputChange("materialsGe", e.target.value)
@@ -342,6 +344,8 @@ const ProductForm: React.FC<ProductFormProps> = ({
             <label>მასალები (EN)</label>
             <input
               type="text"
+              name="materialsEn"
+              placeholder="Materials (EN)"
               value={tagInputs.materialsEn}
               onChange={(e) =>
                 handleTagInputChange("materialsEn", e.target.value)
@@ -357,6 +361,8 @@ const ProductForm: React.FC<ProductFormProps> = ({
             <label>ტეგები (GE)</label>
             <input
               type="text"
+              name="tagsGe"
+              placeholder="ტეგი (GE)"
               value={tagInputs.tagsGe}
               onChange={(e) => handleTagInputChange("tagsGe", e.target.value)}
             />
@@ -368,6 +374,8 @@ const ProductForm: React.FC<ProductFormProps> = ({
             <label>ტეგები (EN)</label>
             <input
               type="text"
+              name="tagsEn"
+              placeholder="Tags (EN)"
               value={tagInputs.tagsEn}
               onChange={(e) => handleTagInputChange("tagsEn", e.target.value)}
             />

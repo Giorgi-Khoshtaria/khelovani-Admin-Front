@@ -78,7 +78,15 @@ export const useProductListing = (id?: string) => {
         if (showLoading) setLoading(false);
       }
     },
-    [id, debouncedSearch, category, selectedPartnerId, isAdmin, userData?.id, currentPage],
+    [
+      id,
+      debouncedSearch,
+      category,
+      selectedPartnerId,
+      isAdmin,
+      userData?.id,
+      currentPage,
+    ],
   );
 
   useEffect(() => {

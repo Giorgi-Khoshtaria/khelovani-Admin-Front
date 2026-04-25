@@ -77,9 +77,14 @@ export default function AdminLoginPage() {
       if (axios.isAxiosError(error)) {
         const responseData = error?.response?.data;
         if (responseData?.errors) {
-          Object.values(responseData.errors).forEach((errMsg) => {
-            if (typeof errMsg === "string") toast.error(errMsg);
-          });
+          const shown = (Array.isArray(responseData.errors) ? responseData.errors : Object.values(responseData.errors))
+            .map((e: unknown) => (typeof e === "string" ? e : (e as any)?.message))
+            .filter(Boolean);
+          if (shown.length > 0) {
+            shown.forEach((msg: string) => toast.error(msg));
+          } else {
+            toast.error("შესვლის დროს დაფიქსირდა შეცდომა");
+          }
         } else if (responseData?.message) {
           toast.error(responseData.message);
         } else {

@@ -17,18 +17,13 @@ const CategorySelect: React.FC<CategorySelectProps> = ({
   className = "",
 }) => {
   return (
-    <select
-      name={name}
-      value={value}
-      onChange={onChange}
-      className={className}
-    >
+    <select name={name} value={value} onChange={onChange} className={className}>
       {includeAll ? (
-        <option value="all">ყველა კატეგორია / All</option>
+        <option value="all">ყველა კატეგორია </option>
       ) : (
-        <option value="">აირჩიეთ კატეგორია / Select Category</option>
+        <option value="">აირჩიეთ კატეგორია </option>
       )}
-      
+
       {Object.values(ProductCategory).map((cat) => (
         <option key={cat} value={cat}>
           {PRODUCT_CATEGORY_LABELS[cat].ge} / {PRODUCT_CATEGORY_LABELS[cat].en}

@@ -1,4 +1,4 @@
-import { Page, Locator } from "@playwright/test";
+import { Page, Locator, expect } from "@playwright/test";
 
 export class TranslationsPage {
   readonly page: Page;
@@ -12,6 +12,7 @@ export class TranslationsPage {
   readonly deleteBtn: Locator;
   readonly rowCheckboxes: Locator;
   readonly bulkDeleteBtn: Locator;
+  readonly editBtn: Locator;
   readonly editModal: Locator;
   readonly editKeyInput: Locator;
   readonly editGeInput: Locator;

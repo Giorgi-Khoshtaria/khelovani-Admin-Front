@@ -46,7 +46,6 @@ export const addProductRequest = async (
   const response = await api.post(
     `${getProductUrl(partnerId)}?lang=${lang}`,
     formData,
-    { headers: { "Content-Type": "multipart/form-data" } },
   );
   return response.data.data;
 };
@@ -97,7 +96,6 @@ export const updateProductRequest = async (
   const response = await api.patch(
     `${getProductUrl(partnerId, productId)}?lang=${lang}`,
     formData,
-    { headers: { "Content-Type": "multipart/form-data" } },
   );
   return response.data.data;
 };

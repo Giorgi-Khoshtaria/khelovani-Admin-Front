@@ -3,21 +3,60 @@
 @use "@/styles/_breakpoints.scss" as *;
 
 .filters {
-  padding: 16px;
+  padding: 20px;
   margin-bottom: 24px;
   display: flex;
   gap: 16px;
+  align-items: flex-end;
 
-  .search-input, .category-select {
-    @extend .input-field;
-  }
-  
-  .search-input {
-    flex: 2;
+  @include mobile {
+    flex-direction: column;
+    gap: 12px;
   }
 
-  .category-select {
+  &__group {
+    display: flex;
+    flex-direction: column;
     flex: 1;
-    width: auto;
+
+    &:first-child {
+      flex: 2;
+    }
+  }
+
+&__search-wrapper,
+  &__select-wrapper {
+    position: relative;
+    display: flex;
+    align-items: center;
+  }
+
+  &__search-icon,
+  &__select-icon {
+    position: absolute;
+    left: 12px;
+    width: 16px;
+    height: 16px;
+    color: colors.$color-text-secondary;
+    pointer-events: none;
+    flex-shrink: 0;
+  }
+
+  &__input,
+  &__select,
+  &__category {
+    @extend .input-field;
+    padding-left: 38px;
+  }
+
+  &__select,
+  &__category {
+    cursor: pointer;
+    appearance: auto;
+    width: 100%;
+  }
+
+  &__category {
+    padding-left: 14px;
   }
 }

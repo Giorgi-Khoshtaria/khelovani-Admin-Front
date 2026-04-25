@@ -1,153 +1,212 @@
 @use "@/styles/colors.scss" as colors;
-@use "@/styles/_breakpoints.scss" as *;
-@use "@/styles/_badges.scss" as *;
+@use "@/styles/buttons" as *;
+@use "@/styles/badges" as *;
 
 .product-row {
   display: grid;
-  grid-template-columns: 80px 2fr 1.2fr 1fr 100px 80px 120px;
+  grid-template-columns: 80px 2.8fr 1.3fr 1fr 1.1fr 110px 130px;
   align-items: center;
-  padding: 12px 16px;
-  border-bottom: 1px solid rgba(colors.$color-border, 0.5);
+  padding: 16px 20px;
+  border-bottom: 1px solid colors.$color-cream;
+  transition: background-color 0.2s ease;
   cursor: pointer;
-  transition: all 0.2s ease;
-
-  &:last-child { border-bottom: none; }
 
   &:hover {
-    background-color: rgba(colors.$color-sand, 0.1);
-    transform: scale(1.002);
+    background-color: colors.$color-ivory;
   }
 
   &.is-hidden {
-    opacity: 0.7;
-    background-color: rgba(colors.$color-bg-page, 0.5);
+    opacity: 0.75;
+    background-color: #fafafa;
+  }
+}
+
+// Image Column
+.col-image {
+  .thumbnail {
+    width: 64px;
+    height: 64px;
+    overflow: hidden;
+    border-radius: 8px;
+    border: 1px solid #eee;
+
+    img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+  }
+}
+
+// Info Column - Title Truncation
+.col-info {
+  min-width: 0; // Critical for ellipsis to work
+
+  .title-stack {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
   }
 
-  @include tablet {
-    grid-template-columns: 60px 1fr 100px 80px;
-    grid-template-rows: auto auto;
-    gap: 8px;
-    padding: 16px;
-
-    .col-category, .col-status { display: none; }
-    .col-image { grid-row: span 2; }
-    .col-info { grid-column: 2 / 5; }
-    .col-actions { grid-column: 4; grid-row: 2; }
+  .title-ge,
+  .title-en {
+    display: block;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    max-width: 100%;
+    font-size: 15px;
+    line-height: 1.4;
   }
 
-  .col-image {
-    .thumbnail {
-      width: 56px;
-      height: 56px;
-      border-radius: 8px;
-      overflow: hidden;
-      background-color: colors.$color-bg-page;
-      border: 1px solid rgba(colors.$color-border, 0.3);
+  .title-ge {
+    font-weight: 600;
+    color: colors.$color-espresso;
+  }
 
-      img {
-        width: 100%;
-        height: 100%;
-        object-fit: cover;
-      }
+  .title-en {
+    font-size: 13.5px;
+    color: #666666;
+  }
+}
+
+// Other Columns
+.col-category {
+  .category-badge {
+    // or your existing badge mixin
+    background-color: #f5f5f5;
+    color: #444;
+    padding: 5px 12px;
+    border-radius: 20px;
+    font-size: 13.5px;
+    white-space: nowrap;
+  }
+}
+
+.col-status {
+  .status-pill {
+    padding: 6px 14px;
+    border-radius: 20px;
+    font-size: 13.8px;
+    font-weight: 500;
+
+    &.visible {
+      background-color: #e8f5e8;
+      color: #2e7d32;
+    }
+
+    &.hidden {
+      background-color: #ffebee;
+      color: #c62828;
+    }
+  }
+}
+
+.col-price {
+  font-weight: 600;
+  color: colors.$color-espresso;
+  font-size: 15.5px;
+}
+
+.col-stock {
+  .stock-level {
+    font-weight: 500;
+    padding: 4px 10px;
+    border-radius: 6px;
+
+    &.in-stock {
+      background-color: #e8f5e9;
+      color: #2e7d32;
+    }
+
+    &.out-of-stock {
+      background-color: #ffebee;
+      color: #c62828;
+    }
+  }
+}
+
+// Actions Column
+.col-actions {
+  justify-self: end;
+  padding-right: 8px;
+}
+
+.action-buttons {
+  display: flex;
+  gap: 8px;
+}
+
+.action-btn {
+  width: 36px;
+  height: 36px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid transparent;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background-color 0.15s ease, border-color 0.15s ease, color 0.15s ease;
+
+  svg {
+    width: 16px;
+    height: 16px;
+    flex-shrink: 0;
+  }
+}
+
+.toggle-btn {
+  &.is-visible {
+    background-color: #e8f4fd;
+    border-color: #bdd7f0;
+    color: #1565c0;
+
+    &:hover {
+      background-color: #d0e9f9;
+      border-color: #1565c0;
     }
   }
 
-  .col-info {
-    .title-stack {
-      display: flex;
-      flex-direction: column;
-      gap: 2px;
+  &.is-hidden-state {
+    background-color: #f5f5f5;
+    border-color: #ddd;
+    color: #888;
 
-      .title-ge {
-        font-weight: 600;
-        color: colors.$color-espresso;
-        font-size: 15px;
-      }
-
-      .title-en {
-        font-size: 13px;
-        color: colors.$color-text-secondary;
-      }
+    &:hover {
+      background-color: #e8f4fd;
+      border-color: #1565c0;
+      color: #1565c0;
     }
   }
+}
 
-  .col-category {
-    .category-badge {
-      font-size: 11px;
-      font-weight: 700;
-      color: colors.$color-walnut;
-      text-transform: uppercase;
-      background: rgba(colors.$color-sand, 0.3);
-      padding: 4px 8px;
-      border-radius: 4px;
-    }
+.edit-btn {
+  background-color: #f0faf4;
+  border-color: #b8e0c8;
+  color: #2e7d32;
+
+  &:hover {
+    background-color: #dcf2e5;
+    border-color: #2e7d32;
   }
+}
 
-  .col-status {
-    .status-pill {
-      @extend .status-badge;
-      font-size: 11px;
-      padding: 4px 10px;
+.delete-btn {
+  background-color: #fff5f5;
+  border-color: #f5c6c6;
+  color: #c62828;
 
-      &.visible {
-        background-color: colors.$color-success-light;
-        color: colors.$color-success-hover;
-      }
-
-      &.hidden {
-        background-color: colors.$color-danger-light;
-        color: colors.$color-danger-hover;
-      }
-    }
+  &:hover {
+    background-color: #ffe0e0;
+    border-color: #c62828;
   }
+}
 
-  .col-price {
-    .price {
-      font-weight: 700;
-      color: colors.$color-espresso;
-      font-size: 16px;
-    }
-  }
+// Prevent click propagation on action buttons
+.col-actions {
+  pointer-events: none;
 
-  .col-stock {
-    .stock-level {
-      font-size: 14px;
-      font-weight: 600;
-      
-      &.in-stock { color: colors.$color-text-primary; }
-      &.out-of-stock { color: colors.$color-danger; }
-    }
-  }
-
-  .col-actions {
-    .action-buttons {
-      display: flex;
-      gap: 8px;
-
-      .action-btn {
-        width: 32px;
-        height: 32px;
-        border-radius: 6px;
-        border: 1px solid colors.$color-border;
-        background: colors.$color-white;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        cursor: pointer;
-        transition: all 0.2s ease;
-        font-size: 14px;
-
-        &:hover {
-          background-color: colors.$color-bg-page;
-          border-color: colors.$color-walnut;
-        }
-
-        &.delete-btn:hover {
-          background-color: colors.$color-danger-light;
-          color: colors.$color-danger;
-          border-color: colors.$color-danger;
-        }
-      }
-    }
+  .action-buttons {
+    pointer-events: auto;
   }
 }

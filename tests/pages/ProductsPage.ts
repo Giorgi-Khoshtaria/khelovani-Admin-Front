@@ -1,8 +1,36 @@
 import { Page, Locator } from "@playwright/test";
 
+interface FillFormOptions {
+  titleGe?: string;
+  titleEn?: string;
+  descriptionGe?: string;
+  descriptionEn?: string;
+  category?: string;
+  price?: number;
+  stockQuantity?: number;
+  condition?: string;
+  tagsGe?: string;
+  tagsEn?: string;
+  materialsGe?: string;
+  materialsEn?: string;
+}
+
 export class ProductsPage {
   readonly page: Page;
+
+  // ── Filters ───────────────────────────────────────────────────────────────
+  readonly searchInput: Locator;
+  readonly categoryFilter: Locator;
+  readonly partnerFilter: Locator;
+
+  // ── List elements ──────────────────────────────────────────────────────────
+  readonly productRows: Locator;
+  readonly emptyState: Locator;
+  readonly addProductBtn: Locator;
+  /** Alias for addProductBtn — used by organizer profile product pages. */
   readonly addBtn: Locator;
+
+  // ── Add / Edit form fields ─────────────────────────────────────────────────
   readonly titleGe: Locator;
   readonly titleEn: Locator;
   readonly descriptionGe: Locator;
@@ -20,22 +48,29 @@ export class ProductsPage {
 
   constructor(page: Page) {
     this.page = page;
-    this.addBtn = page.getByRole("link", { name: /ახალი|პროდუქტის დამატება/i }).or(page.getByRole("button", { name: /ახალი|პროდუქტის დამატება/i }));
-    this.titleGe = page.locator('input[name="titleGe"]');
-    this.titleEn = page.locator('input[name="titleEn"]');
-    this.descriptionGe = page.locator('textarea[name="descriptionGe"]');
-    this.descriptionEn = page.locator('textarea[name="descriptionEn"]');
-    this.category = page.locator('select[name="category"]');
-    this.price = page.locator('input[name="price"]');
-    this.stockQuantity = page.locator('input[name="stockQuantity"]');
-    this.condition = page.locator('select[name="condition"]');
-    this.saveBtn = page.locator('button:has-text("შენახვა"), button:has-text("დამატება")').first();
-    this.imageInput = page.locator('input[type="file"]');
-    
-    this.tagsGe = page.locator('label:has-text("ტეგები (GE)") + input, input[placeholder*="ტეგი (GE)"]');
-    this.tagsEn = page.locator('label:has-text("ტეგები (EN)") + input, input[placeholder*="Tags (EN)"]');
-    this.materialsGe = page.locator('label:has-text("მასალები (GE)") + input, input[placeholder*="მასალა (GE)"]');
-    this.materialsEn = page.locator('label:has-text("მასალები (EN)") + input, input[placeholder*="Materials (EN)"]');
+
+    this.searchInput    = page.locator("input.filters__input");
+    this.categoryFilter = page.locator("select.filters__category");
+    this.partnerFilter  = page.locator("select.filters__select");
+    this.productRows    = page.locator(".product-row");
+    this.emptyState     = page.locator(".empty-state");
+    this.addProductBtn  = page.locator(".add-product-btn");
+    this.addBtn         = this.addProductBtn;
+
+    this.titleGe        = page.locator('input[name="titleGe"]');
+    this.titleEn        = page.locator('input[name="titleEn"]');
+    this.descriptionGe  = page.locator('textarea[name="descriptionGe"]');
+    this.descriptionEn  = page.locator('textarea[name="descriptionEn"]');
+    this.category       = page.locator('select[name="category"]');
+    this.price          = page.locator('input[name="price"]');
+    this.stockQuantity  = page.locator('input[name="stockQuantity"]');
+    this.condition      = page.locator('select[name="condition"]');
+    this.saveBtn        = page.locator('button:has-text("შენახვა"), button:has-text("დამატება")').first();
+    this.imageInput     = page.locator('input[type="file"]');
+    this.tagsGe         = page.locator('input[placeholder*="ტეგი (GE)"]');
+    this.tagsEn         = page.locator('input[placeholder*="Tags (EN)"]');
+    this.materialsGe    = page.locator('input[placeholder*="მასალა (GE)"]');
+    this.materialsEn    = page.locator('input[placeholder*="Materials (EN)"]');
   }
 
   async goto(partnerId?: string) {
@@ -46,58 +81,31 @@ export class ProductsPage {
     }
   }
 
-  async fillForm(data: { 
-    titleGe?: string; 
-    titleEn?: string; 
-    descriptionGe?: string; 
-    descriptionEn?: string; 
-    category?: string; 
-    price?: number; 
-    stockQuantity?: number; 
-    condition?: string; 
-    shippingAvailable?: boolean;
-    shippingPrice?: number;
-    locationGe?: string;
-    locationEn?: string;
-    dimensions?: string;
-    weight?: number;
-    tagsGe?: string; 
-    tagsEn?: string;
-    materialsGe?: string;
-    materialsEn?: string;
-  }) {
-    if (data.titleGe) await this.titleGe.fill(data.titleGe);
-    if (data.titleEn) await this.titleEn.fill(data.titleEn);
-    if (data.descriptionGe) await this.descriptionGe.fill(data.descriptionGe);
-    if (data.descriptionEn) await this.descriptionEn.fill(data.descriptionEn);
-    if (data.locationGe) await this.page.locator('input[name="locationGe"]').fill(data.locationGe);
-    if (data.locationEn) await this.page.locator('input[name="locationEn"]').fill(data.locationEn);
-    if (data.category) await this.category.selectOption(data.category);
-    if (data.price !== undefined) await this.price.fill(data.price.toString());
-    if (data.stockQuantity !== undefined) await this.stockQuantity.fill(data.stockQuantity.toString());
-    if (data.condition) await this.condition.selectOption(data.condition.toLowerCase());
-    
-    if (data.shippingAvailable !== undefined) {
-      const checkbox = this.page.locator('input[name="shippingAvailable"]');
-      if (await checkbox.isChecked() !== data.shippingAvailable) {
-        await checkbox.click();
-      }
-    }
-    if (data.shippingPrice !== undefined) await this.page.locator('input[name="shippingPrice"]').fill(data.shippingPrice.toString());
-    if (data.dimensions) await this.page.locator('input[name="dimensions"]').fill(data.dimensions);
-    if (data.weight !== undefined) await this.page.locator('input[name="weight"]').fill(data.weight.toString());
+  row(titleEn: string) {
+    return this.productRows.filter({ hasText: titleEn }).first();
+  }
 
-    if (data.tagsGe) {
-      await this.tagsGe.fill(data.tagsGe);
+  /** Fills visible form fields. Tags/materials use fill+Enter (chip input). */
+  async fillForm(opts: FillFormOptions) {
+    if (opts.titleGe !== undefined)        await this.titleGe.fill(opts.titleGe);
+    if (opts.titleEn !== undefined)        await this.titleEn.fill(opts.titleEn);
+    if (opts.descriptionGe !== undefined)  await this.descriptionGe.fill(opts.descriptionGe);
+    if (opts.descriptionEn !== undefined)  await this.descriptionEn.fill(opts.descriptionEn);
+    if (opts.category !== undefined)       await this.category.selectOption(opts.category);
+    if (opts.price !== undefined)          await this.price.fill(String(opts.price));
+    if (opts.stockQuantity !== undefined)  await this.stockQuantity.fill(String(opts.stockQuantity));
+    if (opts.condition !== undefined)      await this.condition.selectOption(opts.condition);
+    if (opts.tagsGe !== undefined) {
+      await this.tagsGe.fill(opts.tagsGe);
     }
-    if (data.tagsEn) {
-      await this.tagsEn.fill(data.tagsEn);
+    if (opts.tagsEn !== undefined) {
+      await this.tagsEn.fill(opts.tagsEn);
     }
-    if (data.materialsGe) {
-      await this.materialsGe.fill(data.materialsGe);
+    if (opts.materialsGe !== undefined) {
+      await this.materialsGe.fill(opts.materialsGe);
     }
-    if (data.materialsEn) {
-      await this.materialsEn.fill(data.materialsEn);
+    if (opts.materialsEn !== undefined) {
+      await this.materialsEn.fill(opts.materialsEn);
     }
   }
 }

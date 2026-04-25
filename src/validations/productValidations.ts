@@ -97,7 +97,9 @@ export const productSchema = z.object({
     )
     .min(1, "Minimum 1 English material is required")
     .max(10, "Maximum 10 materials allowed"),
-  condition: z.string().min(1, "მდგომარეობა სავალდებულოა"),
+  condition: z.enum(["new", "handmade", "vintage"] as const, {
+    error: "მდგომარეობა სავალდებულოა / მდგომარეობა არასწორია",
+  }),
   locationGe: z
     .string()
     .regex(georgianRegex, "მდებარეობა უნდა შეიცავდეს მხოლოდ ქართულ ასოებს")

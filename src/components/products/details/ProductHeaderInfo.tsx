@@ -23,7 +23,7 @@ const ProductHeaderInfo: React.FC<ProductHeaderInfoProps> = ({
   return (
     <div className="product-header-info">
       <div className="category-tag">{category.replace("_", " & ")}</div>
-      <h1>{titleGe}</h1>
+      <h1 className="title-ge">{titleGe}</h1>
       {titleEn && <h2 className="title-en">{titleEn}</h2>}
 
       <div className="price-stock-row">

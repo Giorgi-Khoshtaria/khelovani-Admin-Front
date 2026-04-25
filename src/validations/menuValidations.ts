@@ -4,6 +4,7 @@ import { validateWithZod } from "./shared/zodUtils";
 export const menuSchema = z.object({
   labelEn: z
     .string()
+    .trim()
     .min(1, "ინგლისური სახელი სავალდებულოა / English label is required")
     .max(
       100,
@@ -15,6 +16,7 @@ export const menuSchema = z.object({
     ),
   labelKa: z
     .string()
+    .trim()
     .min(1, "ქართული სახელი სავალდებულოა / Georgian label is required")
     .max(
       100,
@@ -26,6 +28,7 @@ export const menuSchema = z.object({
     ),
   href: z
     .string()
+    .trim()
     .min(1, "ლინკი სავალდებულოა / Link is required")
     .max(
       100,

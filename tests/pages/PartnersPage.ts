@@ -28,7 +28,22 @@ export class PartnersPage {
 
   // Profile / Edit Form Locators
   readonly companyNameGe: Locator;
+  readonly companyNameEn: Locator;
+  readonly contactPerson: Locator;
+  readonly city: Locator;
   readonly phone: Locator;
+  readonly email: Locator;
+  readonly address: Locator;
+  readonly addressEn: Locator;
+  readonly website: Locator;
+  readonly facebook: Locator;
+  readonly instagram: Locator;
+  readonly tiktok: Locator;
+  readonly description: Locator;
+  readonly descriptionEn: Locator;
+  readonly saveBtn: Locator;
+  readonly cancelBtn: Locator;
+  readonly errorText: Locator;
 
   constructor(page: Page) {
     this.page = page;
@@ -57,12 +72,43 @@ export class PartnersPage {
     this.statusBadge = page.locator(".profile-header .status-badge").first();
 
     // Profile / Edit Form Inputs (visible only in edit mode)
-    this.companyNameGe = page.locator('#companyNameGe');
-    this.phone = page.locator('#phone');
+    this.companyNameGe  = page.locator('#companyNameGe');
+    this.companyNameEn  = page.locator('#companyNameEn');
+    this.contactPerson  = page.locator('#contactPerson');
+    this.city           = page.locator('#city');
+    this.phone          = page.locator('#phone');
+    this.email          = page.locator('#email');
+    this.address        = page.locator('#address');
+    this.addressEn      = page.locator('#addressEn');
+    this.website        = page.locator('#website');
+    this.facebook       = page.locator('#facebook');
+    this.instagram      = page.locator('#instagram');
+    this.tiktok         = page.locator('#tiktok');
+    this.description    = page.locator('#description');
+    this.descriptionEn  = page.locator('#descriptionEn');
+    this.saveBtn        = page.locator('button.save-btn');
+    this.cancelBtn      = page.locator('button.cancel-btn');
+    this.errorText      = page.locator('.error-text');
   }
 
   async goto() {
     await this.page.goto("/partners");
+  }
+
+  async gotoProfile() {
+    await this.page.goto("/profile");
+  }
+
+  async openEdit() {
+    await this.editBtn.click();
+  }
+
+  async save() {
+    await this.saveBtn.click();
+  }
+
+  async cancel() {
+    await this.cancelBtn.click();
   }
 
   getCardByName(name: string) {
@@ -70,12 +116,13 @@ export class PartnersPage {
   }
 
   async gotoDetails(name: string) {
+    await this.searchInput.fill(name);
+    await this.page.waitForResponse((r) => r.url().includes("/api/admin/partners"));
     const card = this.getCardByName(name);
     await card.locator(".view-details-btn").click();
     await this.page.waitForURL(/\/partners\/[a-f0-9]+/);
   }
 
-  // Locators for detail fields in InfoGrid
   getDetailedField(id: string) {
     return this.page.locator(`#${id}`);
   }

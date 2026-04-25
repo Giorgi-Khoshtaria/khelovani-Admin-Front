@@ -6,7 +6,7 @@ import * as path from "path";
  * Read environment variables from file.
  * https://github.com/motdotla/dotenv
  */
-dotenv.config({ path: path.resolve(process.cwd(), ".env.test") });
+dotenv.config({ path: path.resolve(process.cwd(), ".env.local") });
 
 
 /**
@@ -14,6 +14,7 @@ dotenv.config({ path: path.resolve(process.cwd(), ".env.test") });
  */
 export default defineConfig({
   testDir: "./tests",
+  testIgnore: ["**/suites/**"],
   /* Maximum time one test can run for. */
   timeout: 30 * 1000,
   expect: {

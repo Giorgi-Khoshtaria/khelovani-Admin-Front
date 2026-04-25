@@ -3,9 +3,8 @@
 
 .product-details-page {
   padding: 32px;
-  max-width: 1400px;
-  margin: 0 auto;
   animation: fadeIn 0.4s ease-out;
+  overflow-x: hidden;
 
   @include mobile {
     padding: 16px;
@@ -14,18 +13,27 @@
   .details-header {
     display: flex;
     justify-content: space-between;
-    align-items: center;
+    align-items: flex-start;
+    gap: 16px;
+    flex-wrap: wrap;
     margin-bottom: 32px;
 
     .header-left {
       display: flex;
       align-items: center;
       gap: 24px;
+      min-width: 0;
 
       h1 {
         font-size: 28px;
         color: colors.$color-espresso;
         margin: 0;
+        overflow-wrap: break-word;
+        word-break: break-word;
+
+        @include mobile {
+          font-size: 20px;
+        }
       }
     }
 
@@ -39,6 +47,7 @@
       align-items: center;
       gap: 8px;
       padding: 8px 0;
+      white-space: nowrap;
       transition: transform 0.2s ease;
 
       &:hover {
@@ -50,7 +59,8 @@
     .header-actions {
       display: flex;
       align-items: center;
-      gap: 16px;
+      gap: 12px;
+      flex-wrap: wrap;
 
       .edit-details-btn {
         background-color: colors.$color-white;
@@ -60,6 +70,7 @@
         border-radius: 8px;
         font-weight: 600;
         cursor: pointer;
+        white-space: nowrap;
         transition: all 0.2s ease;
 
         &:hover {
@@ -76,6 +87,7 @@
         border-radius: 8px;
         font-weight: 600;
         cursor: pointer;
+        white-space: nowrap;
         transition: all 0.2s ease;
 
         &:hover {
@@ -92,6 +104,7 @@
         border-radius: 8px;
         font-weight: 600;
         cursor: pointer;
+        white-space: nowrap;
         transition: all 0.2s ease;
 
         &:hover {
@@ -120,9 +133,14 @@
       width: 8px;
       height: 8px;
       border-radius: 50%;
-      
-      &.shown { background-color: colors.$color-success; }
-      &.hidden { background-color: colors.$color-danger; }
+      flex-shrink: 0;
+
+      &.shown {
+        background-color: colors.$color-success;
+      }
+      &.hidden {
+        background-color: colors.$color-danger;
+      }
     }
   }
 
@@ -132,21 +150,24 @@
     gap: 48px;
     align-items: start;
 
-    @include tablet {
+    @include mobile-and-tablet {
       grid-template-columns: 1fr;
       gap: 32px;
     }
 
     .left-column {
+      min-width: 0;
       position: sticky;
       top: 32px;
 
-      @include tablet {
+      @include mobile-and-tablet {
         position: static;
       }
     }
 
     .right-column {
+      min-width: 0;
+
       .content-card {
         padding: 40px;
         display: flex;
@@ -154,7 +175,7 @@
         gap: 24px;
 
         @include mobile {
-          padding: 24px;
+          padding: 20px 16px;
         }
 
         .additional-info {
@@ -168,15 +189,20 @@
           .info-item {
             display: flex;
             justify-content: space-between;
+            gap: 12px;
             font-size: 14.4px;
+            flex-wrap: wrap;
 
             .label {
               color: colors.$color-text-secondary;
+              flex-shrink: 0;
             }
 
             .value {
               font-weight: 600;
               color: colors.$color-espresso;
+              text-align: right;
+              word-break: break-word;
             }
           }
         }
@@ -185,7 +211,8 @@
   }
 }
 
-.loading-state, .error-state {
+.loading-state,
+.error-state {
   display: flex;
   justify-content: center;
   align-items: center;
@@ -196,6 +223,12 @@
 }
 
 @keyframes fadeIn {
-  from { opacity: 0; transform: translateY(10px); }
-  to { opacity: 1; transform: translateY(0); }
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }

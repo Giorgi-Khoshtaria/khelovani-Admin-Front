@@ -42,7 +42,7 @@ export default function ProductListingPage() {
   const isProfileMode = location.pathname.startsWith("/profile");
 
   const onEdit = (productId: string) => {
-    const editPath = isProfileMode 
+    const editPath = isProfileMode
       ? `/profile/products/${productId}/edit`
       : `/partners/${id}/products/${productId}/edit`;
     navigate(editPath);
@@ -52,7 +52,11 @@ export default function ProductListingPage() {
     if (isProfileMode) {
       navigate(`/profile/products/${product._id}`);
     } else {
-      navigate(id ? `/partners/${id}/products/${product._id}` : `/products/${product._id}`);
+      navigate(
+        id
+          ? `/partners/${id}/products/${product._id}`
+          : `/products/${product._id}`,
+      );
     }
   };
 
@@ -60,23 +64,42 @@ export default function ProductListingPage() {
     <div className="product-listing-page">
       <div className="page-header">
         <div className="header-title">
-          <button className="back-btn" onClick={() => {
-            if (isProfileMode) navigate("/profile");
-            else navigate(id ? `/partners/${id}` : "/partners");
-          }}>
-            ← უკან {isProfileMode ? "პროფილზე" : id ? "პარტნიორის პროფილზე" : "პარტნიორების სიაზე"}
-          </button>
-          <h1>{id || isProfileMode ? "პროდუქტები / Products" : "ყველა პროდუქტი / All Products"}</h1>
+          {(isProfileMode || id || !isAdmin) && (
+            <button
+              className="back-btn"
+              onClick={() => {
+                if (isProfileMode) navigate("/profile");
+                else navigate(id ? `/partners/${id}` : "/partners");
+              }}
+            >
+              ← უკან{" "}
+              {isProfileMode
+                ? "პროფილზე"
+                : id
+                  ? "პარტნიორის პროფილზე"
+                  : "პარტნიორების სიაზე"}
+            </button>
+          )}
+          <h1>{id || isProfileMode ? "პროდუქტები" : "ყველა პროდუქტი"}</h1>
           {totalCount > 0 && <span className="count-badge">{totalCount}</span>}
         </div>
         {!isAdmin && (id || isProfileMode) && (
-          <button className="add-product-btn" onClick={() => navigate(isProfileMode ? "/profile/products/add" : `/partners/${id}/products/add`)}>
-            + პროდუქტის დამატება / Add Product
+          <button
+            className="add-product-btn"
+            onClick={() =>
+              navigate(
+                isProfileMode
+                  ? "/profile/products/add"
+                  : `/partners/${id}/products/add`,
+              )
+            }
+          >
+            + პროდუქტის დამატება
           </button>
         )}
       </div>
 
-      <ProductFilters 
+      <ProductFilters
         search={search}
         onSearchChange={setSearch}
         category={category}
@@ -89,17 +112,17 @@ export default function ProductListingPage() {
       />
 
       {loading ? (
-        <div className="loading">იტვირთება... / Loading...</div>
+        <div className="loading">იტვირთება...</div>
       ) : products.length === 0 ? (
         <div className="empty-state card">
-          <p>პროდუქტები ვერ მოიძებნა / No products found.</p>
+          <p>პროდუქტები ვერ მოიძებნა</p>
         </div>
       ) : (
         <div className="products-list card">
           <ProductListHeader />
 
-          {products.map(product => (
-            <ProductTableRow 
+          {products.map((product) => (
+            <ProductTableRow
               key={product._id}
               product={product}
               isAdmin={isAdmin}
@@ -114,9 +137,11 @@ export default function ProductListingPage() {
             <div className="pagination">
               <button
                 disabled={currentPage === 1}
-                onClick={() => setCurrentPage((p: number) => Math.max(1, p - 1))}
+                onClick={() =>
+                  setCurrentPage((p: number) => Math.max(1, p - 1))
+                }
               >
-                წინა / Prev
+                წინა
               </button>
               <span className="page-info">
                 გვერდი {currentPage} / {totalPages}
@@ -127,7 +152,7 @@ export default function ProductListingPage() {
                   setCurrentPage((p: number) => Math.min(totalPages, p + 1))
                 }
               >
-                შემდეგი / Next
+                შემდეგი
               </button>
             </div>
           )}

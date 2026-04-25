@@ -7,21 +7,21 @@ import ProductSpecsList from "@/components/products/details/ProductSpecsList";
 import "./ProductDetailsPage.scss";
 
 const ProductDetailsPage = () => {
-  const { id: partnerId, productId } = useParams<{ id: string; productId: string }>();
-  const {
-    product,
-    loading,
-    isAdmin,
-    handleDelete,
-    handleToggleVisibility,
-  } = useProductDetails(partnerId, productId);
+  const { id: partnerId, productId } = useParams<{
+    id: string;
+    productId: string;
+  }>();
+  const { product, loading, isAdmin, handleDelete, handleToggleVisibility } =
+    useProductDetails(partnerId, productId);
   const navigate = useNavigate();
 
   if (loading)
     return <div className="loading-state">იტვირთება... / Loading...</div>;
   if (!product)
     return (
-      <div className="error-state">პროდუქტი ვერ მოიძებნა / Product not found.</div>
+      <div className="error-state">
+        პროდუქტი ვერ მოიძებნა / Product not found.
+      </div>
     );
 
   return (
@@ -31,8 +31,9 @@ const ProductDetailsPage = () => {
           <button className="back-btn" onClick={() => navigate(-1)}>
             ← უკან / Back
           </button>
-          <h1>{product.titleGe}</h1>
+          <h1 className="page-title">{product.titleGe}</h1>
         </div>
+
         <div className="header-actions">
           {isAdmin ? (
             <button
@@ -60,6 +61,7 @@ const ProductDetailsPage = () => {
           </button>
         </div>
       </div>
+
       <div className="status-indicator">
         <span
           className={`status-dot ${product.isShown ? "shown" : "hidden"}`}
@@ -115,8 +117,8 @@ const ProductDetailsPage = () => {
               <div className="info-item">
                 <span className="label">ტრანსპორტირება / Shipping:</span>
                 <span className="value">
-                  {product.shippingAvailable 
-                    ? `ხელმისაწვდომია (${product.shippingPrice || 0} GEL) / Available` 
+                  {product.shippingAvailable
+                    ? `ხელმისაწვდომია (${product.shippingPrice || 0} GEL) / Available`
                     : "არა / Not available"}
                 </span>
               </div>

@@ -64,12 +64,13 @@ export function PartnerCompanyPanel({
               label="კომპანიის სახელი (EN)"
               value={editForm.companyNameEn || ""}
               onChange={onChange}
+              error={errors.companyNameEn}
               fullWidth
             />
           </div>
         ) : (
           <>
-            <h2 className="company-title-ge">{partner.companyNameGe}</h2>
+            <h1 className="company-title-ge">{partner.companyNameGe}</h1>
             <p className="company-title-en">({partner.companyNameEn})</p>
           </>
         )}
