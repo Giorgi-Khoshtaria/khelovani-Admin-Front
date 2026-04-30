@@ -1,0 +1,52 @@
+@use "@/styles/colors.scss" as colors;
+@use "@/styles/_inputs.scss" as inputs;
+
+.user-info-form {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+
+  &__row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+
+    @media (max-width: 640px) {
+      grid-template-columns: 1fr;
+    }
+  }
+
+  &__field {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+  }
+
+  &__label {
+    font-size: 13px;
+    font-weight: 600;
+    color: colors.$color-text-secondary;
+  }
+
+  &__input {
+    @extend .input-field;
+    background-color: colors.$color-ivory;
+    color: colors.$color-text-secondary;
+    cursor: not-allowed;
+    opacity: 0.85;
+
+    &:disabled {
+      background-color: colors.$color-ivory;
+    }
+  }
+
+  &__note {
+    font-size: 13px;
+    color: colors.$color-text-secondary;
+    background-color: colors.$color-bg-secondary;
+    border-left: 3px solid colors.$color-border;
+    padding: 10px 14px;
+    border-radius: 4px;
+    margin-top: 8px;
+  }
+}

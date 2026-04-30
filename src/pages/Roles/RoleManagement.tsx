@@ -7,22 +7,22 @@ import { RoleModals } from "@/components/roles/RoleModals";
 export default function RoleManagement() {
   const { data, list, modals, forms, actions } = useRoleManagement();
 
-  const { roles, permissions, loading } = data;
-  const { activeTab, searchQuery, selectedCategory, sortField, sortOrder } = list;
-  const { 
-    isRoleModalOpen, 
-    isPermModalOpen, 
-    isPermEditModalOpen, 
-    setIsRoleModalOpen, 
-    setIsPermModalOpen, 
-    setIsPermEditModalOpen 
+  const { roles, permissions, categories, loading } = data;
+  const { activeTab, searchQuery, selectedCategory } = list;
+  const {
+    isRoleModalOpen,
+    isPermModalOpen,
+    isPermEditModalOpen,
+    setIsRoleModalOpen,
+    setIsPermModalOpen,
+    setIsPermEditModalOpen,
   } = modals;
-  const { roleFormHandler, permFormHandler, editPermFormHandler } = forms;
+  const { roleFormHandler, roleAllowedPanels, permFormHandler, editPermFormHandler } = forms;
   const {
     setActiveTab,
     setSearchQuery,
     setSelectedCategory,
-    handleSort,
+    handleRoleAllowedPanelsChange,
     handleCreateRole,
     handleCreatePermission,
     handleOpenEditPermissionModal,
@@ -38,17 +38,11 @@ export default function RoleManagement() {
       <div className="page-header">
         <h1>როლები და უფლებები</h1>
         {activeTab === "roles" ? (
-          <button
-            className="btn-primary"
-            onClick={() => setIsRoleModalOpen(true)}
-          >
+          <button className="btn-primary" onClick={() => setIsRoleModalOpen(true)}>
             + ახალი როლი
           </button>
         ) : (
-          <button
-            className="btn-primary"
-            onClick={() => setIsPermModalOpen(true)}
-          >
+          <button className="btn-primary" onClick={() => setIsPermModalOpen(true)}>
             + ახალი უფლება
           </button>
         )}
@@ -75,13 +69,11 @@ export default function RoleManagement() {
         ) : (
           <RolePermissionsTable
             permissions={permissions}
+            categories={categories}
             selectedCategory={selectedCategory}
             onCategoryChange={setSelectedCategory}
             searchQuery={searchQuery}
             onSearchChange={setSearchQuery}
-            sortField={sortField}
-            sortOrder={sortOrder}
-            onSort={handleSort}
             onEditPermission={handleOpenEditPermissionModal}
             onDeletePermission={handleDeletePermission}
           />
@@ -95,7 +87,10 @@ export default function RoleManagement() {
         setIsPermModalOpen={setIsPermModalOpen}
         isPermEditModalOpen={isPermEditModalOpen}
         setIsPermEditModalOpen={setIsPermEditModalOpen}
+        categories={categories}
         roleForm={roleFormHandler}
+        roleAllowedPanels={roleAllowedPanels}
+        onRoleAllowedPanelsChange={handleRoleAllowedPanelsChange}
         permForm={permFormHandler}
         editPermForm={editPermFormHandler}
         onCreateRole={handleCreateRole}

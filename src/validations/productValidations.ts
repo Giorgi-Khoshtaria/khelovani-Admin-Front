@@ -1,6 +1,5 @@
 import { z } from "zod";
 import { validateWithZod } from "./shared/zodUtils";
-import { ProductCategory } from "@/types/productTypes";
 
 const georgianRegex = /^[ა-ჰ0-9\s.,/\\\-()!?:;$%&*#@]+$/;
 const englishRegex = /^[a-zA-Z0-9\s.,/\\\-()!?:;$%&*#@]+$/;
@@ -30,9 +29,7 @@ export const productSchema = z.object({
     .min(10, "Description must be at least 10 characters")
     .max(2000, "Description must not exceed 2000 characters")
     .regex(englishRegex, "Description must contain only English characters"),
-  category: z.nativeEnum(ProductCategory, {
-    error: "აირჩიეთ სწორი კატეგორია / Select a valid category",
-  }),
+  category: z.string().min(1, "აირჩიეთ სწორი კატეგორია / Select a valid category"),
   price: z.preprocess(
     (val) => (val === "" || val === undefined ? undefined : Number(val)),
     z

@@ -1,6 +1,7 @@
 import React from "react";
 import "./ProductTableRow.scss";
 import type { Product } from "@/types/productTypes";
+import useCategoryOptions from "@/hooks/categories/useCategoryOptions";
 
 interface ProductTableRowProps {
   product: Product;
@@ -9,6 +10,7 @@ interface ProductTableRowProps {
   onDelete: (e: React.MouseEvent, productId: string) => void;
   onEdit: (productId: string) => void;
   onRowClick: () => void;
+  onPin?: (e: React.MouseEvent, product: Product) => void;
 }
 
 // Helper function to truncate text
@@ -26,10 +28,13 @@ export const ProductTableRow: React.FC<ProductTableRowProps> = ({
   onDelete,
   onEdit,
   onRowClick,
+  onPin,
 }) => {
+  const { getLabel } = useCategoryOptions();
+
   return (
     <div
-      className={`product-row ${!product.isShown ? "is-hidden" : ""}`}
+      className={`product-row ${!product.isShown ? "is-hidden" : ""}${product.isPinned ? " pinned" : ""}`}
       onClick={onRowClick}
     >
       <div className="col-image">
@@ -43,12 +48,15 @@ export const ProductTableRow: React.FC<ProductTableRowProps> = ({
 
       <div className="col-info">
         <div className="title-stack">
-          <span
-            className="title-ge"
-            title={product.titleGe} // Full text on hover
-          >
-            {truncate(product.titleGe)}
-          </span>
+          <div className="title-row">
+            <span
+              className="title-ge"
+              title={product.titleGe}
+            >
+              {truncate(product.titleGe)}
+            </span>
+            {product.isPinned && <span className="pin-badge">📌 პინი</span>}
+          </div>
           <span className="title-en" title={product.titleEn}>
             {truncate(product.titleEn)}
           </span>
@@ -56,7 +64,7 @@ export const ProductTableRow: React.FC<ProductTableRowProps> = ({
       </div>
 
       <div className="col-category">
-        <span className="category-badge">{product.category}</span>
+        <span className="category-badge">{getLabel(product.category)}</span>
       </div>
 
       <div className="col-status">
@@ -84,6 +92,15 @@ export const ProductTableRow: React.FC<ProductTableRowProps> = ({
       <div className="col-actions" onClick={(e) => e.stopPropagation()}>
         <div className="action-buttons">
           {isAdmin ? (
+            <>
+            <button
+              className={`action-btn pin-btn ${product.isPinned ? "active" : ""}`}
+              onClick={(e) => onPin?.(e, product)}
+              disabled={!product.isShown}
+              title={!product.isShown ? "დამალული პროდუქტის პინი შეუძლებელია" : product.isPinned ? "პინის მოხსნა" : "პინი"}
+            >
+              {product.isPinned ? "📌" : "📍"}
+            </button>
             <button
               className={`action-btn toggle-btn ${product.isShown ? "is-visible" : "is-hidden-state"}`}
               onClick={(e) => onToggle(e, product)}
@@ -102,6 +119,7 @@ export const ProductTableRow: React.FC<ProductTableRowProps> = ({
                 </svg>
               )}
             </button>
+            </>
           ) : (
             <button
               className="action-btn edit-btn"

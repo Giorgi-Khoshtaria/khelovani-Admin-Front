@@ -26,6 +26,10 @@ export class PartnersPage {
   readonly banBtn: Locator;
   readonly statusBadge: Locator;
 
+  // Pin / Visibility — detail page
+  readonly pinBtn: Locator;
+  readonly visibilityBtn: Locator;
+
   // Profile / Edit Form Locators
   readonly companyNameGe: Locator;
   readonly companyNameEn: Locator;
@@ -70,6 +74,8 @@ export class PartnersPage {
     this.rejectBtn = page.locator(".profile-header .reject-btn");
     this.banBtn = page.locator(".profile-header .ban-btn");
     this.statusBadge = page.locator(".profile-header .status-badge").first();
+    this.pinBtn = page.locator(".profile-header .pin-btn");
+    this.visibilityBtn = page.locator(".profile-header .visibility-btn");
 
     // Profile / Edit Form Inputs (visible only in edit mode)
     this.companyNameGe  = page.locator('#companyNameGe');

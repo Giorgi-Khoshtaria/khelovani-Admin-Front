@@ -198,7 +198,7 @@ export async function ensureOrganizerSession(
         contactPerson: "Test Organizer",
         phone: "599111222",
         city: "tbilisi",
-        category: "other",
+        categories: ["other"],
         email: orgEmail,
         address: "ტესტის ქუჩა 1",
         addressEn: "Test Street 1",

@@ -1,0 +1,77 @@
+@use "@/styles/colors.scss" as colors;
+@use "@/styles/_buttons.scss" as *;
+
+.user-details-page {
+  padding: 24px;
+
+  .card {
+    background: colors.$color-white;
+    border-radius: 12px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+  }
+
+  .user-details-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 24px;
+
+    .header-left {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+
+      .back-btn {
+        @extend .btn-outline;
+        padding: 6px 12px;
+        font-size: 14px;
+      }
+
+      .page-title {
+        margin: 0;
+        font-size: 22px;
+        color: colors.$color-espresso;
+      }
+    }
+
+    .header-actions {
+      .btn-danger {
+        padding: 8px 18px;
+        font-size: 14px;
+        font-weight: 600;
+        border: none;
+        border-radius: 8px;
+        background-color: #c62828;
+        color: #fff;
+        cursor: pointer;
+        transition: background-color 0.15s ease;
+
+        &:hover {
+          background-color: #b71c1c;
+        }
+      }
+    }
+  }
+
+  .user-details-content {
+    padding: 28px;
+
+    .section-title {
+      margin: 0 0 24px;
+      font-size: 16px;
+      font-weight: 700;
+      color: colors.$color-text-secondary;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      padding-bottom: 12px;
+      border-bottom: 1px solid colors.$color-cream;
+    }
+  }
+
+  .loading-state,
+  .error-state {
+    text-align: center;
+    padding: 48px;
+    color: colors.$color-text-secondary;
+  }
+}

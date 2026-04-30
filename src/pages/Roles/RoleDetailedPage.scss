@@ -7,135 +7,201 @@
   .page-header {
     display: flex;
     justify-content: space-between;
-    align-items: center;
-    margin-bottom: 16px;
+    align-items: flex-start;
+    margin-bottom: 24px;
+    gap: 16px;
 
     .header-left {
       display: flex;
       flex-direction: column;
-      gap: 8px;
+      gap: 6px;
 
       .back-link {
         color: colors.$color-text-secondary;
         text-decoration: none;
-        font-size: 14.4px;
+        font-size: 13.6px;
         font-weight: 500;
 
-        &:hover {
-          color: colors.$color-text-primary;
-        }
+        &:hover { color: colors.$color-text-primary; }
       }
 
       h1 {
         margin: 0;
-        font-size: 28.8px;
+        font-size: 26px;
         color: colors.$color-text-primary;
+        font-weight: 700;
+      }
+
+      .role-desc {
+        margin: 0;
+        font-size: 14.4px;
+        color: colors.$color-text-secondary;
+      }
+    }
+
+    .header-right {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      flex-shrink: 0;
+
+      .selected-count {
+        font-size: 13.6px;
+        color: colors.$color-text-secondary;
+        white-space: nowrap;
       }
     }
   }
 
-  .role-desc {
+  .permissions-toolbar {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 24px;
+
+    .perm-search {
+      width: 100%;
+      max-width: 380px;
+      padding: 9px 14px;
+      border: 1px solid colors.$color-border;
+      border-radius: 8px;
+      font-size: 14.4px;
+      background: colors.$color-white;
+      transition: border-color 0.15s;
+
+      &:focus {
+        outline: none;
+        border-color: colors.$color-espresso;
+      }
+    }
+
+    .search-hint {
+      font-size: 13px;
+      color: colors.$color-text-secondary;
+      white-space: nowrap;
+    }
+  }
+
+  .empty-search {
+    text-align: center;
+    padding: 48px;
     color: colors.$color-text-secondary;
-    margin-bottom: 32px;
-    font-size: 16px;
-    background: colors.$color-white;
-    padding: 16px;
-    border-radius: 8px;
-    border-left: 4px solid colors.$color-espresso;
-    box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+    font-size: 15px;
   }
 
   .permissions-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
-    gap: 24px;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 20px;
     align-items: start;
+
+    @media (max-width: 1200px) {
+      grid-template-columns: repeat(2, 1fr);
+    }
+
+    @media (max-width: 700px) {
+      grid-template-columns: 1fr;
+    }
   }
 
   .permission-category-card {
     background: colors.$color-white;
-    border-radius: 12px;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
-    padding: 24px;
-    border: 1px solid rgba(0,0,0,0.05);
+    border-radius: 10px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+    border: 1px solid rgba(0, 0, 0, 0.06);
+    overflow: hidden;
 
     .category-header {
       display: flex;
       justify-content: space-between;
       align-items: center;
-      margin-bottom: 16px;
-      border-bottom: 2px solid colors.$color-cream;
-      padding-bottom: 8px;
+      padding: 14px 18px;
+      background: colors.$color-ivory;
+      border-bottom: 1px solid colors.$color-cream;
 
-      h3 {
-        margin: 0;
-        font-size: 17.6px;
-        color: colors.$color-espresso;
+      .category-title {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+
+        h3 {
+          margin: 0;
+          font-size: 15px;
+          font-weight: 600;
+          color: colors.$color-espresso;
+        }
+
+        .count-badge {
+          background: colors.$color-espresso;
+          color: colors.$color-white;
+          font-size: 11px;
+          font-weight: 600;
+          padding: 2px 7px;
+          border-radius: 10px;
+          line-height: 1.4;
+        }
       }
 
       .select-all-label {
         display: flex;
         align-items: center;
-        gap: 6.4px;
-        font-size: 13.6px;
+        gap: 6px;
+        font-size: 12.8px;
         color: colors.$color-text-secondary;
         cursor: pointer;
+        white-space: nowrap;
 
-        input {
-          margin: 0;
-          cursor: pointer;
-        }
+        input { margin: 0; cursor: pointer; }
       }
     }
 
     .permission-items {
       display: flex;
       flex-direction: column;
-      gap: 12.8px;
+      padding: 8px 0;
     }
 
     .permission-item {
       display: flex;
       align-items: flex-start;
-      gap: 12px;
-      padding: 8px;
-      border-radius: 6px;
+      gap: 10px;
+      padding: 9px 18px;
       cursor: pointer;
-      transition: background 0.2s;
+      transition: background 0.15s;
 
-      &:hover {
-        background: colors.$color-bg-page;
-      }
+      &:hover { background: colors.$color-bg-page; }
 
       input[type="checkbox"] {
-        margin-top: 4px;
+        margin-top: 3px;
         cursor: pointer;
-        width: 16px;
-        height: 16px;
+        width: 15px;
+        height: 15px;
+        flex-shrink: 0;
       }
 
       .permission-info {
         display: flex;
         flex-direction: column;
-        gap: 3.2px;
+        gap: 2px;
+        min-width: 0;
 
         .perm-name {
           font-weight: 600;
           color: colors.$color-text-primary;
-          font-size: 15.2px;
 
           code {
             background: #f1f3f5;
-            padding: 1.6px 4.8px;
+            padding: 1px 5px;
             border-radius: 4px;
             font-family: monospace;
-            font-size: 13.6px;
+            font-size: 12.8px;
           }
         }
 
         .perm-desc {
-          font-size: 13.6px;
+          font-size: 12.8px;
           color: colors.$color-text-secondary;
+          line-height: 1.4;
         }
       }
     }

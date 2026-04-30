@@ -73,7 +73,7 @@ export class ApiHelper {
   async createPartner(data: Partial<Partner>) {
     // Note: Admin cannot directly POST a partner, we use the public registration endpoint for seeding
     const registrationData = {
-      category: "others",
+      categories: ["other"],
       terms: true,
       ...data,
     };
@@ -88,6 +88,32 @@ export class ApiHelper {
     await axios.delete(`${backendUrl}/api/admin/partners/${id}`, {
       headers: this.getHeaders(),
     });
+  }
+
+  async approvePartner(id: string) {
+    await axios.patch(
+      `${backendUrl}/api/admin/partners/${id}/status`,
+      { status: "APPROVED" },
+      { headers: this.getHeaders() },
+    );
+  }
+
+  async pinPartner(id: string, isPinned: boolean) {
+    const response = await axios.patch(
+      `${backendUrl}/api/admin/partners/${id}/pin`,
+      { isPinned },
+      { headers: this.getHeaders() },
+    );
+    return response.data;
+  }
+
+  async setPartnerVisibility(id: string, isShown: boolean) {
+    const response = await axios.patch(
+      `${backendUrl}/api/admin/partners/${id}/visibility`,
+      { isShown },
+      { headers: this.getHeaders() },
+    );
+    return response.data;
   }
 
   // Products API
@@ -141,6 +167,15 @@ export class ApiHelper {
     });
   }
 
+  async pinProduct(productId: string, isPinned: boolean) {
+    const response = await axios.patch(
+      `${backendUrl}/api/products/${productId}/pin`,
+      { isPinned },
+      { headers: this.getHeaders() },
+    );
+    return response.data;
+  }
+
   // Translations API
   async createTranslation(data: Omit<RawTranslation, "_id">) {
     const response = await axios.post(
@@ -177,6 +212,33 @@ export class ApiHelper {
     });
   }
 
+  // Users API
+  async getUsers(params: Record<string, string | number> = {}) {
+    const response = await axios.get(`${backendUrl}/api/admin/users`, {
+      headers: this.getHeaders(),
+      params,
+    });
+    return response.data;
+  }
+  async getUserById(id: string) {
+    const response = await axios.get(`${backendUrl}/api/admin/users/${id}`, {
+      headers: this.getHeaders(),
+    });
+    return response.data.data ?? response.data;
+  }
+  async deleteUser(id: string) {
+    await axios.delete(`${backendUrl}/api/admin/users/${id}`, {
+      headers: this.getHeaders(),
+    });
+  }
+  async bulkDeleteUsers(ids: string[]) {
+    await axios.post(
+      `${backendUrl}/api/admin/users/bulk-delete`,
+      { ids },
+      { headers: this.getHeaders() },
+    );
+  }
+
   // Permissions API
   async getPermissions() {
     const response = await axios.get(`${backendUrl}/api/admin/permissions`, {
@@ -191,5 +253,36 @@ export class ApiHelper {
       { headers: this.getHeaders() },
     );
     return response.data;
+  }
+  async deletePermission(id: string) {
+    await axios.delete(`${backendUrl}/api/admin/permissions/${id}`, {
+      headers: this.getHeaders(),
+    });
+  }
+  async getPermissionCategories(): Promise<string[]> {
+    const response = await axios.get(
+      `${backendUrl}/api/admin/permissions/categories`,
+      { headers: this.getHeaders() },
+    );
+    return response.data.data as string[];
+  }
+
+  // Categories API
+  async getCategories() {
+    const response = await axios.get(`${backendUrl}/api/admin/categories`, {
+      headers: this.getHeaders(),
+    });
+    return response.data.data;
+  }
+  async createCategory(data: { slug: string; nameGe: string; nameEn: string; isActive?: boolean }) {
+    const response = await axios.post(`${backendUrl}/api/admin/categories`, data, {
+      headers: this.getHeaders(),
+    });
+    return response.data.data;
+  }
+  async deleteCategory(id: string) {
+    await axios.delete(`${backendUrl}/api/admin/categories/${id}`, {
+      headers: this.getHeaders(),
+    }).catch(() => {});
   }
 }

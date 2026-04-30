@@ -1,3 +1,8 @@
+const ALLOWED_PANELS = [
+  { value: "admin", label: "Admin" },
+  { value: "admin-organization", label: "Organization" },
+];
+
 interface RoleModalsProps {
   isRoleModalOpen: boolean;
   setIsRoleModalOpen: (open: boolean) => void;
@@ -5,10 +10,13 @@ interface RoleModalsProps {
   setIsPermModalOpen: (open: boolean) => void;
   isPermEditModalOpen: boolean;
   setIsPermEditModalOpen: (open: boolean) => void;
+  categories: string[];
   roleForm: {
     formData: { name: string; description: string };
     handleChange: (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => void;
   };
+  roleAllowedPanels: string[];
+  onRoleAllowedPanelsChange: (panel: string) => void;
   permForm: {
     formData: { name: string; description: string; category: string };
     handleChange: (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => void;
@@ -29,7 +37,10 @@ export function RoleModals({
   setIsPermModalOpen,
   isPermEditModalOpen,
   setIsPermEditModalOpen,
+  categories,
   roleForm,
+  roleAllowedPanels,
+  onRoleAllowedPanelsChange,
   permForm,
   editPermForm,
   onCreateRole,
@@ -55,13 +66,27 @@ export function RoleModals({
                 />
               </div>
               <div className="form-group">
-                <label>აღწერა *</label>
+                <label>აღწერა</label>
                 <textarea
                   id="description"
                   value={roleForm.formData.description}
                   onChange={roleForm.handleChange}
-                  required
                 />
+              </div>
+              <div className="form-group">
+                <label>პანელები (Allowed Panels)</label>
+                <div className="checkbox-group">
+                  {ALLOWED_PANELS.map(({ value, label }) => (
+                    <label key={value} className="checkbox-item">
+                      <input
+                        type="checkbox"
+                        checked={roleAllowedPanels.includes(value)}
+                        onChange={() => onRoleAllowedPanelsChange(value)}
+                      />
+                      {label}
+                    </label>
+                  ))}
+                </div>
               </div>
               <div className="form-actions">
                 <button
@@ -114,11 +139,15 @@ export function RoleModals({
                   onChange={permForm.handleChange}
                   required
                 >
-                  <option value="General">General</option>
-                  <option value="Users">Users</option>
-                  <option value="Orgs">Orgs</option>
-                  <option value="Roles">Roles</option>
-                  <option value="Settings">Settings</option>
+                  {categories.length > 0 ? (
+                    categories.map((cat) => (
+                      <option key={cat} value={cat}>
+                        {cat}
+                      </option>
+                    ))
+                  ) : (
+                    <option value="General">General</option>
+                  )}
                 </select>
               </div>
               <div className="form-actions">
@@ -173,12 +202,15 @@ export function RoleModals({
                   onChange={editPermForm.handleChange}
                   required
                 >
-                  <option value="General">General</option>
-                  <option value="USERS">Users</option>
-                  <option value="ORGS">Orgs</option>
-                  <option value="ROLES">Roles</option>
-                  <option value="SETTINGS">Settings</option>
-                  <option value="REPORTS">Reports</option>
+                  {categories.length > 0 ? (
+                    categories.map((cat) => (
+                      <option key={cat} value={cat}>
+                        {cat}
+                      </option>
+                    ))
+                  ) : (
+                    <option value="General">General</option>
+                  )}
                 </select>
               </div>
               <div className="form-actions">

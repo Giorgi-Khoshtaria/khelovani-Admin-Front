@@ -18,3 +18,19 @@ export interface Role {
   updatedAt?: string;
 }
 
+export interface CreateRolePayload {
+  name: string;
+  description?: string;
+  permissions?: string[];
+  allowedPanels?: string[];
+  isActive?: boolean;
+}
+
+export interface UpdateRolePayload {
+  name?: string;
+  description?: string;
+  permissions?: string[];
+  allowedPanels?: string[];
+  isActive?: boolean;
+}
+

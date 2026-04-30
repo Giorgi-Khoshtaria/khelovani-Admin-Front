@@ -1,5 +1,6 @@
 import React from "react";
 import "./ProductHeaderInfo.scss";
+import useCategoryOptions from "@/hooks/categories/useCategoryOptions";
 
 interface ProductHeaderInfoProps {
   titleGe: string;
@@ -20,9 +21,11 @@ const ProductHeaderInfo: React.FC<ProductHeaderInfoProps> = ({
   stockQuantity,
   condition,
 }) => {
+  const { getLabel } = useCategoryOptions();
+
   return (
     <div className="product-header-info">
-      <div className="category-tag">{category.replace("_", " & ")}</div>
+      <div className="category-tag">{getLabel(category)}</div>
       <h1 className="title-ge">{titleGe}</h1>
       {titleEn && <h2 className="title-en">{titleEn}</h2>}
 

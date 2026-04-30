@@ -51,3 +51,23 @@
     }
   }
 }
+
+.category-chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+
+  &__chip {
+    background: $color-success-light;
+    color: $color-success;
+    padding: 3px 12px;
+    border-radius: 16px;
+    font-size: 13px;
+    font-weight: 500;
+  }
+
+  &__empty {
+    color: $color-text-secondary;
+    font-size: 14px;
+  }
+}

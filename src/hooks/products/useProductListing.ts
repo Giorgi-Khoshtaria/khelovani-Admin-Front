@@ -4,6 +4,7 @@ import {
   deleteProductRequest,
   updateProductRequest,
 } from "@/apiCalls/partnerApiCalls/product.req";
+import { updateProductPinRequest } from "@/apiCalls/partnerApiCalls/pinProduct.req";
 import { getAllPartnerRequest } from "@/apiCalls/partnerApiCalls/getPartner.req";
 import { toast } from "react-toastify";
 import type { Product } from "@/types/productTypes";
@@ -133,6 +134,34 @@ export const useProductListing = (id?: string) => {
     }
   };
 
+  const handlePin = async (product: Product) => {
+    const newVal = !product.isPinned;
+    setProducts((prev) =>
+      prev.map((p) => (p._id === product._id ? { ...p, isPinned: newVal } : p)),
+    );
+    try {
+      const { data, meta } = await updateProductPinRequest(product._id, newVal);
+      setProducts((prev) =>
+        prev.map((p) => {
+          if (p._id === product._id) return { ...p, isPinned: data.isPinned, pinnedAt: data.pinnedAt };
+          if (meta.evicted.includes(p._id)) return { ...p, isPinned: false, pinnedAt: null };
+          return p;
+        }),
+      );
+      if (newVal && meta.evicted.length > 0) {
+        toast.info("სხვა პროდუქტი ავტომატურად მოიხსნა პინიდან");
+      } else {
+        toast.success(newVal ? "პროდუქტი დაიპინა" : "პინი მოიხსნა");
+      }
+      fetchProducts(false);
+    } catch {
+      setProducts((prev) =>
+        prev.map((p) => (p._id === product._id ? { ...p, isPinned: product.isPinned } : p)),
+      );
+      toast.error("მოქმედება ვერ შესრულდა");
+    }
+  };
+
   const handleToggleVisibility = async (product: Product) => {
     const originalStatus = product.isShown;
     const newStatus = !originalStatus;
@@ -172,6 +201,7 @@ export const useProductListing = (id?: string) => {
     partners,
     isAdmin,
     handleDelete,
+    handlePin,
     handleToggleVisibility,
     fetchProducts,
     currentPage,

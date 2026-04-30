@@ -1,0 +1,78 @@
+@use "@/styles/colors.scss" as colors;
+
+.multi-chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  align-items: flex-start;
+  border: 1px solid colors.$color-border;
+  border-radius: 8px;
+  padding: 8px;
+  min-height: 44px;
+  background: colors.$color-white;
+  position: relative;
+
+  &__placeholder {
+    color: colors.$color-text-secondary;
+    font-size: 14px;
+    line-height: 28px;
+  }
+
+  &__chip {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    padding: 3px 10px;
+    border-radius: 16px;
+    font-size: 13px;
+    font-weight: 500;
+
+    &--selected {
+      background: colors.$color-success-light;
+      color: colors.$color-success;
+    }
+  }
+
+  &__remove {
+    background: none;
+    border: none;
+    cursor: pointer;
+    font-size: 16px;
+    line-height: 1;
+    padding: 0;
+    color: inherit;
+    opacity: 0.7;
+
+    &:hover {
+      opacity: 1;
+    }
+  }
+
+  &__dropdown {
+    width: 100%;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 4px;
+    margin-top: 4px;
+  }
+
+  &__option {
+    background: colors.$color-ivory;
+    border: 1px solid colors.$color-border;
+    border-radius: 16px;
+    padding: 2px 10px;
+    font-size: 13px;
+    cursor: pointer;
+    transition: background 0.15s;
+
+    &:hover:not(:disabled) {
+      background: colors.$color-bg-secondary;
+      border-color: colors.$color-espresso;
+    }
+
+    &:disabled {
+      opacity: 0.4;
+      cursor: not-allowed;
+    }
+  }
+}

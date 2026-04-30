@@ -7,12 +7,14 @@ import {
   deletePartnerRequest,
   uploadPartnerPhotoRequest,
 } from "@/apiCalls/partnerApiCalls/getPartner.req";
+import { updatePartnerPinRequest } from "@/apiCalls/partnerApiCalls/pinPartner.req";
+import { updatePartnerVisibilityRequest } from "@/apiCalls/partnerApiCalls/setPartnerVisibility.req";
 import { getErrorMessage } from "@/utils/handleApiError";
 import { toast } from "react-toastify";
 import "./PartnerDetailedPage.scss";
 import { usePartnerContext } from "@/context/PartnerContext";
 import { useLogout } from "@/hooks/auth/useLogout";
-import { PartnerStatus } from "@/lib/status/partnerStatus";
+import { PartnerStatus } from "@/types/partnerStatus";
 import type { Partner } from "@/types/partner.types";
 import { parseJwt } from "@/utils/parseJwt";
 import { validatePartnerForm } from "@/validations/partnerValidations";
@@ -38,6 +40,8 @@ export default function PartnerDetailedPage() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
   const [updating, setUpdating] = useState(false);
+  const [pinning, setPinning] = useState(false);
+  const [toggling, setToggling] = useState(false);
 
   const [isEditing, setIsEditing] = useState(false);
   const [editForm, setEditForm] = useState<Partial<Partner>>({});
@@ -84,7 +88,9 @@ export default function PartnerDetailedPage() {
   };
 
   const handleChange = (
-    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>,
+    e: React.ChangeEvent<
+      HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement
+    >,
   ) => {
     const { id, value } = e.target;
     setEditForm((prev) => ({ ...prev, [id]: value }));
@@ -154,6 +160,40 @@ export default function PartnerDetailedPage() {
     }
   };
 
+  const handlePin = async () => {
+    if (!id || !partner) return;
+    try {
+      setPinning(true);
+      const newVal = !partner.isPinned;
+      const { data, meta } = await updatePartnerPinRequest(id, newVal);
+      setPartner({ ...partner, isPinned: data.isPinned, pinnedAt: data.pinnedAt });
+      if (newVal && meta.evicted.length > 0) {
+        toast.info("სხვა პარტნიორი ავტომატურად მოიხსნა პინიდან");
+      } else {
+        toast.success(newVal ? "პარტნიორი დაიპინა" : "პინი მოიხსნა");
+      }
+    } catch (err) {
+      toast.error(getErrorMessage(err, "მოქმედება ვერ შესრულდა"));
+    } finally {
+      setPinning(false);
+    }
+  };
+
+  const handleToggleVisibility = async () => {
+    if (!id || !partner) return;
+    try {
+      setToggling(true);
+      const newVal = !(partner.isShown ?? true);
+      await updatePartnerVisibilityRequest(id, newVal);
+      setPartner({ ...partner, isShown: newVal });
+      toast.success(newVal ? "პარტნიორი გამოჩნდა" : "პარტნიორი დაიმალა");
+    } catch (err) {
+      toast.error(getErrorMessage(err, "მოქმედება ვერ შესრულდა"));
+    } finally {
+      setToggling(false);
+    }
+  };
+
   const handlePhotoChange = async (file: File) => {
     if (!id) return;
 
@@ -191,6 +231,10 @@ export default function PartnerDetailedPage() {
         onEdit={() => setIsEditing(true)}
         onDelete={handleDelete}
         onStatusUpdate={handleStatusUpdate}
+        onPin={handlePin}
+        onToggleVisibility={handleToggleVisibility}
+        pinning={pinning}
+        toggling={toggling}
       />
 
       <PartnerCompanyPanel
@@ -209,6 +253,9 @@ export default function PartnerDetailedPage() {
         isAdmin={isAdmin}
         editForm={editForm}
         onChange={handleChange}
+        onCategoriesChange={(cats) =>
+          setEditForm((prev) => ({ ...prev, categories: cats }))
+        }
         errors={formErrors}
       />
     </div>

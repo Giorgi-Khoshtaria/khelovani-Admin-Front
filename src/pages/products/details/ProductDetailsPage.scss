@@ -79,6 +79,31 @@
         }
       }
 
+      .pin-details-btn {
+        background: none;
+        border: 1px solid #f59e0b;
+        color: #92400e;
+        padding: 9.6px 19.2px;
+        border-radius: 8px;
+        font-weight: 600;
+        cursor: pointer;
+        white-space: nowrap;
+        transition: all 0.2s ease;
+
+        &.active {
+          background: #fef3c7;
+        }
+
+        &:hover:not(:disabled) {
+          background: #fef3c7;
+        }
+
+        &:disabled {
+          opacity: 0.45;
+          cursor: not-allowed;
+        }
+      }
+
       .toggle-details-btn {
         background-color: colors.$color-white;
         border: 1px solid colors.$color-info;

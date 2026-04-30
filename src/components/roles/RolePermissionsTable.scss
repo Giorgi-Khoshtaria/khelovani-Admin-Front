@@ -9,13 +9,28 @@
 
   .tab-controls {
     display: flex;
-    justify-content: flex-end;
+    align-items: center;
+    gap: 12px;
 
-    .search-input {
-      padding: 9.6px 16px;
+    .category-filter {
+      padding: 9px 14px;
       border: 1px solid colors.$color-border;
       border-radius: 8px;
-      width: 100%;
+      font-size: 14.4px;
+      background: colors.$color-white;
+      cursor: pointer;
+
+      &:focus {
+        outline: none;
+        border-color: colors.$color-espresso;
+      }
+    }
+
+    .search-input {
+      padding: 9px 14px;
+      border: 1px solid colors.$color-border;
+      border-radius: 8px;
+      flex: 1;
       max-width: 320px;
       font-size: 14.4px;
 
@@ -67,6 +82,13 @@
         border-radius: 4px;
         color: colors.$color-espresso;
         font-family: monospace;
+      }
+
+      .empty-row {
+        text-align: center;
+        color: colors.$color-text-secondary;
+        padding: 32px;
+        font-size: 14.4px;
       }
 
       .category-badge {

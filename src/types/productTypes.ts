@@ -7,7 +7,7 @@ export interface Product {
   descriptionEn?: string;
   price: number;
   currency: string;
-  category: ProductCategory;
+  category: string;
   stockQuantity: number;
   condition: "new" | "handmade" | "vintage";
   tagsGe: string[];
@@ -21,6 +21,8 @@ export interface Product {
   dimensions?: string;
   weight?: number;
   isShown: boolean;
+  isPinned?: boolean;
+  pinnedAt?: string | null;
   createdAt: string;
   isOneOfAKind?: boolean;
   owner: string;
@@ -45,59 +47,5 @@ export interface CreateProductInput extends Omit<
   stockQuantity: number | string;
   shippingPrice: number | string;
   weight: number | string;
-  category: ProductCategory | "";
+  category: string;
 }
-export const ProductCategory = {
-  JEWELRY: "jewelry",
-  CERAMICS: "ceramics",
-  TEXTILE: "textile",
-  WOODWORK: "woodwork",
-  PAINTING: "painting",
-  SCULPTURE: "sculpture",
-  LEATHERWORK: "leatherwork",
-  GLASSWORK: "glasswork",
-  EMBROIDERY: "embroidery",
-  METALWORK: "metalwork",
-  FELTWORK: "feltwork",
-  KNITTING: "knitting",
-  CANDLES: "candles",
-  PHOTOGRAPHY: "photography",
-  PRINTMAKING: "printmaking",
-  PAPER_ART: "paper_art",
-  HOME_DECOR: "home_decor",
-  ACCESSORIES: "accessories",
-  TOYS: "toys",
-  OTHER: "other",
-} as const;
-
-export type ProductCategory =
-  (typeof ProductCategory)[keyof typeof ProductCategory];
-
-export const PRODUCT_CATEGORY_LABELS: Record<
-  ProductCategory,
-  { ge: string; en: string }
-> = {
-  [ProductCategory.JEWELRY]: { ge: "სამკაული", en: "Jewelry" },
-  [ProductCategory.CERAMICS]: { ge: "კერამიკა", en: "Ceramics" },
-  [ProductCategory.TEXTILE]: { ge: "ტექსტილი", en: "Textile" },
-  [ProductCategory.WOODWORK]: { ge: "ხის ნაკეთობები", en: "Woodwork" },
-  [ProductCategory.PAINTING]: { ge: "ფერწერა", en: "Painting" },
-  [ProductCategory.SCULPTURE]: { ge: "ქანდაკება", en: "Sculpture" },
-  [ProductCategory.LEATHERWORK]: { ge: "ტყავის ნაკეთობები", en: "Leatherwork" },
-  [ProductCategory.GLASSWORK]: { ge: "მინის ნაკეთობები", en: "Glasswork" },
-  [ProductCategory.EMBROIDERY]: { ge: "ნაქარგობა", en: "Embroidery" },
-  [ProductCategory.METALWORK]: { ge: "ლითონის ნაკეთობები", en: "Metalwork" },
-  [ProductCategory.FELTWORK]: { ge: "თექა", en: "Feltwork" },
-  [ProductCategory.KNITTING]: { ge: "ნაქსოვი", en: "Knitting" },
-  [ProductCategory.CANDLES]: { ge: "სანთლები", en: "Candles" },
-  [ProductCategory.PHOTOGRAPHY]: { ge: "ფოტოგრაფია", en: "Photography" },
-  [ProductCategory.PRINTMAKING]: {
-    ge: "გრაფიკა / გრავიურა",
-    en: "Printmaking",
-  },
-  [ProductCategory.PAPER_ART]: { ge: "ქაღალდის ხელოვნება", en: "Paper Art" },
-  [ProductCategory.HOME_DECOR]: { ge: "სახლის დეკორი", en: "Home Decor" },
-  [ProductCategory.ACCESSORIES]: { ge: "აქსესუარები", en: "Accessories" },
-  [ProductCategory.TOYS]: { ge: "სათამაშოები", en: "Toys" },
-  [ProductCategory.OTHER]: { ge: "სხვა", en: "Other" },
-};

@@ -1,5 +1,5 @@
 import React from "react";
-import { ProductCategory, PRODUCT_CATEGORY_LABELS } from "@/types/productTypes";
+import useCategoryOptions from "@/hooks/categories/useCategoryOptions";
 
 interface CategorySelectProps {
   value: string;
@@ -16,17 +16,18 @@ const CategorySelect: React.FC<CategorySelectProps> = ({
   includeAll = false,
   className = "",
 }) => {
-  return (
-    <select name={name} value={value} onChange={onChange} className={className}>
-      {includeAll ? (
-        <option value="all">ყველა კატეგორია </option>
-      ) : (
-        <option value="">აირჩიეთ კატეგორია </option>
-      )}
+  const { options, loading } = useCategoryOptions();
 
-      {Object.values(ProductCategory).map((cat) => (
-        <option key={cat} value={cat}>
-          {PRODUCT_CATEGORY_LABELS[cat].ge} / {PRODUCT_CATEGORY_LABELS[cat].en}
+  return (
+    <select name={name} value={value} onChange={onChange} className={className} disabled={loading}>
+      {includeAll ? (
+        <option value="all">ყველა კატეგორია</option>
+      ) : (
+        <option value="">აირჩიეთ კატეგორია</option>
+      )}
+      {options.map((cat) => (
+        <option key={cat.slug} value={cat.slug}>
+          {cat.nameGe} / {cat.nameEn}
         </option>
       ))}
     </select>

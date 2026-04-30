@@ -22,6 +22,7 @@ export default function ProductListingPage() {
     partners,
     isAdmin,
     handleDelete,
+    handlePin,
     handleToggleVisibility,
     currentPage,
     setCurrentPage,
@@ -37,6 +38,11 @@ export default function ProductListingPage() {
   const onToggle = async (e: React.MouseEvent, product: Product) => {
     e.stopPropagation();
     await handleToggleVisibility(product);
+  };
+
+  const onPin = async (e: React.MouseEvent, product: Product) => {
+    e.stopPropagation();
+    await handlePin(product);
   };
 
   const isProfileMode = location.pathname.startsWith("/profile");
@@ -129,6 +135,7 @@ export default function ProductListingPage() {
               onToggle={onToggle}
               onDelete={onDelete}
               onEdit={onEdit}
+              onPin={onPin}
               onRowClick={() => onRowClick(product)}
             />
           ))}

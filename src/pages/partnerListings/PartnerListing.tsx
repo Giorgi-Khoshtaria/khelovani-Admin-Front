@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { useSearchParams } from "react-router-dom";
 import PartnerCard from "../../components/partners/PartnerCard/PartnerCard";
 import type { PartnerData } from "@/types/partner.types";
-import { PartnerStatus } from "@/lib/status/partnerStatus";
+import { PartnerStatus } from "@/types/partnerStatus";
 import "./partnerListing.scss";
 
 import {
@@ -112,9 +112,7 @@ export default function PartnerListing() {
 
   const handleBulkDelete = async () => {
     if (
-      !window.confirm(
-        `ნამდვილად გსურთ ${selectedIds.length} პარტნიორის წაშლა?`,
-      )
+      !window.confirm(`ნამდვილად გსურთ ${selectedIds.length} პარტნიორის წაშლა?`)
     )
       return;
 
@@ -217,6 +215,13 @@ export default function PartnerListing() {
                 onDelete={refreshPartners}
                 isSelected={selectedIds.includes(partner._id)}
                 onSelect={handleSelect}
+                isAdmin={true}
+                onUpdate={(updated) => {
+                  setPartners((prev) =>
+                    prev.map((p) => p._id === partner._id ? { ...p, ...updated } : p)
+                  );
+                  if (updated.isPinned !== undefined) refreshPartners();
+                }}
               />
             ))}
           </div>
@@ -247,4 +252,3 @@ export default function PartnerListing() {
     </div>
   );
 }
-

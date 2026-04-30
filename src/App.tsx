@@ -28,6 +28,9 @@ import ProtectedRoute from "./components/auth/ProtectedRoute";
 
 import ExportPage from "./pages/Export/ExportPage";
 import NotFound from "./pages/NotFound/NotFound";
+import UserListingPage from "./pages/users/listing/UserListingPage";
+import UserDetailsPage from "./pages/users/details/UserDetailsPage";
+import CategoryListing from "./pages/categories/CategoryListing";
 
 const IndexRedirect = () => {
   const { token } = usePartnerContext();
@@ -82,6 +85,18 @@ const router = createBrowserRouter([
           {
             path: "export",
             element: <ExportPage />,
+          },
+          {
+            path: "users",
+            element: <UserListingPage />,
+          },
+          {
+            path: "users/:id",
+            element: <UserDetailsPage />,
+          },
+          {
+            path: "categories",
+            element: <CategoryListing />,
           },
         ],
       },

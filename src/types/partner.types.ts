@@ -1,4 +1,4 @@
-import { PartnerStatus as PartnerStatusObj } from "@/lib/status/partnerStatus";
+import { PartnerStatus as PartnerStatusObj } from "@/types/partnerStatus";
 
 export type PartnerStatus =
   (typeof PartnerStatusObj)[keyof typeof PartnerStatusObj];
@@ -10,11 +10,15 @@ export interface PartnerData {
   email: string;
   status: PartnerStatus;
   identificationCode?: string;
+  categories?: string[];
   website?: string;
   facebook?: string;
   instagram?: string;
   tiktok?: string;
   profilePhoto?: string;
+  isPinned?: boolean;
+  pinnedAt?: string | null;
+  isShown?: boolean;
 }
 
 export interface Partner {
@@ -30,6 +34,7 @@ export interface Partner {
   addressEn: string;
   description?: string;
   descriptionEn?: string;
+  categories?: string[];
   status: PartnerStatus;
   createdAt: string;
   website?: string;
@@ -37,4 +42,7 @@ export interface Partner {
   instagram?: string;
   tiktok?: string;
   profilePhoto?: string;
+  isPinned?: boolean;
+  pinnedAt?: string | null;
+  isShown?: boolean;
 }

@@ -1,0 +1,40 @@
+@use "@/styles/colors.scss" as colors;
+
+.category-table {
+  width: 100%;
+  border-collapse: collapse;
+  background: white;
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+
+  &__head {
+    background: colors.$color-bg-secondary;
+
+    th {
+      padding: 12px 16px;
+      text-align: left;
+      font-size: 13px;
+      font-weight: 600;
+      color: colors.$color-text-secondary;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+  }
+
+  &__empty {
+    text-align: center;
+    padding: 48px;
+    color: colors.$color-text-secondary;
+    font-size: 15px;
+  }
+
+  tbody tr:hover {
+    background: colors.$color-ivory;
+  }
+
+  tbody tr.pinned {
+    border-left: 3px solid #f59e0b;
+    background-color: #fffbeb;
+  }
+}

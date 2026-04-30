@@ -10,6 +10,7 @@ import { productsVisibilityTests } from "./suites/visibility.spec";
 import { productsDeleteTests } from "./suites/delete.spec";
 import { productsCrossPartnerTests } from "./suites/cross-partner.spec";
 import { productsErrorStatesTests } from "./suites/error-states.spec";
+import { productsPinTests } from "./suites/pin.spec";
 
 test.describe("Admin — Products", () => {
   productsAccessTests();
@@ -23,4 +24,5 @@ test.describe("Admin — Products", () => {
   productsDeleteTests();
   productsCrossPartnerTests();
   productsErrorStatesTests();
+  productsPinTests();
 });

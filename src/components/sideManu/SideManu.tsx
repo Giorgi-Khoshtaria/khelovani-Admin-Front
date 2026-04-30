@@ -22,12 +22,15 @@ export default function SideManu() {
     links.push({ path: "/menu", label: "მენიუ" });
   if (hasPermission("users.list"))
     links.push({ path: "/partners", label: "პარტნიორების სია" });
+  if (role === "admin")
+    links.push({ path: "/users", label: "მომხმარებლები" });
   if (hasPermission("products.viewAll"))
     links.push({ path: "/products", label: "ყველა პროდუქტი" });
   if (hasPermission("translations.read"))
     links.push({ path: "/translations", label: "თარგმანები" });
   if (hasPermission("roles.read"))
     links.push({ path: "/roles", label: "როლები" });
+  if (role === "admin") links.push({ path: "/categories", label: "კატეგორიები" });
   if (role === "admin") links.push({ path: "/export", label: "ექსპორტი" });
 
   // Organisation / Partner Links
@@ -53,6 +56,11 @@ export default function SideManu() {
 
     // Admin /partners highlighting
     if (linkPath === "/partners" && location.pathname.startsWith("/partners")) {
+      return true;
+    }
+
+    // Admin /users highlighting
+    if (linkPath === "/users" && location.pathname.startsWith("/users")) {
       return true;
     }
 

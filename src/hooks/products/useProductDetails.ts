@@ -1,6 +1,7 @@
 import { useState, useEffect, useCallback, useMemo } from "react";
 import { useNavigate } from "react-router-dom";
 import { getProductDetailsRequest, deleteProductRequest, updateProductRequest } from "@/apiCalls/partnerApiCalls/product.req";
+import { updateProductPinRequest } from "@/apiCalls/partnerApiCalls/pinProduct.req";
 import { toast } from "react-toastify";
 import type { Product } from "@/types/productTypes";
 import { parseJwt } from "@/utils/parseJwt";
@@ -9,6 +10,7 @@ export const useProductDetails = (partnerId?: string, productId?: string) => {
   const navigate = useNavigate();
   const [product, setProduct] = useState<Product | null>(null);
   const [loading, setLoading] = useState(true);
+  const [pinning, setPinning] = useState(false);
 
   const userRole = useMemo(() => {
     const token = localStorage.getItem("adminToken");
@@ -53,6 +55,26 @@ export const useProductDetails = (partnerId?: string, productId?: string) => {
     }
   };
 
+  const handlePin = async () => {
+    if (!productId || !product) return;
+    if (pinning) return;
+    const newVal = !product.isPinned;
+    try {
+      setPinning(true);
+      const { data, meta } = await updateProductPinRequest(productId, newVal);
+      setProduct((prev) => prev ? { ...prev, isPinned: data.isPinned, pinnedAt: data.pinnedAt } : null);
+      if (newVal && meta.evicted.length > 0) {
+        toast.info("სხვა პროდუქტი ავტომატურად მოიხსნა პინიდან");
+      } else {
+        toast.success(newVal ? "პროდუქტი დაიპინა" : "პინი მოიხსნა");
+      }
+    } catch {
+      toast.error("მოქმედება ვერ შესრულდა");
+    } finally {
+      setPinning(false);
+    }
+  };
+
   const handleToggleVisibility = async () => {
     if (!productId || !product) return;
     const originalStatus = product.isShown;
@@ -73,6 +95,8 @@ export const useProductDetails = (partnerId?: string, productId?: string) => {
     product,
     loading,
     isAdmin,
+    pinning,
+    handlePin,
     handleDelete,
     handleToggleVisibility,
     fetchProductDetails

@@ -42,9 +42,47 @@
     gap: 12px;
     align-items: center;
 
+    .admin-pin-actions {
+      display: flex;
+      gap: 8px;
+    }
+
     .admin-status-actions {
       display: flex;
       gap: 12px;
+    }
+
+    .pin-btn,
+    .visibility-btn {
+      border-radius: 6px;
+      padding: 6px 14px;
+      font-size: 14px;
+      cursor: pointer;
+      border: 1px solid $color-border;
+      background: none;
+      transition: background 0.15s ease, border-color 0.15s ease;
+
+      &:hover:not(:disabled) {
+        background: $color-bg-secondary;
+        border-color: $color-espresso;
+      }
+
+      &:disabled {
+        opacity: 0.5;
+        cursor: not-allowed;
+      }
+    }
+
+    .pin-btn.active {
+      background: #fef3c7;
+      border-color: #f59e0b;
+      color: #92400e;
+    }
+
+    .visibility-btn.hidden {
+      background: #f3f4f6;
+      border-color: #d1d5db;
+      color: #6b7280;
     }
 
     .profile-owner-actions {

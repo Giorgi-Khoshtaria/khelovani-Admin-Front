@@ -1,4 +1,4 @@
-import { PartnerStatus } from "@/lib/status/partnerStatus";
+import { PartnerStatus } from "@/types/partnerStatus";
 import type { Partner } from "@/types/partner.types";
 import api from "../api";
 

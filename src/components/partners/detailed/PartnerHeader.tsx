@@ -1,4 +1,4 @@
-import { PartnerStatus } from "@/lib/status/partnerStatus";
+import { PartnerStatus } from "@/types/partnerStatus";
 import type { Partner } from "@/types/partner.types";
 import "./PartnerHeader.scss";
 
@@ -16,6 +16,10 @@ interface PartnerHeaderProps {
   onStatusUpdate: (
     newStatus: typeof PartnerStatus.APPROVED | typeof PartnerStatus.BANNED,
   ) => void;
+  onPin?: () => void;
+  onToggleVisibility?: () => void;
+  pinning?: boolean;
+  toggling?: boolean;
 }
 
 export function PartnerHeader({
@@ -30,7 +34,12 @@ export function PartnerHeader({
   onEdit,
   onDelete,
   onStatusUpdate,
+  onPin,
+  onToggleVisibility,
+  pinning,
+  toggling,
 }: PartnerHeaderProps) {
+  const isShown = partner.isShown ?? true;
   return (
     <div className="profile-header">
       <div className="header-title">
@@ -76,6 +85,27 @@ export function PartnerHeader({
               </div>
             )}
           </>
+        )}
+
+        {!isEditing && isAdmin && (
+          <div className="admin-pin-actions">
+            <button
+              className={`pin-btn ${partner.isPinned ? "active" : ""}`}
+              onClick={onPin}
+              disabled={pinning || updating}
+              title={partner.isPinned ? "პინის მოხსნა" : "პინი"}
+            >
+              {pinning ? "..." : partner.isPinned ? "📌 პინის მოხსნა" : "📍 პინი"}
+            </button>
+            <button
+              className={`visibility-btn ${isShown ? "visible" : "hidden"}`}
+              onClick={onToggleVisibility}
+              disabled={toggling || updating}
+              title={isShown ? "დამალვა" : "გამოჩენა"}
+            >
+              {toggling ? "..." : isShown ? "👁 დამალვა" : "🙈 გამოჩენა"}
+            </button>
+          </div>
         )}
 
         {!isEditing && isAdmin && (

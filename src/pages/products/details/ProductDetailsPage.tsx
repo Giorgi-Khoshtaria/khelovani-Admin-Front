@@ -11,7 +11,7 @@ const ProductDetailsPage = () => {
     id: string;
     productId: string;
   }>();
-  const { product, loading, isAdmin, handleDelete, handleToggleVisibility } =
+  const { product, loading, isAdmin, pinning, handlePin, handleDelete, handleToggleVisibility } =
     useProductDetails(partnerId, productId);
   const navigate = useNavigate();
 
@@ -36,14 +36,24 @@ const ProductDetailsPage = () => {
 
         <div className="header-actions">
           {isAdmin ? (
-            <button
-              className="toggle-details-btn"
-              onClick={handleToggleVisibility}
-            >
-              {product.isShown
-                ? "დამალვა / Hide Visibility"
-                : "გამოჩენა / Show Visibility"}
-            </button>
+            <>
+              <button
+                className={`pin-details-btn${product.isPinned ? " active" : ""}`}
+                onClick={handlePin}
+                disabled={pinning || !product.isShown}
+                title={!product.isShown ? "დამალული პროდუქტის პინი შეუძლებელია" : undefined}
+              >
+                {pinning ? "..." : product.isPinned ? "📌 პინის მოხსნა" : "📍 პინი"}
+              </button>
+              <button
+                className="toggle-details-btn"
+                onClick={handleToggleVisibility}
+              >
+                {product.isShown
+                  ? "დამალვა / Hide Visibility"
+                  : "გამოჩენა / Show Visibility"}
+              </button>
+            </>
           ) : (
             partnerId && (
               <button

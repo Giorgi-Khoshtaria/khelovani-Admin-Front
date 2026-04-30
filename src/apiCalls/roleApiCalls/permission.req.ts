@@ -4,13 +4,21 @@ import api from "../api";
 export const getPermissionsRequest = async (
   search?: string,
   category?: string,
-  sortBy?: string,
-  sortOrder?: string,
 ) => {
   const response = await api.get(`/api/admin/permissions`, {
-    params: { search, category, sortBy, sortOrder },
+    params: { search, category },
   });
-  return { data: response.data.data as Permission[], meta: response.data.meta };
+  return { data: response.data.data as Permission[] };
+};
+
+export const getPermissionByIdRequest = async (id: string): Promise<Permission> => {
+  const response = await api.get(`/api/admin/permissions/${id}`);
+  return response.data.data;
+};
+
+export const getPermissionCategoriesRequest = async (): Promise<string[]> => {
+  const response = await api.get(`/api/admin/permissions/categories`);
+  return response.data.data as string[];
 };
 
 export const createPermissionRequest = async (data: Partial<Permission>) => {
