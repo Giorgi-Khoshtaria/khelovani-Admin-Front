@@ -9,7 +9,7 @@ import { getAllPartnerRequest } from "@/apiCalls/partnerApiCalls/getPartner.req"
 import { toast } from "react-toastify";
 import type { Product } from "@/types/productTypes";
 import { parseJwt } from "@/utils/parseJwt";
-import type { Partner } from "@/types/partner.types";
+import type { Partner, PartnerType } from "@/types/partner.types";
 import { useDebounce } from "@/hooks/useDebounce";
 
 interface TokenPayload {
@@ -34,6 +34,7 @@ export const useProductListing = (id?: string) => {
   // Admin filter by organization
   const [selectedPartnerId, setSelectedPartnerId] = useState("");
   const [partners, setPartners] = useState<{ _id: string; name: string }[]>([]);
+  const [ownerType, setOwnerType] = useState<PartnerType | "">("");
 
   const userData = useMemo(() => {
     const token = localStorage.getItem("adminToken");
@@ -69,6 +70,7 @@ export const useProductListing = (id?: string) => {
           selectedPartnerId,
           currentPage,
           limit,
+          ownerType || undefined,
         );
         setProducts(data.data || []);
         setTotalPages(data.meta?.totalPages || 1);
@@ -84,6 +86,7 @@ export const useProductListing = (id?: string) => {
       debouncedSearch,
       category,
       selectedPartnerId,
+      ownerType,
       isAdmin,
       userData?.id,
       currentPage,
@@ -92,7 +95,7 @@ export const useProductListing = (id?: string) => {
 
   useEffect(() => {
     setCurrentPage(1);
-  }, [debouncedSearch, category, selectedPartnerId]);
+  }, [debouncedSearch, category, selectedPartnerId, ownerType]);
 
   useEffect(() => {
     fetchProducts();
@@ -198,6 +201,8 @@ export const useProductListing = (id?: string) => {
     setCategory,
     selectedPartnerId,
     setSelectedPartnerId,
+    ownerType,
+    setOwnerType,
     partners,
     isAdmin,
     handleDelete,

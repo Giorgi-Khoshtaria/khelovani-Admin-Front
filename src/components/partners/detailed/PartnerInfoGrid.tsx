@@ -37,30 +37,48 @@ export function PartnerInfoGrid({
       <div className="profile-grid">
         <div className="info-section">
           <h2>ზოგადი ინფორმაცია</h2>
-          <TextInput
-            id="identificationCode"
-            label="საიდენტიფიკაციო კოდი"
-            value={
-              isEditing
-                ? editForm.identificationCode || ""
-                : partner.identificationCode
-            }
-            onChange={onChange}
-            readOnly={!isAdmin}
-            error={errors.identificationCode}
-            fullWidth
-          />
-          <TextInput
-            id="contactPerson"
-            label="საკონტაქტო პირი"
-            value={
-              isEditing ? editForm.contactPerson || "" : partner.contactPerson
-            }
-            onChange={onChange}
-            readOnly={!isEditing}
-            error={errors.contactPerson}
-            fullWidth
-          />
+          {partner.partnerType === "individual" ? (
+            <TextInput
+              id="personalNumber"
+              label="პირადი ნომერი"
+              value={
+                isEditing
+                  ? editForm.personalNumber || ""
+                  : partner.personalNumber || ""
+              }
+              onChange={onChange}
+              readOnly={!isAdmin}
+              error={errors.personalNumber}
+              fullWidth
+            />
+          ) : (
+            <TextInput
+              id="identificationCode"
+              label="საიდენტიფიკაციო კოდი"
+              value={
+                isEditing
+                  ? editForm.identificationCode || ""
+                  : partner.identificationCode || ""
+              }
+              onChange={onChange}
+              readOnly={!isAdmin}
+              error={errors.identificationCode}
+              fullWidth
+            />
+          )}
+          {partner.partnerType !== "individual" && (
+            <TextInput
+              id="contactPerson"
+              label="საკონტაქტო პირი"
+              value={
+                isEditing ? editForm.contactPerson || "" : partner.contactPerson || ""
+              }
+              onChange={onChange}
+              readOnly={!isEditing}
+              error={errors.contactPerson}
+              fullWidth
+            />
+          )}
           <div className="form-row">
             {isEditing ? (
               <SelectInput

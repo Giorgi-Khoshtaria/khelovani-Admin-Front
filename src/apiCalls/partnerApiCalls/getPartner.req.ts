@@ -1,5 +1,5 @@
 import { PartnerStatus } from "@/types/partnerStatus";
-import type { Partner } from "@/types/partner.types";
+import type { Partner, PartnerType } from "@/types/partner.types";
 import api from "../api";
 
 export const getPartnerByIdRequest = async (id: string) => {
@@ -12,11 +12,13 @@ export const getAllPartnerRequest = async (
   status?: string,
   page: number = 1,
   limit: number = 10,
+  partnerType?: PartnerType | "",
 ) => {
   const response = await api.get(`/api/admin/partners`, {
     params: {
       ...(search ? { search } : {}),
       ...(status && status !== "all" ? { status } : {}),
+      ...(partnerType ? { partnerType } : {}),
       page,
       limit,
     },

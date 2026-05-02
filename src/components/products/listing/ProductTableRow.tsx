@@ -60,6 +60,11 @@ export const ProductTableRow: React.FC<ProductTableRowProps> = ({
           <span className="title-en" title={product.titleEn}>
             {truncate(product.titleEn)}
           </span>
+          {product.ownerType && (
+            <span className={`owner-type-badge owner-type-badge--${product.ownerType}`}>
+              {product.ownerType === "individual" ? "👤 ფიზიკური პირი" : "🏢 ორგანიზაცია"}
+            </span>
+          )}
         </div>
       </div>
 

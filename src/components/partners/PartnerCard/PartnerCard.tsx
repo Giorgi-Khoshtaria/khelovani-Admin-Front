@@ -91,6 +91,11 @@ export default function PartnerCard({
             />
           )}
           <h3 className="partner-card__name">{partner.companyNameGe}</h3>
+          {partner.partnerType && (
+            <span className={`partner-card__type-badge type--${partner.partnerType}`}>
+              {partner.partnerType === "individual" ? "👤 ფიზიკური პირი" : "🏢 ორგანიზაცია"}
+            </span>
+          )}
           {partner.isPinned && (
             <span className="partner-card__pin-badge">📌 პინი</span>
           )}

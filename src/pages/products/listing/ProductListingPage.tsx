@@ -19,6 +19,8 @@ export default function ProductListingPage() {
     setCategory,
     selectedPartnerId,
     setSelectedPartnerId,
+    ownerType,
+    setOwnerType,
     partners,
     isAdmin,
     handleDelete,
@@ -115,6 +117,8 @@ export default function ProductListingPage() {
         selectedPartnerId={selectedPartnerId}
         onPartnerChange={setSelectedPartnerId}
         partners={partners}
+        ownerType={ownerType}
+        onOwnerTypeChange={setOwnerType}
       />
 
       {loading ? (

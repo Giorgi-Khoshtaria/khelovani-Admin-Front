@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { useSearchParams } from "react-router-dom";
 import PartnerCard from "../../components/partners/PartnerCard/PartnerCard";
 import type { PartnerData } from "@/types/partner.types";
+import { PartnerTypeEnum, type PartnerType } from "@/types/partner.types";
 import { PartnerStatus } from "@/types/partnerStatus";
 import "./partnerListing.scss";
 
@@ -23,6 +24,7 @@ export default function PartnerListing() {
 
   const [partners, setPartners] = useState<PartnerData[]>([]);
   const [activeTab, setActiveTab] = useState<"all" | PartnerStatus>(initialTab);
+  const [partnerTypeFilter, setPartnerTypeFilter] = useState<PartnerType | "">("");
   const [searchQuery, setSearchQuery] = useState(initialSearch);
   const debouncedQuery = useDebounce(searchQuery, 500); // Reduced from 1000ms
   const [loading, setLoading] = useState(true);
@@ -67,6 +69,7 @@ export default function PartnerListing() {
           activeTab,
           currentPage,
           limit,
+          partnerTypeFilter,
         );
         setPartners(data.data || []);
         setTotalPages(data.meta?.totalPages || 1);
@@ -78,11 +81,11 @@ export default function PartnerListing() {
     };
 
     fetchPartners();
-  }, [debouncedQuery, activeTab, currentPage]);
+  }, [debouncedQuery, activeTab, currentPage, partnerTypeFilter]);
 
   useEffect(() => {
     setCurrentPage(1);
-  }, [debouncedQuery, activeTab]);
+  }, [debouncedQuery, activeTab, partnerTypeFilter]);
 
   const refreshPartners = async () => {
     try {
@@ -91,6 +94,7 @@ export default function PartnerListing() {
         activeTab,
         currentPage,
         limit,
+        partnerTypeFilter,
       );
       setPartners(data.data || []);
       setTotalPages(data.meta?.totalPages || 1);
@@ -128,39 +132,22 @@ export default function PartnerListing() {
     }
   };
 
-  // Enforce server-side result: no client-side filtering safeguard as requested.
-  const filteredPartners = partners;
+  // Enforce server-side result + client-side sorting
+  const filteredPartners = [...partners].sort((a, b) => {
+    // Pinned first
+    if (a.isPinned && !b.isPinned) return -1;
+    if (!a.isPinned && b.isPinned) return 1;
+
+    // Then newly registered (descending createdAt)
+    const dateA = a.createdAt ? new Date(a.createdAt).getTime() : 0;
+    const dateB = b.createdAt ? new Date(b.createdAt).getTime() : 0;
+    return dateB - dateA;
+  });
 
   return (
     <div className="partner-listing-page">
       <div className="page-header">
         <h1>პარტნიორების სია</h1>
-        <div className="tabs">
-          <button
-            onClick={() => handleTabChange("all")}
-            className={activeTab === "all" ? "active" : ""}
-          >
-            ყველა
-          </button>
-          <button
-            onClick={() => handleTabChange(PartnerStatus.PENDING)}
-            className={activeTab === PartnerStatus.PENDING ? "active" : ""}
-          >
-            მოლოდინი
-          </button>
-          <button
-            onClick={() => handleTabChange(PartnerStatus.APPROVED)}
-            className={activeTab === PartnerStatus.APPROVED ? "active" : ""}
-          >
-            დადასტურებული
-          </button>
-          <button
-            onClick={() => handleTabChange(PartnerStatus.BANNED)}
-            className={activeTab === PartnerStatus.BANNED ? "active" : ""}
-          >
-            დაბლოკილი
-          </button>
-        </div>
       </div>
 
       <div className="list-actions">
@@ -171,6 +158,37 @@ export default function PartnerListing() {
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
           />
+        </div>
+
+        <div className="filters-group">
+          <div className="filter-item">
+            <label htmlFor="status-filter">სტატუსი:</label>
+            <select
+              id="status-filter"
+              value={activeTab}
+              onChange={(e) => handleTabChange(e.target.value as "all" | PartnerStatus)}
+              className="filter-select"
+            >
+              <option value="all">ყველა</option>
+              <option value={PartnerStatus.PENDING}>მოლოდინი</option>
+              <option value={PartnerStatus.APPROVED}>დადასტურებული</option>
+              <option value={PartnerStatus.BANNED}>დაბლოკილი</option>
+            </select>
+          </div>
+
+          <div className="filter-item">
+            <label htmlFor="type-filter">ტიპი:</label>
+            <select
+              id="type-filter"
+              value={partnerTypeFilter}
+              onChange={(e) => setPartnerTypeFilter(e.target.value as PartnerType | "")}
+              className="filter-select"
+            >
+              <option value="">ყველა ტიპი</option>
+              <option value={PartnerTypeEnum.ORGANIZATION}>🏢 ორგანიზაცია</option>
+              <option value={PartnerTypeEnum.INDIVIDUAL}>👤 ფიზიკური პირი</option>
+            </select>
+          </div>
         </div>
 
         {partners.length > 0 && (

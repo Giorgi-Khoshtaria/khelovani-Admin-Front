@@ -57,12 +57,14 @@ export const getProductsRequest = async (
   filterPartnerId?: string,
   page: number = 1,
   limit: number = 10,
+  ownerType?: string,
 ) => {
   const response = await api.get(getProductUrl(partnerId), {
     params: {
       ...(search && { search }),
       ...(category && category !== "all" && { category }),
       ...(filterPartnerId && { partnerId: filterPartnerId }),
+      ...(ownerType && { ownerType }),
       page,
       limit,
     },

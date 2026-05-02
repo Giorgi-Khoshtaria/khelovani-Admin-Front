@@ -21,36 +21,6 @@
       font-size: 28px;
       color: $color-text-primary;
     }
-
-    .tabs {
-      display: flex;
-      gap: 8px;
-      background-color: $color-bg-secondary;
-      padding: 6px;
-      border-radius: 8px;
-
-      button {
-        background: none;
-        border: none;
-        padding: 8px 16px;
-        border-radius: 6px;
-        font-size: 14px;
-        font-weight: 600;
-        cursor: pointer;
-        color: $color-text-secondary;
-        transition: all 0.2s ease;
-
-        &:hover {
-          color: $color-espresso;
-        }
-
-        &.active {
-          background-color: $color-white;
-          color: $color-espresso;
-          box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
-        }
-      }
-    }
   }
 
   .list-actions {
@@ -68,10 +38,10 @@
     .search-bar {
       margin-bottom: 0;
       flex: 1;
+      min-width: 280px;
       
       input {
         width: 100%;
-        max-width: 360px;
         padding: 10px 16px;
         border-radius: 8px;
         border: 1px solid $color-border;
@@ -81,12 +51,65 @@
         transition: border-color 0.2s ease;
 
         &:focus {
-          border-color: $color-text-primary;
+          border-color: $color-espresso;
+          box-shadow: 0 0 0 2px rgba($color-espresso, 0.1);
         }
 
-        ::placeholder {
+        &::placeholder {
           color: $color-text-secondary;
           opacity: 0.6;
+        }
+      }
+    }
+
+    .filters-group {
+      display: flex;
+      gap: 16px;
+      align-items: center;
+
+      @include mobile {
+        width: 100%;
+        flex-direction: column;
+        align-items: flex-start;
+      }
+
+      .filter-item {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+
+        @include mobile {
+          width: 100%;
+          justify-content: space-between;
+        }
+
+        label {
+          font-size: 13px;
+          font-weight: 600;
+          color: $color-text-secondary;
+          white-space: nowrap;
+        }
+
+        .filter-select {
+          padding: 8px 12px;
+          border-radius: 8px;
+          border: 1px solid $color-border;
+          background-color: $color-white;
+          font-size: 14px;
+          color: $color-text-primary;
+          cursor: pointer;
+          outline: none;
+          min-width: 160px;
+          transition: all 0.2s ease;
+
+          &:hover {
+            border-color: $color-text-secondary;
+          }
+
+          &:focus {
+            border-color: $color-espresso;
+            box-shadow: 0 0 0 2px rgba($color-espresso, 0.1);
+          }
         }
       }
     }

@@ -1,5 +1,8 @@
+import type { PartnerType } from "@/types/partner.types";
+
 export interface Product {
   _id: string;
+  ownerType?: PartnerType;
   images: string[];
   titleGe: string;
   titleEn?: string;

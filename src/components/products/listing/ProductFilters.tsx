@@ -1,6 +1,7 @@
 import React from "react";
 import "./ProductFilters.scss";
 import CategorySelect from "../../ui/CategorySelect";
+import { PartnerTypeEnum, type PartnerType } from "@/types/partner.types";
 
 interface ProductFiltersProps {
   search: string;
@@ -12,6 +13,8 @@ interface ProductFiltersProps {
   selectedPartnerId: string;
   onPartnerChange: (value: string) => void;
   partners: { _id: string; name: string }[];
+  ownerType: PartnerType | "";
+  onOwnerTypeChange: (value: PartnerType | "") => void;
 }
 
 export const ProductFilters: React.FC<ProductFiltersProps> = ({
@@ -24,18 +27,29 @@ export const ProductFilters: React.FC<ProductFiltersProps> = ({
   selectedPartnerId,
   onPartnerChange,
   partners,
+  ownerType,
+  onOwnerTypeChange,
 }) => {
   return (
     <div className="filters card">
       <div className="filters__group">
         <div className="filters__search-wrapper">
-          <svg className="filters__search-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+          <svg
+            className="filters__search-icon"
+            xmlns="http://www.w3.org/2000/svg"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            strokeWidth="2"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+          >
             <circle cx="11" cy="11" r="8" />
             <line x1="21" y1="21" x2="16.65" y2="16.65" />
           </svg>
           <input
             type="text"
-            placeholder="ძიება (სათაური, აღწერა)"
+            placeholder="ძიება (სათაური)"
             value={search}
             onChange={(e) => onSearchChange(e.target.value)}
             className="filters__input"
@@ -46,7 +60,16 @@ export const ProductFilters: React.FC<ProductFiltersProps> = ({
       {isAdmin && !id && (
         <div className="filters__group">
           <div className="filters__select-wrapper">
-            <svg className="filters__select-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+            <svg
+              className="filters__select-icon"
+              xmlns="http://www.w3.org/2000/svg"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="2"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+            >
               <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z" />
               <polyline points="9 22 9 12 15 12 15 22" />
             </svg>
@@ -63,6 +86,24 @@ export const ProductFilters: React.FC<ProductFiltersProps> = ({
                   {p.name}
                 </option>
               ))}
+            </select>
+          </div>
+        </div>
+      )}
+
+      {isAdmin && (
+        <div className="filters__group">
+          <div className="filters__select-wrapper">
+            <select
+              className="filters__select"
+              value={ownerType}
+              onChange={(e: React.ChangeEvent<HTMLSelectElement>) =>
+                onOwnerTypeChange(e.target.value as PartnerType | "")
+              }
+            >
+              <option value="">პროდუქტის მფლობელი: ყველა</option>
+              <option value={PartnerTypeEnum.ORGANIZATION}>🏢 ორგანიზაცია</option>
+              <option value={PartnerTypeEnum.INDIVIDUAL}>👤 ფიზიკური პირი</option>
             </select>
           </div>
         </div>
