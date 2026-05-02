@@ -40,6 +40,7 @@ export const UserListHeader: React.FC<UserListHeaderProps> = ({
       <div className="user-col-name">სახელი</div>
       <div className="user-col-email">ელ-ფოსტა</div>
       <div className="user-col-created">შექმნილია</div>
+      <div className="user-col-verified">სტატუსი</div>
       <div className="user-col-actions">მოქმედება</div>
     </div>
   );

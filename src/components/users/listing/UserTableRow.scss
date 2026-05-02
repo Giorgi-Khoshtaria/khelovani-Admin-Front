@@ -2,7 +2,7 @@
 
 .user-row {
   display: grid;
-  grid-template-columns: 40px 120px 1.5fr 1.8fr 140px 100px;
+  grid-template-columns: 40px 120px 1.5fr 1.8fr 140px 130px 100px;
   align-items: center;
   padding: 16px 20px;
   border-bottom: 1px solid colors.$color-cream;
@@ -75,6 +75,31 @@
   .user-created {
     font-size: 13px;
     color: colors.$color-text-secondary;
+  }
+}
+
+.user-col-verified {
+  display: flex;
+  align-items: center;
+}
+
+.user-verified-badge {
+  font-size: 12px;
+  font-weight: 600;
+  padding: 3px 8px;
+  border-radius: 12px;
+  white-space: nowrap;
+
+  &--verified {
+    background-color: #e8f5e9;
+    color: #2e7d32;
+    border: 1px solid #a5d6a7;
+  }
+
+  &--unverified {
+    background-color: #fff3e0;
+    color: #e65100;
+    border: 1px solid #ffcc80;
   }
 }
 

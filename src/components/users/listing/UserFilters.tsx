@@ -8,6 +8,8 @@ interface UserFiltersProps {
   onDateFromChange: (value: string) => void;
   dateTo: string;
   onDateToChange: (value: string) => void;
+  isVerified: "" | "true" | "false";
+  onIsVerifiedChange: (value: "" | "true" | "false") => void;
   onClear: () => void;
 }
 
@@ -18,9 +20,11 @@ export const UserFilters: React.FC<UserFiltersProps> = ({
   onDateFromChange,
   dateTo,
   onDateToChange,
+  isVerified,
+  onIsVerifiedChange,
   onClear,
 }) => {
-  const hasFilters = search || dateFrom || dateTo;
+  const hasFilters = search || dateFrom || dateTo || isVerified;
 
   return (
     <div className="user-filters card">
@@ -70,6 +74,21 @@ export const UserFilters: React.FC<UserFiltersProps> = ({
           className="user-filters__date"
           data-testid="user-date-to"
         />
+      </div>
+
+      <div className="user-filters__group">
+        <select
+          className="user-filters__date"
+          value={isVerified}
+          onChange={(e) =>
+            onIsVerifiedChange(e.target.value as "" | "true" | "false")
+          }
+          data-testid="user-verified-filter"
+        >
+          <option value="">ვერიფიკაცია: ყველა</option>
+          <option value="true">✓ ვერიფიცირებული</option>
+          <option value="false">✗ არავერიფიცირებული</option>
+        </select>
       </div>
 
       {hasFilters && (

@@ -76,6 +76,14 @@ export const UserTableRow: React.FC<UserTableRowProps> = ({
         <span className="user-created">{createdAt}</span>
       </div>
 
+      <div className="user-col-verified">
+        <span
+          className={`user-verified-badge${user.isVerified ? " user-verified-badge--verified" : " user-verified-badge--unverified"}`}
+        >
+          {user.isVerified ? "✓ ვერიფიც." : "✗ არავერიფ."}
+        </span>
+      </div>
+
       <div className="user-col-actions" onClick={(e) => e.stopPropagation()}>
         <div className="user-action-buttons">
           <button

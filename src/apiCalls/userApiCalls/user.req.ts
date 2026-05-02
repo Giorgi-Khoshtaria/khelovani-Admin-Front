@@ -2,12 +2,13 @@ import api from "../api";
 import type { UserFilters } from "@/types/user.types";
 
 export const getUsersRequest = async (params: UserFilters = {}) => {
-  const { search, dateFrom, dateTo, page = 1, limit = 10 } = params;
+  const { search, dateFrom, dateTo, isVerified, page = 1, limit = 10 } = params;
   const response = await api.get("/api/admin/users", {
     params: {
       ...(search && { search }),
       ...(dateFrom && { dateFrom }),
       ...(dateTo && { dateTo }),
+      ...(isVerified !== undefined && { isVerified }),
       page,
       limit,
     },

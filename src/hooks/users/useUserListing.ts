@@ -15,6 +15,7 @@ export const useUserListing = () => {
   const debouncedSearch = useDebounce(search, 500);
   const [dateFrom, setDateFrom] = useState("");
   const [dateTo, setDateTo] = useState("");
+  const [isVerified, setIsVerified] = useState<"true" | "false" | "">("");
   const [currentPage, setCurrentPage] = useState(1);
   const [totalPages, setTotalPages] = useState(1);
   const [totalCount, setTotalCount] = useState(0);
@@ -29,6 +30,7 @@ export const useUserListing = () => {
           search: debouncedSearch || undefined,
           dateFrom: dateFrom || undefined,
           dateTo: dateTo || undefined,
+          isVerified: (isVerified as "true" | "false") || undefined,
           page: currentPage,
           limit,
         });
@@ -42,12 +44,12 @@ export const useUserListing = () => {
         if (showLoading) setLoading(false);
       }
     },
-    [debouncedSearch, dateFrom, dateTo, currentPage],
+    [debouncedSearch, dateFrom, dateTo, isVerified, currentPage],
   );
 
   useEffect(() => {
     setCurrentPage(1);
-  }, [debouncedSearch, dateFrom, dateTo]);
+  }, [debouncedSearch, dateFrom, dateTo, isVerified]);
 
   useEffect(() => {
     fetchUsers();
@@ -110,6 +112,7 @@ export const useUserListing = () => {
     setSearch("");
     setDateFrom("");
     setDateTo("");
+    setIsVerified("");
     setCurrentPage(1);
   };
 
@@ -125,6 +128,8 @@ export const useUserListing = () => {
     setDateFrom,
     dateTo,
     setDateTo,
+    isVerified,
+    setIsVerified,
     currentPage,
     setCurrentPage,
     totalPages,

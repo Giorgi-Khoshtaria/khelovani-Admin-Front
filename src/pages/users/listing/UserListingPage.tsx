@@ -17,6 +17,8 @@ export default function UserListingPage() {
     setDateFrom,
     dateTo,
     setDateTo,
+    isVerified,
+    setIsVerified,
     currentPage,
     setCurrentPage,
     totalPages,
@@ -58,6 +60,8 @@ export default function UserListingPage() {
         onDateFromChange={setDateFrom}
         dateTo={dateTo}
         onDateToChange={setDateTo}
+        isVerified={isVerified}
+        onIsVerifiedChange={setIsVerified}
         onClear={clearFilters}
       />
 

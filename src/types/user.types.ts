@@ -27,6 +27,7 @@ export interface UserFilters {
   search?: string;
   dateFrom?: string;
   dateTo?: string;
+  isVerified?: "true" | "false";
   page?: number;
   limit?: number;
 }
