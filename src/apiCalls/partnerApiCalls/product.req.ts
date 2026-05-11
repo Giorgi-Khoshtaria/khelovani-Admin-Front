@@ -17,13 +17,15 @@ const createProductFormData = (data: Partial<AddProductFormData>) => {
   data.images?.forEach((file) => formData.append("images", file));
 
   // 2. Configuration for field types
-  const BOOLEAN_FIELDS = ["isShown", "isOneOfAKind", "shippingAvailable"];
+  const BOOLEAN_FIELDS = ["isShown", "isOnSale", "shippingAvailable"];
   const ARRAY_FIELDS = ["tagsGe", "tagsEn", "materialsGe", "materialsEn"];
+  const SKIP_FIELDS = new Set(["images", "owner"]);
 
   // 3. Process all fields
   (Object.keys(data) as Array<keyof AddProductFormData>).forEach((key) => {
     const value = data[key];
-    if (value === undefined || value === null || key === "images") return;
+    if (value === undefined || value === null || value === "") return;
+    if (SKIP_FIELDS.has(key)) return;
 
     if (BOOLEAN_FIELDS.includes(key)) {
       formData.append(key, value ? "true" : "false");
@@ -58,6 +60,7 @@ export const getProductsRequest = async (
   page: number = 1,
   limit: number = 10,
   ownerType?: string,
+  condition?: string,
 ) => {
   const response = await api.get(getProductUrl(partnerId), {
     params: {
@@ -65,6 +68,7 @@ export const getProductsRequest = async (
       ...(category && category !== "all" && { category }),
       ...(filterPartnerId && { partnerId: filterPartnerId }),
       ...(ownerType && { ownerType }),
+      ...(condition && { condition }),
       page,
       limit,
     },
@@ -93,8 +97,12 @@ export const updateProductRequest = async (
   productId: string,
   data: Partial<AddProductFormData>,
   lang: string = "ge",
+  keepImages?: string[],
 ) => {
   const formData = createProductFormData(data);
+  if (keepImages !== undefined) {
+    formData.append("keepImages", JSON.stringify(keepImages));
+  }
   const response = await api.patch(
     `${getProductUrl(partnerId, productId)}?lang=${lang}`,
     formData,

@@ -1,7 +1,9 @@
 import api from "../api";
-import type { Product } from "@/types/productTypes";
+import type { Product, ProductCondition } from "@/types/productTypes";
 
-export const getPinnedProductsRequest = async (): Promise<Product[]> => {
+export type PinnedProductsGrouped = Record<ProductCondition, Product[]>;
+
+export const getPinnedProductsRequest = async (): Promise<PinnedProductsGrouped> => {
   const response = await api.get("/api/products/pinned");
   return response.data.data;
 };

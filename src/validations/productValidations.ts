@@ -22,13 +22,15 @@ export const productSchema = z.object({
     .min(1, "ქართული აღწერა სავალდებულოა")
     .min(10, "აღწერა უნდა იყოს მინიმუმ 10 სიმბოლო")
     .max(2000, "აღწერა არ უნდა აღემატებოდეს 2000 სიმბოლოს")
-    .regex(georgianRegex, "აღწერა უნდა შეიცავდეს მხოლოდ ქართულ ასოებს"),
+    .regex(/[ა-ჰ]/, "აღწერა უნდა შეიცავდეს ქართულ ასოებს")
+    .regex(/^[^<>]*$/, "HTML ტეგები დაუშვებელია"),
   descriptionEn: z
     .string()
     .min(1, "ინგლისური აღწერა სავალდებულოა / English description is required")
     .min(10, "Description must be at least 10 characters")
     .max(2000, "Description must not exceed 2000 characters")
-    .regex(englishRegex, "Description must contain only English characters"),
+    .regex(/[a-zA-Z]/, "Description must contain English characters")
+    .regex(/^[^<>]*$/, "HTML tags are not allowed"),
   category: z.string().min(1, "აირჩიეთ სწორი კატეგორია / Select a valid category"),
   price: z.preprocess(
     (val) => (val === "" || val === undefined ? undefined : Number(val)),
@@ -94,19 +96,9 @@ export const productSchema = z.object({
     )
     .min(1, "Minimum 1 English material is required")
     .max(10, "Maximum 10 materials allowed"),
-  condition: z.enum(["new", "handmade", "vintage"] as const, {
+  condition: z.enum(["handmade", "made_to_order", "limited_edition", "one_of_a_kind", "restored", "upcycled"] as const, {
     error: "მდგომარეობა სავალდებულოა / მდგომარეობა არასწორია",
   }),
-  locationGe: z
-    .string()
-    .regex(georgianRegex, "მდებარეობა უნდა შეიცავდეს მხოლოდ ქართულ ასოებს")
-    .optional()
-    .or(z.literal("")),
-  locationEn: z
-    .string()
-    .regex(englishRegex, "Location must contain only English characters")
-    .optional()
-    .or(z.literal("")),
   shippingPrice: z.preprocess(
     (val) =>
       val === "" || val === undefined || val === null ? 0 : Number(val),

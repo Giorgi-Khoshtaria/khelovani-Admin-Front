@@ -1,0 +1,162 @@
+@use "@/styles/colors.scss" as colors;
+@use "@/styles/_buttons.scss" as *;
+
+.pinned-products-page {
+  padding: 24px;
+
+  .card {
+    background: colors.$color-white;
+    border-radius: 12px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+  }
+
+  .page-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 24px;
+
+    .header-title {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+
+      h1 {
+        margin: 0;
+        color: colors.$color-espresso;
+        font-size: 24px;
+      }
+
+      .page-subtitle {
+        font-size: 13px;
+        color: colors.$color-text-secondary;
+        background: colors.$color-bg-secondary;
+        border: 1px solid colors.$color-border;
+        padding: 4px 12px;
+        border-radius: 20px;
+      }
+    }
+  }
+
+  .section-tabs {
+    display: flex;
+    gap: 8px;
+    margin-bottom: 20px;
+    flex-wrap: wrap;
+  }
+
+  .section-tab {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 8px 16px;
+    border: 1.5px solid colors.$color-border;
+    border-radius: 8px;
+    background: colors.$color-white;
+    color: colors.$color-text-secondary;
+    font-size: 14px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.15s;
+
+    &:hover {
+      border-color: colors.$color-espresso;
+      color: colors.$color-espresso;
+    }
+
+    &.active {
+      border-color: colors.$color-espresso;
+      background: colors.$color-espresso;
+      color: colors.$color-white;
+
+      .tab-count {
+        background: rgba(255, 255, 255, 0.2);
+        color: colors.$color-white;
+      }
+    }
+
+    .tab-count {
+      font-size: 12px;
+      font-weight: 600;
+      background: colors.$color-bg-secondary;
+      color: colors.$color-text-secondary;
+      padding: 2px 8px;
+      border-radius: 10px;
+    }
+  }
+
+  .loading,
+  .empty-state {
+    text-align: center;
+    padding: 48px;
+    color: colors.$color-text-secondary;
+  }
+
+  .products-list {
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+  }
+
+  .autofill-divider {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 10px 16px;
+    background: colors.$color-bg-secondary;
+    border-top: 1px solid colors.$color-border;
+    border-bottom: 1px solid colors.$color-border;
+
+    span {
+      font-size: 12px;
+      font-weight: 600;
+      color: colors.$color-text-secondary;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+  }
+
+  .product-row {
+    &.is-autofill {
+      opacity: 0.55;
+    }
+  }
+
+  .unpin-btn {
+    width: 32px;
+    height: 32px;
+    padding: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 1.5px solid colors.$color-danger-light;
+    background: colors.$color-danger-light;
+    border-radius: 8px;
+    cursor: pointer;
+    color: colors.$color-danger;
+    transition: all 0.15s;
+
+    svg {
+      width: 14px;
+      height: 14px;
+    }
+
+    &:hover {
+      background: colors.$color-danger;
+      border-color: colors.$color-danger;
+      color: white;
+    }
+  }
+
+  .autofill-badge {
+    font-size: 10px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    color: colors.$color-text-secondary;
+    background: colors.$color-bg-secondary;
+    border: 1px solid colors.$color-border;
+    padding: 3px 8px;
+    border-radius: 10px;
+  }
+}

@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { getUserByIdRequest, deleteUserRequest } from "@/apiCalls/userApiCalls/user.req";
 import { toast } from "react-toastify";
 import type { User } from "@/types/user.types";
+import { getErrorMessage } from "@/utils/handleApiError";
 
 export const useUserDetails = (userId?: string) => {
   const navigate = useNavigate();
@@ -17,9 +18,9 @@ export const useUserDetails = (userId?: string) => {
       setError(null);
       const data = await getUserByIdRequest(userId);
       setUser(data);
-    } catch {
-      setError("მომხმარებელი ვერ მოიძებნა");
-      toast.error("მომხმარებლის მონაცემების ჩატვირთვა ვერ მოხერხდა");
+    } catch (err) {
+      setError(getErrorMessage(err, "მომხმარებელი ვერ მოიძებნა"));
+      toast.error(getErrorMessage(err, "მომხმარებლის მონაცემების ჩატვირთვა ვერ მოხერხდა"));
       navigate("/users");
     } finally {
       setLoading(false);
@@ -42,8 +43,8 @@ export const useUserDetails = (userId?: string) => {
       await deleteUserRequest(userId);
       toast.success("მომხმარებელი წარმატებით წაიშალა");
       navigate("/users");
-    } catch {
-      toast.error("შეცდომა მომხმარებლის წაშლისას");
+    } catch (err) {
+      toast.error(getErrorMessage(err, "შეცდომა მომხმარებლის წაშლისას"));
     }
   };
 

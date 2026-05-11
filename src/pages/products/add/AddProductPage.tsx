@@ -6,6 +6,7 @@ import { useProductForm } from "@/hooks/products/useProductForm";
 import ProductForm from "@/components/products/form/ProductForm";
 import { usePartnerContext } from "@/context/PartnerContext";
 import { parseJwt } from "@/utils/parseJwt";
+import { getErrorMessage } from "@/utils/handleApiError";
 import "./AddProductPage.scss";
 
 export default function AddProductPage() {
@@ -21,11 +22,11 @@ export default function AddProductPage() {
 
   const {
     formData,
-    tagInputs,
     errors,
     handleInputChange,
-    handleTagInputChange,
-    handleFileChange,
+    setArrayField,
+    appendProcessedImage,
+    resetImages,
     validate,
   } = useProductForm();
 
@@ -42,12 +43,7 @@ export default function AddProductPage() {
       toast.success("პროდუქტი წარმატებით დაემატა / Product successfully added");
       navigate(urlId ? `/partners/${id}/products` : "/profile/products");
     } catch (error: unknown) {
-      const message =
-        error instanceof Error
-          ? (error as unknown as { response?: { data?: { message?: string } } })
-              .response?.data?.message || error.message
-          : "შეცდომა დამატებისას / Error adding product";
-      toast.error(message);
+      toast.error(getErrorMessage(error, "შეცდომა დამატებისას / Error adding product"));
     } finally {
       setLoading(false);
     }
@@ -59,23 +55,21 @@ export default function AddProductPage() {
         <button className="back-btn" onClick={() => navigate(-1)}>
           ← უკან
         </button>
-        <h1>ახალი პროდუქტის დამატება / Add New Product</h1>
+        <div className="header-text">
+          <h1>ახალი პროდუქტის დამატება</h1>
+          <p>შეავსეთ ყველა სავალდებულო ველი პროდუქტის გამოსაქვეყნებლად</p>
+        </div>
       </div>
 
       <ProductForm
         formData={formData}
-        tagInputs={tagInputs}
         errors={errors}
         loading={loading}
         onSubmit={handleSubmit}
         handleInputChange={handleInputChange}
-        handleTagInputChange={
-          handleTagInputChange as (
-            name: "tagsGe" | "tagsEn" | "materialsGe" | "materialsEn",
-            value: string,
-          ) => void
-        }
-        handleFileChange={handleFileChange}
+        setArrayField={setArrayField}
+        appendProcessedImage={appendProcessedImage}
+        resetImages={resetImages}
         onCancel={() => navigate(-1)}
         isAdmin={isAdmin}
       />

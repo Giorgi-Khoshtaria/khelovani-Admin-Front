@@ -5,7 +5,7 @@ import { PartnerStatus } from "@/types/partnerStatus";
 import { toast } from "react-toastify";
 import { updatePartnerPinRequest } from "@/apiCalls/partnerApiCalls/pinPartner.req";
 import { updatePartnerVisibilityRequest } from "@/apiCalls/partnerApiCalls/setPartnerVisibility.req";
-import useCategoryOptions from "@/hooks/categories/useCategoryOptions";
+import { getErrorMessage } from "@/utils/handleApiError";
 import "./PartnerCard.scss";
 
 interface PartnerCardProps {
@@ -27,7 +27,6 @@ export default function PartnerCard({
 }: PartnerCardProps) {
   const [pinning, setPinning] = useState(false);
   const [toggling, setToggling] = useState(false);
-  const { getLabel } = useCategoryOptions();
 
   const isShown = partner.isShown ?? true;
 
@@ -45,8 +44,8 @@ export default function PartnerCard({
       } else {
         toast.success(newVal ? "პარტნიორი დაიპინა" : "პინი მოიხსნა");
       }
-    } catch {
-      toast.error("მოქმედება ვერ შესრულდა");
+    } catch (err) {
+      toast.error(getErrorMessage(err, "მოქმედება ვერ შესრულდა"));
     } finally {
       setPinning(false);
     }
@@ -62,8 +61,8 @@ export default function PartnerCard({
       await updatePartnerVisibilityRequest(partner._id, newVal);
       onUpdate?.({ isShown: newVal });
       toast.success(newVal ? "პარტნიორი გამოჩნდა" : "პარტნიორი დაიმალა");
-    } catch {
-      toast.error("მოქმედება ვერ შესრულდა");
+    } catch (err) {
+      toast.error(getErrorMessage(err, "მოქმედება ვერ შესრულდა"));
     } finally {
       setToggling(false);
     }
@@ -92,8 +91,12 @@ export default function PartnerCard({
           )}
           <h3 className="partner-card__name">{partner.companyNameGe}</h3>
           {partner.partnerType && (
-            <span className={`partner-card__type-badge type--${partner.partnerType}`}>
-              {partner.partnerType === "individual" ? "👤 ფიზიკური პირი" : "🏢 ორგანიზაცია"}
+            <span
+              className={`partner-card__type-badge type--${partner.partnerType}`}
+            >
+              {partner.partnerType === "individual"
+                ? "👤 ფიზიკური პირი"
+                : "🏢 ორგანიზაცია"}
             </span>
           )}
           {partner.isPinned && (
@@ -116,15 +119,6 @@ export default function PartnerCard({
         <p className="partner-card__email">
           <strong>Ელ-ფოსტა:</strong> {partner.email}
         </p>
-        {(partner.categories ?? []).length > 0 && (
-          <div className="partner-card__categories">
-            {(partner.categories ?? []).map((slug) => (
-              <span key={slug} className="partner-card__category-chip">
-                {getLabel(slug)}
-              </span>
-            ))}
-          </div>
-        )}
       </div>
 
       <div className="partner-card__footer">
@@ -156,14 +150,13 @@ export default function PartnerCard({
           onClick={async () => {
             if (window.confirm("ნამდვილად გსურთ პარტნიორის წაშლა?")) {
               try {
-                const { deletePartnerRequest } = await import(
-                  "@/apiCalls/partnerApiCalls/getPartner.req"
-                );
+                const { deletePartnerRequest } =
+                  await import("@/apiCalls/partnerApiCalls/getPartner.req");
                 await deletePartnerRequest(partner._id);
                 toast.success("პარტნიორი წარმატებით წაიშალა");
                 if (onDelete) onDelete();
-              } catch {
-                toast.error("წაშლა ვერ მოხერხდა");
+              } catch (err) {
+                toast.error(getErrorMessage(err, "წაშლა ვერ მოხერხდა"));
               }
             }
           }}

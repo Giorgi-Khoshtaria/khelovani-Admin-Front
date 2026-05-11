@@ -16,9 +16,9 @@ export const validateWithZod = <T>(
 
   const errors: Record<string, string> = {};
   result.error.issues.forEach((issue) => {
-    const field = issue.path.join(".");
-    if (!errors[field]) {
-      errors[field] = issue.message;
+    const rootField = issue.path[0]?.toString() ?? issue.path.join(".");
+    if (!errors[rootField]) {
+      errors[rootField] = issue.message;
     }
   });
 

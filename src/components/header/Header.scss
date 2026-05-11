@@ -56,15 +56,19 @@
     }
 
     button {
-      @extend .btn-outline;
-      border-color: $color-accent;
-      color: $color-accent;
-      padding: 6px 16px; // keep local size if needed
+      background-color: $color-espresso;
+      color: $color-white;
+      border: 1px solid $color-espresso;
+      padding: 7px 18px;
+      border-radius: 8px;
+      font-size: 14px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: background-color 0.2s ease, opacity 0.2s ease;
 
       &:hover:not(:disabled) {
-        background-color: $color-espresso;
-        color: $color-white;
-        border-color: $color-espresso;
+        background-color: $color-darkest;
+        border-color: $color-darkest;
       }
 
       &:active {

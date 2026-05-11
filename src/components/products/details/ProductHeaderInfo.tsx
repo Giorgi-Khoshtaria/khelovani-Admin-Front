@@ -1,6 +1,7 @@
 import React from "react";
 import "./ProductHeaderInfo.scss";
 import useCategoryOptions from "@/hooks/categories/useCategoryOptions";
+import { CONDITION_LABELS, type ProductCondition } from "@/types/productTypes";
 
 interface ProductHeaderInfoProps {
   titleGe: string;
@@ -43,7 +44,12 @@ const ProductHeaderInfo: React.FC<ProductHeaderInfoProps> = ({
       </div>
 
       <div className="condition-info">
-        <span>მდგომარეობა:</span> <strong>{condition}</strong>
+        <span>მდგომარეობა / Condition:</span>
+        <strong>
+          {CONDITION_LABELS[condition as ProductCondition]
+            ? `${CONDITION_LABELS[condition as ProductCondition].ge} / ${CONDITION_LABELS[condition as ProductCondition].en}`
+            : condition}
+        </strong>
       </div>
     </div>
   );

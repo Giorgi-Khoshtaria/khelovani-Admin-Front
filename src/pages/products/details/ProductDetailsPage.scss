@@ -1,35 +1,46 @@
 @use "@/styles/colors.scss" as colors;
 @use "@/styles/_breakpoints.scss" as *;
 
+// ────────────────────────────────────────────────────────────
+// Product Details Page
+// ────────────────────────────────────────────────────────────
+
 .product-details-page {
-  padding: 32px;
-  animation: fadeIn 0.4s ease-out;
-  overflow-x: hidden;
+  padding: 32px 28px 56px;
+  max-width: 1200px;
+  margin: 0 auto;
+  animation: pd-fade-in 0.35s ease-out;
 
   @include mobile {
-    padding: 16px;
+    padding: 16px 14px 40px;
   }
 
+  // ── Page Header ─────────────────────────────────────────────
   .details-header {
     display: flex;
     justify-content: space-between;
     align-items: flex-start;
     gap: 16px;
     flex-wrap: wrap;
-    margin-bottom: 32px;
+    margin-bottom: 24px;
+    padding-bottom: 20px;
+    border-bottom: 1.5px solid colors.$color-bg-secondary;
 
     .header-left {
       display: flex;
       align-items: center;
-      gap: 24px;
+      gap: 18px;
       min-width: 0;
+      flex: 1;
 
       h1 {
-        font-size: 28px;
+        font-size: 26px;
+        font-weight: 700;
         color: colors.$color-espresso;
         margin: 0;
         overflow-wrap: break-word;
         word-break: break-word;
+        letter-spacing: -0.02em;
 
         @include mobile {
           font-size: 20px;
@@ -38,152 +49,226 @@
     }
 
     .back-btn {
-      background: none;
-      border: none;
-      color: colors.$color-walnut;
-      font-weight: 600;
-      cursor: pointer;
-      display: flex;
+      display: inline-flex;
       align-items: center;
-      gap: 8px;
-      padding: 8px 0;
+      gap: 6px;
+      padding: 8px 14px;
+      border-radius: 10px;
+      border: 1.5px solid colors.$color-border;
+      background: colors.$color-white;
+      color: colors.$color-text-secondary;
+      font-size: 13px;
+      font-weight: 600;
+      font-family: inherit;
+      cursor: pointer;
       white-space: nowrap;
-      transition: transform 0.2s ease;
+      transition: all 0.18s;
+      flex-shrink: 0;
 
       &:hover {
-        transform: translateX(-4px);
-        color: colors.$color-espresso;
+        border-color: colors.$color-walnut;
+        color: colors.$color-walnut;
+        background: colors.$color-cream;
       }
     }
 
     .header-actions {
       display: flex;
       align-items: center;
-      gap: 12px;
+      gap: 8px;
       flex-wrap: wrap;
+      flex-shrink: 0;
 
-      .edit-details-btn {
-        background-color: colors.$color-white;
-        border: 1px solid colors.$color-walnut;
-        color: colors.$color-walnut;
-        padding: 9.6px 19.2px;
-        border-radius: 8px;
+      // shared button base
+      > button,
+      .pin-menu-wrapper > button {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        padding: 9px 16px;
+        border-radius: 10px;
+        font-size: 13px;
         font-weight: 600;
+        font-family: inherit;
         cursor: pointer;
         white-space: nowrap;
-        transition: all 0.2s ease;
-
-        &:hover {
-          background-color: colors.$color-walnut;
-          color: white;
-        }
+        transition: all 0.18s;
+        border: 1.5px solid transparent;
       }
 
-      .pin-details-btn {
-        background: none;
-        border: 1px solid #f59e0b;
-        color: #92400e;
-        padding: 9.6px 19.2px;
-        border-radius: 8px;
-        font-weight: 600;
-        cursor: pointer;
-        white-space: nowrap;
-        transition: all 0.2s ease;
+      .edit-details-btn {
+        background: colors.$color-white;
+        border-color: colors.$color-walnut;
+        color: colors.$color-walnut;
 
-        &.active {
-          background: #fef3c7;
-        }
-
-        &:hover:not(:disabled) {
-          background: #fef3c7;
-        }
-
-        &:disabled {
-          opacity: 0.45;
-          cursor: not-allowed;
+        &:hover {
+          background: colors.$color-walnut;
+          color: colors.$color-white;
         }
       }
 
       .toggle-details-btn {
-        background-color: colors.$color-white;
-        border: 1px solid colors.$color-info;
+        background: colors.$color-white;
+        border-color: colors.$color-info;
         color: colors.$color-info;
-        padding: 9.6px 19.2px;
-        border-radius: 8px;
-        font-weight: 600;
-        cursor: pointer;
-        white-space: nowrap;
-        transition: all 0.2s ease;
 
         &:hover {
-          background-color: colors.$color-info;
-          color: white;
+          background: colors.$color-info;
+          color: colors.$color-white;
         }
       }
 
       .delete-details-btn {
-        background: none;
-        border: 1px solid rgba(colors.$color-danger, 0.3);
+        background: colors.$color-white;
+        border-color: rgba(colors.$color-danger, 0.4);
         color: colors.$color-danger;
-        padding: 9.6px 19.2px;
-        border-radius: 8px;
-        font-weight: 600;
-        cursor: pointer;
-        white-space: nowrap;
-        transition: all 0.2s ease;
 
         &:hover {
-          background-color: colors.$color-danger;
-          color: white;
+          background: colors.$color-danger;
+          color: colors.$color-white;
           border-color: colors.$color-danger;
+        }
+      }
+
+      // ── Pin button & dropdown ─────────────────────────────
+      .pin-menu-wrapper {
+        position: relative;
+
+        .pin-details-btn {
+          background: #fffbeb;
+          border-color: #f59e0b;
+          color: #92400e;
+
+          &.active {
+            background: #fef3c7;
+            border-color: #d97706;
+          }
+
+          &:hover:not(:disabled) {
+            background: #fef3c7;
+            border-color: #d97706;
+          }
+
+          &:disabled {
+            opacity: 0.45;
+            cursor: not-allowed;
+          }
+        }
+
+        .pin-dropdown {
+          position: absolute;
+          top: calc(100% + 8px);
+          right: 0;
+          min-width: 200px;
+          background: colors.$color-white;
+          border: 1.5px solid colors.$color-border;
+          border-radius: 12px;
+          box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
+          padding: 6px;
+          z-index: 100;
+          animation: pd-dropdown 0.15s ease-out;
+
+          .pin-option {
+            display: block;
+            width: 100%;
+            text-align: left;
+            padding: 9px 14px;
+            border: none;
+            background: transparent;
+            border-radius: 8px;
+            font-size: 13px;
+            font-weight: 500;
+            font-family: inherit;
+            color: colors.$color-text-primary;
+            cursor: pointer;
+            transition: background 0.15s;
+
+            &:hover {
+              background: colors.$color-bg-secondary;
+            }
+
+            &.active {
+              background: #fef3c7;
+              color: #92400e;
+              font-weight: 700;
+            }
+
+            &--unpin {
+              color: colors.$color-danger;
+              margin-top: 4px;
+              border-top: 1px solid colors.$color-border;
+              border-radius: 0 0 8px 8px;
+
+              &:hover {
+                background: colors.$color-danger-light;
+              }
+            }
+          }
         }
       }
     }
   }
 
+  // ── Status indicator ────────────────────────────────────────
   .status-indicator {
     display: inline-flex;
     align-items: center;
-    gap: 9.6px;
-    font-size: 13.6px;
-    font-weight: 600;
-    color: colors.$color-text-secondary;
-    padding: 6.4px 16px;
-    background-color: colors.$color-white;
+    gap: 8px;
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: 0.03em;
+    text-transform: uppercase;
+    padding: 6px 14px;
     border-radius: 999px;
-    border: 1px solid colors.$color-border;
-    margin-bottom: 32px;
+    margin-bottom: 28px;
+    border: 1.5px solid transparent;
+
+    &:has(.status-dot.shown) {
+      background: colors.$color-success-light;
+      color: #065f46;
+      border-color: #a7f3d0;
+    }
+
+    &:has(.status-dot.hidden) {
+      background: colors.$color-danger-light;
+      color: colors.$color-danger-hover;
+      border-color: #fca5a5;
+    }
 
     .status-dot {
-      width: 8px;
-      height: 8px;
+      width: 7px;
+      height: 7px;
       border-radius: 50%;
       flex-shrink: 0;
 
       &.shown {
-        background-color: colors.$color-success;
+        background: colors.$color-success;
+        box-shadow: 0 0 0 3px rgba(colors.$color-success, 0.25);
       }
+
       &.hidden {
-        background-color: colors.$color-danger;
+        background: colors.$color-danger;
+        box-shadow: 0 0 0 3px rgba(colors.$color-danger, 0.2);
       }
     }
   }
 
+  // ── Main grid ───────────────────────────────────────────────
   .details-grid {
     display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 48px;
+    grid-template-columns: 5fr 6fr;
+    gap: 32px;
     align-items: start;
 
     @include mobile-and-tablet {
       grid-template-columns: 1fr;
-      gap: 32px;
+      gap: 24px;
     }
 
     .left-column {
       min-width: 0;
       position: sticky;
-      top: 32px;
+      top: 24px;
 
       @include mobile-and-tablet {
         position: static;
@@ -194,36 +279,70 @@
       min-width: 0;
 
       .content-card {
-        padding: 40px;
+        background: colors.$color-white;
+        border-radius: 16px;
+        border: 1px solid rgba(209, 213, 219, 0.7);
+        box-shadow: 0 1px 3px rgba(0, 0, 0, 0.06), 0 4px 16px rgba(0, 0, 0, 0.04);
+        padding: 32px;
         display: flex;
         flex-direction: column;
-        gap: 24px;
+        gap: 0;
 
         @include mobile {
-          padding: 20px 16px;
+          padding: 18px 16px;
         }
 
+        // ── Additional info table ────────────────────────────
         .additional-info {
           display: flex;
           flex-direction: column;
-          gap: 16px;
-          margin-top: 32px;
-          padding-top: 32px;
-          border-top: 1px solid colors.$color-border;
+          gap: 0;
+          margin-top: 28px;
+          padding-top: 28px;
+          border-top: 1.5px solid colors.$color-bg-secondary;
 
           .info-item {
             display: flex;
             justify-content: space-between;
+            align-items: center;
             gap: 12px;
-            font-size: 14.4px;
-            flex-wrap: wrap;
+            padding: 11px 14px;
+            border-radius: 8px;
+            transition: background 0.15s;
+
+            &:hover {
+              background: colors.$color-bg-primary;
+            }
+
+            &.highlight {
+              background: #fffbeb;
+              border: 1px solid #fcd34d;
+              margin-bottom: 6px;
+
+              .label {
+                color: #92400e;
+                font-weight: 600;
+              }
+
+              .value {
+                color: #b45309;
+                font-weight: 700;
+              }
+
+              &:hover {
+                background: #fef3c7;
+              }
+            }
 
             .label {
+              font-size: 13px;
               color: colors.$color-text-secondary;
               flex-shrink: 0;
+              font-weight: 500;
             }
 
             .value {
+              font-size: 13px;
               font-weight: 600;
               color: colors.$color-espresso;
               text-align: right;
@@ -236,21 +355,35 @@
   }
 }
 
+// ── Loading / Error states ──────────────────────────────────
 .loading-state,
 .error-state {
   display: flex;
   justify-content: center;
   align-items: center;
   min-height: 60vh;
-  font-size: 20px;
+  font-size: 18px;
   color: colors.$color-walnut;
   font-weight: 600;
+  gap: 10px;
 }
 
-@keyframes fadeIn {
+// ── Animations ──────────────────────────────────────────────
+@keyframes pd-fade-in {
   from {
     opacity: 0;
-    transform: translateY(10px);
+    transform: translateY(8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes pd-dropdown {
+  from {
+    opacity: 0;
+    transform: translateY(-6px);
   }
   to {
     opacity: 1;

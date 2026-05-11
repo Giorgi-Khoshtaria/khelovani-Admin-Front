@@ -3,23 +3,23 @@
 .product-specs-list {
   display: flex;
   flex-direction: column;
-  gap: 32px;
-  padding: 24px;
-  background-color: colors.$color-ivory;
-  border-radius: 12px;
-  border: 1px solid colors.$color-border;
+  gap: 20px;
+  padding: 20px;
+  background: colors.$color-bg-primary;
+  border-radius: 14px;
+  border: 1.5px solid colors.$color-bg-secondary;
 
   .specs-section {
     display: flex;
     flex-direction: column;
-    gap: 12px;
+    gap: 10px;
 
     label {
-      font-size: 14.4px;
-      font-weight: 700;
-      color: colors.$color-walnut;
+      font-size: 10px;
+      font-weight: 800;
+      color: colors.$color-text-secondary;
       text-transform: uppercase;
-      letter-spacing: 0.05em;
+      letter-spacing: 0.08em;
     }
 
     .specs-row {
@@ -27,28 +27,51 @@
       flex-direction: column;
       gap: 8px;
 
+      // GE group
       .spec-group {
         display: flex;
         flex-wrap: wrap;
-        gap: 8px;
+        gap: 7px;
 
         .spec-badge {
-          background-color: colors.$color-white;
-          border: 1px solid colors.$color-border;
-          padding: 5.6px 12px;
-          border-radius: 6px;
-          font-size: 13.6px;
+          display: inline-flex;
+          align-items: center;
+          padding: 5px 13px;
+          border-radius: 20px;
+          font-size: 13px;
+          font-weight: 500;
+          background: colors.$color-white;
+          border: 1.5px solid colors.$color-border;
           color: colors.$color-espresso;
+          transition: border-color 0.15s;
 
-          &.tag {
-            background-color: colors.$color-sand;
-            color: colors.$color-espresso;
-            border: none;
+          &:hover {
+            border-color: colors.$color-walnut;
           }
 
+          // tag variant
+          &.tag {
+            background: colors.$color-sand;
+            border-color: transparent;
+            color: colors.$color-espresso;
+            font-weight: 600;
+          }
+
+          // EN variant — slightly muted
           &.en {
-            opacity: 0.7;
+            opacity: 0.65;
             font-style: italic;
+            font-size: 12px;
+          }
+        }
+
+        // EN group wrapper
+        &.en {
+          padding-top: 4px;
+          border-top: 1px dashed rgba(colors.$color-border, 0.8);
+
+          .spec-badge {
+            background: rgba(colors.$color-white, 0.6);
           }
         }
       }

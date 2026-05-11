@@ -7,8 +7,9 @@ import {
 import { updateProductPinRequest } from "@/apiCalls/partnerApiCalls/pinProduct.req";
 import { getAllPartnerRequest } from "@/apiCalls/partnerApiCalls/getPartner.req";
 import { toast } from "react-toastify";
-import type { Product } from "@/types/productTypes";
+import type { Product, ProductCondition } from "@/types/productTypes";
 import { parseJwt } from "@/utils/parseJwt";
+import { getErrorMessage } from "@/utils/handleApiError";
 import type { Partner, PartnerType } from "@/types/partner.types";
 import { useDebounce } from "@/hooks/useDebounce";
 
@@ -35,6 +36,7 @@ export const useProductListing = (id?: string) => {
   const [selectedPartnerId, setSelectedPartnerId] = useState("");
   const [partners, setPartners] = useState<{ _id: string; name: string }[]>([]);
   const [ownerType, setOwnerType] = useState<PartnerType | "">("");
+  const [condition, setCondition] = useState<ProductCondition | "">("");
 
   const userData = useMemo(() => {
     const token = localStorage.getItem("adminToken");
@@ -71,12 +73,13 @@ export const useProductListing = (id?: string) => {
           currentPage,
           limit,
           ownerType || undefined,
+          condition || undefined,
         );
         setProducts(data.data || []);
         setTotalPages(data.meta?.totalPages || 1);
         setTotalCount(data.meta?.totalCount || 0);
-      } catch {
-        toast.error("შეცდომა პროდუქტების ჩატვირთვისას");
+      } catch (err) {
+        toast.error(getErrorMessage(err, "შეცდომა პროდუქტების ჩატვირთვისას"));
       } finally {
         if (showLoading) setLoading(false);
       }
@@ -87,6 +90,7 @@ export const useProductListing = (id?: string) => {
       category,
       selectedPartnerId,
       ownerType,
+      condition,
       isAdmin,
       userData?.id,
       currentPage,
@@ -95,7 +99,7 @@ export const useProductListing = (id?: string) => {
 
   useEffect(() => {
     setCurrentPage(1);
-  }, [debouncedSearch, category, selectedPartnerId, ownerType]);
+  }, [debouncedSearch, category, selectedPartnerId, ownerType, condition]);
 
   useEffect(() => {
     fetchProducts();
@@ -132,36 +136,36 @@ export const useProductListing = (id?: string) => {
       await deleteProductRequest(id, productId);
       toast.success("პროდუქტი წარმატებით წაიშალა");
       fetchProducts(false);
-    } catch {
-      toast.error("შეცდომა პროდუქტის წაშლისას");
+    } catch (err) {
+      toast.error(getErrorMessage(err, "შეცდომა პროდუქტის წაშლისას"));
     }
   };
 
-  const handlePin = async (product: Product) => {
-    const newVal = !product.isPinned;
+  const handlePin = async (product: Product, pinSection: import("@/types/productTypes").PinSection | null) => {
+    const prev_section = product.pinSection;
     setProducts((prev) =>
-      prev.map((p) => (p._id === product._id ? { ...p, isPinned: newVal } : p)),
+      prev.map((p) => (p._id === product._id ? { ...p, pinSection } : p)),
     );
     try {
-      const { data, meta } = await updateProductPinRequest(product._id, newVal);
+      const { data, meta } = await updateProductPinRequest(product._id, pinSection);
       setProducts((prev) =>
         prev.map((p) => {
-          if (p._id === product._id) return { ...p, isPinned: data.isPinned, pinnedAt: data.pinnedAt };
-          if (meta.evicted.includes(p._id)) return { ...p, isPinned: false, pinnedAt: null };
+          if (p._id === product._id) return { ...p, pinSection: data.pinSection, pinnedAt: data.pinnedAt };
+          if (meta.evicted.includes(p._id)) return { ...p, pinSection: null, pinnedAt: null };
           return p;
         }),
       );
-      if (newVal && meta.evicted.length > 0) {
+      if (pinSection && meta.evicted.length > 0) {
         toast.info("სხვა პროდუქტი ავტომატურად მოიხსნა პინიდან");
       } else {
-        toast.success(newVal ? "პროდუქტი დაიპინა" : "პინი მოიხსნა");
+        toast.success(pinSection ? "პროდუქტი დაიპინა" : "პინი მოიხსნა");
       }
       fetchProducts(false);
-    } catch {
+    } catch (err) {
       setProducts((prev) =>
-        prev.map((p) => (p._id === product._id ? { ...p, isPinned: product.isPinned } : p)),
+        prev.map((p) => (p._id === product._id ? { ...p, pinSection: prev_section } : p)),
       );
-      toast.error("მოქმედება ვერ შესრულდა");
+      toast.error(getErrorMessage(err, "მოქმედება ვერ შესრულდა"));
     }
   };
 
@@ -182,13 +186,13 @@ export const useProductListing = (id?: string) => {
           ? "პროდუქტი დაიმალა / Product hidden"
           : "პროდუქტი გამოჩნდა / Product shown",
       );
-    } catch {
+    } catch (err) {
       setProducts((prev) =>
         prev.map((p) =>
           p._id === product._id ? { ...p, isShown: originalStatus } : p,
         ),
       );
-      toast.error("შეცდომა სტატუსის შეცვლისას");
+      toast.error(getErrorMessage(err, "შეცდომა სტატუსის შეცვლისას"));
     }
   };
 
@@ -199,6 +203,8 @@ export const useProductListing = (id?: string) => {
     setSearch,
     category,
     setCategory,
+    condition,
+    setCondition,
     selectedPartnerId,
     setSelectedPartnerId,
     ownerType,

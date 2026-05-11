@@ -1,0 +1,147 @@
+@use "@/styles/colors.scss" as colors;
+
+.chip-input {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding: 10px;
+  border: 1.5px solid colors.$color-border;
+  border-radius: 10px;
+  background: colors.$color-ivory;
+  transition: border-color 0.15s;
+
+  &:focus-within {
+    border-color: colors.$color-walnut;
+    background: colors.$color-white;
+  }
+
+  &--error {
+    border-color: #e53935;
+  }
+
+  &__chips {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    min-height: 0;
+
+    &:empty {
+      display: none;
+    }
+  }
+
+  &__chip {
+    display: inline-flex;
+    align-items: stretch;
+    background: colors.$color-espresso;
+    color: colors.$color-white;
+    border-radius: 16px;
+    overflow: hidden;
+    font-size: 12.5px;
+    font-weight: 500;
+    transition: background 0.15s;
+
+    &:hover {
+      background: colors.$color-walnut;
+    }
+  }
+
+  &__chip-text {
+    background: none;
+    border: none;
+    color: inherit;
+    font-size: inherit;
+    font-weight: inherit;
+    padding: 5px 4px 5px 12px;
+    cursor: text;
+    font-family: inherit;
+  }
+
+  &__chip-remove {
+    background: none;
+    border: none;
+    color: inherit;
+    cursor: pointer;
+    padding: 0 10px 0 4px;
+    font-size: 16px;
+    line-height: 1;
+    opacity: 0.75;
+    transition: opacity 0.15s;
+
+    &:hover {
+      opacity: 1;
+    }
+  }
+
+  &__edit {
+    border: 1.5px solid colors.$color-walnut;
+    background: colors.$color-white;
+    border-radius: 16px;
+    padding: 4px 12px;
+    font-size: 12.5px;
+    font-weight: 500;
+    color: colors.$color-espresso;
+    outline: none;
+    min-width: 80px;
+  }
+
+  &__add-row {
+    display: flex;
+    gap: 6px;
+    align-items: center;
+  }
+
+  &__draft {
+    flex: 1;
+    border: 1.5px solid colors.$color-border;
+    border-radius: 8px;
+    padding: 8px 12px;
+    font-size: 13px;
+    background: colors.$color-white;
+    color: colors.$color-text-primary;
+    outline: none;
+    transition: border-color 0.15s;
+
+    &:focus {
+      border-color: colors.$color-walnut;
+    }
+
+    &:disabled {
+      opacity: 0.5;
+      cursor: not-allowed;
+    }
+
+    &::placeholder {
+      color: colors.$color-text-secondary;
+    }
+  }
+
+  &__add-btn {
+    border: 1.5px solid colors.$color-walnut;
+    background: colors.$color-cream;
+    color: colors.$color-espresso;
+    border-radius: 8px;
+    padding: 8px 14px;
+    font-size: 12.5px;
+    font-weight: 600;
+    cursor: pointer;
+    white-space: nowrap;
+    transition: all 0.15s;
+
+    &:hover:not(:disabled) {
+      background: colors.$color-espresso;
+      color: colors.$color-white;
+    }
+
+    &:disabled {
+      opacity: 0.4;
+      cursor: not-allowed;
+    }
+  }
+
+  &__counter {
+    font-size: 11px;
+    color: colors.$color-text-secondary;
+    text-align: right;
+  }
+}

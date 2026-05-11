@@ -7,6 +7,7 @@ import {
 import { toast } from "react-toastify";
 import type { User } from "@/types/user.types";
 import { useDebounce } from "@/hooks/useDebounce";
+import { getErrorMessage } from "@/utils/handleApiError";
 
 export const useUserListing = () => {
   const [users, setUsers] = useState<User[]>([]);
@@ -38,8 +39,8 @@ export const useUserListing = () => {
         setTotalPages(result.meta?.totalPages || 1);
         setTotalCount(result.meta?.totalCount || 0);
         setSelectedIds(new Set());
-      } catch {
-        toast.error("შეცდომა მომხმარებლების ჩატვირთვისას");
+      } catch (err) {
+        toast.error(getErrorMessage(err, "შეცდომა მომხმარებლების ჩატვირთვისას"));
       } finally {
         if (showLoading) setLoading(false);
       }
@@ -66,8 +67,8 @@ export const useUserListing = () => {
       await deleteUserRequest(userId);
       toast.success("მომხმარებელი წარმატებით წაიშალა");
       fetchUsers(false);
-    } catch {
-      toast.error("შეცდომა მომხმარებლის წაშლისას");
+    } catch (err) {
+      toast.error(getErrorMessage(err, "შეცდომა მომხმარებლის წაშლისას"));
     }
   };
 
@@ -103,8 +104,8 @@ export const useUserListing = () => {
       await bulkDeleteUsersRequest(Array.from(selectedIds));
       toast.success(`${selectedIds.size} მომხმარებელი წარმატებით წაიშალა`);
       fetchUsers(false);
-    } catch {
-      toast.error("შეცდომა მომხმარებლების წაშლისას");
+    } catch (err) {
+      toast.error(getErrorMessage(err, "შეცდომა მომხმარებლების წაშლისას"));
     }
   };
 

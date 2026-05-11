@@ -1,17 +1,47 @@
 @use "@/styles/colors.scss" as colors;
 @use "@/styles/_breakpoints.scss" as *;
 
+$grid: 80px 2.8fr 1.3fr 1fr 1.1fr 110px 130px;
+
 .list-header {
   display: grid;
-  grid-template-columns: 80px 2fr 1.2fr 1fr 100px 80px 120px;
-  padding: 16px;
-  background-color: colors.$color-ivory;
+  grid-template-columns: $grid;
+  align-items: center;
+  padding: 10px 20px;
+  background: linear-gradient(to bottom, colors.$color-bg-secondary, colors.$color-ivory);
   border-bottom: 2px solid colors.$color-border;
-  font-weight: 700;
-  font-size: 13px;
-  color: colors.$color-walnut;
-  text-transform: uppercase;
-  letter-spacing: 0.05em;
+
+  > div {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+
+    span {
+      font-size: 11px;
+      font-weight: 700;
+      color: colors.$color-walnut;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+    }
+
+    small {
+      font-size: 10px;
+      font-weight: 400;
+      color: colors.$color-text-secondary;
+      letter-spacing: 0.04em;
+    }
+
+    &.col-actions {
+      justify-self: end;
+      padding-right: 8px;
+    }
+
+    &.col-price,
+    &.col-stock,
+    &.col-status {
+      span, small { text-align: center; }
+    }
+  }
 
   @include tablet {
     display: none;

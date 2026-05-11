@@ -1,6 +1,8 @@
+import { useState } from "react";
 import TextInput from "@/components/ui/TextInput";
 import type { Partner } from "@/types/partner.types";
 import { toast } from "react-toastify";
+import ImageCropperModal from "@/components/ui/ImageCropperModal";
 import "./PartnerCompanyPanel.scss";
 
 interface PartnerCompanyPanelProps {
@@ -28,8 +30,11 @@ export function PartnerCompanyPanel({
     }
   };
 
+  const [pendingFile, setPendingFile] = useState<File | null>(null);
+
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
+    e.target.value = "";
     if (file) {
       if (file.size > 5 * 1024 * 1024) {
         toast.warning("ფაილის ზომა არ უნდა აღემატებოდეს 5MB-ს");
@@ -39,7 +44,7 @@ export function PartnerCompanyPanel({
         toast.warning("მხოლოდ სურათების ატვირთვაა ნებადართული");
         return;
       }
-      onPhotoChange?.(file);
+      setPendingFile(file);
     }
   };
 
@@ -104,6 +109,18 @@ export function PartnerCompanyPanel({
           onChange={handleFileChange}
         />
       </div>
+
+      {pendingFile && (
+        <ImageCropperModal
+          file={pendingFile}
+          aspect={1}
+          onCancel={() => setPendingFile(null)}
+          onConfirm={(processed) => {
+            setPendingFile(null);
+            onPhotoChange?.(processed);
+          }}
+        />
+      )}
     </div>
   );
 }

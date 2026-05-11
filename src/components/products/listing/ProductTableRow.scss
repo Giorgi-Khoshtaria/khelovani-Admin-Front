@@ -19,6 +19,16 @@
     opacity: 0.75;
     background-color: #fafafa;
   }
+
+  &.is-pinned {
+    background-color: #fffbeb;
+    border-left: 3px solid #f59e0b;
+    padding-left: 17px;
+
+    &:hover {
+      background-color: #fef3c7;
+    }
+  }
 }
 
 // Image Column
@@ -59,24 +69,6 @@
     line-height: 1.4;
   }
 
-  .title-row {
-    display: flex;
-    align-items: center;
-    gap: 6px;
-  }
-
-  .pin-badge {
-    font-size: 11px;
-    background: #fef3c7;
-    color: #92400e;
-    border: 1px solid #fcd34d;
-    border-radius: 4px;
-    padding: 1px 5px;
-    font-weight: 600;
-    white-space: nowrap;
-    flex-shrink: 0;
-  }
-
   .title-ge {
     font-weight: 600;
     color: colors.$color-espresso;
@@ -85,6 +77,27 @@
   .title-en {
     font-size: 13.5px;
     color: #666666;
+  }
+
+  .badges-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    margin-top: 2px;
+  }
+
+  .pin-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    font-size: 11px;
+    font-weight: 600;
+    color: #92400e;
+    background-color: #fef3c7;
+    border: 1px solid #fcd34d;
+    border-radius: 12px;
+    padding: 2px 8px;
+    white-space: nowrap;
   }
 }
 
@@ -173,6 +186,10 @@
   }
 }
 
+.pin-menu-wrapper {
+  position: relative;
+}
+
 .pin-btn {
   background: none;
   border: 1px solid colors.$color-border;
@@ -189,10 +206,46 @@
   }
 }
 
-.product-row.pinned {
-  border-left: 3px solid #f59e0b;
-  background-color: #fffbeb;
+.pin-dropdown {
+  position: absolute;
+  right: 0;
+  top: calc(100% + 4px);
+  z-index: 200;
+  background: #fff;
+  border: 1px solid colors.$color-border;
+  border-radius: 8px;
+  box-shadow: 0 4px 16px rgba(0,0,0,0.12);
+  min-width: 180px;
+  padding: 4px;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
 }
+
+.pin-option {
+  display: block;
+  width: 100%;
+  text-align: left;
+  padding: 8px 12px;
+  font-size: 13px;
+  border: none;
+  border-radius: 6px;
+  background: none;
+  cursor: pointer;
+  transition: background 0.15s;
+
+  &:hover { background: colors.$color-ivory; }
+  &.active { background: #fef3c7; font-weight: 600; }
+
+  &--unpin {
+    color: #c0392b;
+    margin-top: 2px;
+    border-top: 1px solid colors.$color-border;
+    border-radius: 0 0 6px 6px;
+    &:hover { background: #fff5f5; }
+  }
+}
+
 
 .toggle-btn {
   &.is-visible {

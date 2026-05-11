@@ -1,0 +1,193 @@
+@use "@/styles/colors.scss" as colors;
+
+.cat-picker {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+
+  &--error {
+    .cat-picker__search {
+      border-color: #e53935;
+    }
+  }
+
+  &__loading {
+    font-size: 13px;
+    color: colors.$color-text-secondary;
+    padding: 8px 0;
+  }
+
+  &__selected {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 8px;
+    padding: 8px 12px;
+    background: colors.$color-espresso;
+    color: colors.$color-white;
+    border-radius: 8px;
+    font-size: 13px;
+  }
+
+  &__selected-label {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-weight: 600;
+
+    small {
+      font-weight: 400;
+      opacity: 0.7;
+      font-size: 12px;
+    }
+  }
+
+  &__clear {
+    background: none;
+    border: none;
+    color: colors.$color-white;
+    opacity: 0.7;
+    cursor: pointer;
+    font-size: 13px;
+    padding: 2px 4px;
+    line-height: 1;
+    border-radius: 4px;
+    flex-shrink: 0;
+
+    &:hover {
+      opacity: 1;
+      background: rgba(255, 255, 255, 0.15);
+    }
+  }
+
+  &__search-wrapper {
+    position: relative;
+    display: flex;
+    align-items: center;
+  }
+
+  &__search-icon {
+    position: absolute;
+    left: 10px;
+    width: 15px;
+    height: 15px;
+    color: colors.$color-text-secondary;
+    pointer-events: none;
+    flex-shrink: 0;
+  }
+
+  &__search {
+    width: 100%;
+    padding: 9px 34px 9px 32px;
+    border: 1.5px solid colors.$color-border;
+    border-radius: 8px;
+    font-size: 13px;
+    background: colors.$color-ivory;
+    color: colors.$color-text-primary;
+    outline: none;
+    transition: border-color 0.15s;
+
+    &:focus {
+      border-color: colors.$color-walnut;
+      background: colors.$color-white;
+    }
+
+    &::placeholder {
+      color: colors.$color-text-secondary;
+    }
+  }
+
+  &__search-clear {
+    position: absolute;
+    right: 8px;
+    background: none;
+    border: none;
+    font-size: 12px;
+    color: colors.$color-text-secondary;
+    cursor: pointer;
+    padding: 2px 4px;
+    border-radius: 4px;
+    line-height: 1;
+
+    &:hover {
+      color: colors.$color-espresso;
+      background: colors.$color-cream;
+    }
+  }
+
+  &__grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 6px;
+    max-height: 220px;
+    overflow-y: auto;
+    padding-right: 2px;
+
+    &::-webkit-scrollbar {
+      width: 4px;
+    }
+
+    &::-webkit-scrollbar-track {
+      background: colors.$color-ivory;
+      border-radius: 4px;
+    }
+
+    &::-webkit-scrollbar-thumb {
+      background: colors.$color-bg-accent;
+      border-radius: 4px;
+    }
+  }
+
+  &__item {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    padding: 8px 10px;
+    border: 1.5px solid colors.$color-border;
+    border-radius: 8px;
+    background: colors.$color-ivory;
+    cursor: pointer;
+    text-align: left;
+    transition: all 0.15s;
+
+    &:hover:not(&--active) {
+      border-color: colors.$color-walnut;
+      background: colors.$color-cream;
+    }
+
+    &--active {
+      border-color: colors.$color-espresso;
+      background: colors.$color-espresso;
+
+      .cat-picker__name-ge {
+        color: colors.$color-white;
+      }
+
+      .cat-picker__name-en {
+        color: rgba(255, 255, 255, 0.65);
+      }
+    }
+  }
+
+  &__name-ge {
+    font-size: 12.5px;
+    font-weight: 600;
+    color: colors.$color-espresso;
+    line-height: 1.3;
+  }
+
+  &__name-en {
+    font-size: 11px;
+    font-weight: 400;
+    color: colors.$color-text-secondary;
+    line-height: 1.2;
+  }
+
+  &__empty {
+    grid-column: 1 / -1;
+    font-size: 13px;
+    color: colors.$color-text-secondary;
+    text-align: center;
+    padding: 16px 0;
+  }
+}

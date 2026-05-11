@@ -26,6 +26,8 @@ export default function SideManu() {
     links.push({ path: "/users", label: "მომხმარებლები" });
   if (hasPermission("products.viewAll"))
     links.push({ path: "/products", label: "ყველა პროდუქტი" });
+  if (role === "admin")
+    links.push({ path: "/products/pinned", label: "პინ-პროდუქტები" });
   if (hasPermission("translations.read"))
     links.push({ path: "/translations", label: "თარგმანები" });
   if (hasPermission("roles.read"))
@@ -73,9 +75,27 @@ export default function SideManu() {
     )
       return true;
 
+    // /products sub-pages (e.g. /products/123) but NOT /products/pinned
+    if (
+      linkPath === "/products" &&
+      location.pathname.startsWith("/products/") &&
+      !location.pathname.startsWith("/products/pinned")
+    ) {
+      return true;
+    }
+
+    // /products/pinned sub-pages
+    if (
+      linkPath === "/products/pinned" &&
+      location.pathname.startsWith("/products/pinned")
+    ) {
+      return true;
+    }
+
     // Org legacy paths (in case they land there via direct link)
     if (
       linkPath.endsWith("/products") &&
+      linkPath !== "/products" &&
       location.pathname.startsWith(linkPath)
     ) {
       return true;

@@ -19,7 +19,6 @@ export interface PartnerData {
   status: PartnerStatus;
   identificationCode?: string;
   personalNumber?: string;
-  categories?: string[];
   website?: string;
   facebook?: string;
   instagram?: string;
@@ -46,7 +45,6 @@ export interface Partner {
   addressEn: string;
   description?: string;
   descriptionEn?: string;
-  categories?: string[];
   status: PartnerStatus;
   createdAt: string;
   website?: string;

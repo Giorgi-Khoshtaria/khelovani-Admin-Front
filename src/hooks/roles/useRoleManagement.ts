@@ -62,8 +62,8 @@ export default function useRoleManagement() {
         );
         setPermissions(data);
       }
-    } catch {
-      toast.error("მონაცემების ჩატვირთვა ვერ მოხერხდა");
+    } catch (err) {
+      toast.error(getErrorMessage(err, "მონაცემების ჩატვირთვა ვერ მოხერხდა"));
     } finally {
       setLoading(false);
     }

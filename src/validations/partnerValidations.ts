@@ -23,7 +23,6 @@ export const partnerSchema = z.object({
   facebook: z.string().optional(),
   instagram: z.string().optional(),
   tiktok: z.string().optional(),
-  categories: z.array(z.string()).min(1, "კატეგორია სავალდებულოა").max(5, "მაქსიმუმ 5 კატეგორია").optional(),
 });
 
 export type PartnerFormData = z.infer<typeof partnerSchema>;

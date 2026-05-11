@@ -1,0 +1,15 @@
+@use "@/styles/colors.scss" as colors;
+
+.product-form {
+  .pf-discount-field {
+    margin-top: 14px;
+    padding: 16px 18px;
+    background: colors.$color-warning-light;
+    border: 1px solid #fcd34d;
+    border-radius: 12px;
+    display: inline-flex;
+    flex-direction: column;
+    gap: 6px;
+    min-width: 220px;
+  }
+}

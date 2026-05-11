@@ -253,9 +253,6 @@ export default function PartnerDetailedPage() {
         isAdmin={isAdmin}
         editForm={editForm}
         onChange={handleChange}
-        onCategoriesChange={(cats) =>
-          setEditForm((prev) => ({ ...prev, categories: cats }))
-        }
         errors={formErrors}
       />
     </div>

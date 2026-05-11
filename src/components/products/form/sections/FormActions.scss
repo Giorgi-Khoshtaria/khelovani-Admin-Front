@@ -1,0 +1,80 @@
+@use "@/styles/colors.scss" as colors;
+
+.product-form {
+  .pf-actions {
+    position: sticky;
+    bottom: 12px;
+    display: flex;
+    gap: 10px;
+    background: colors.$color-white;
+    padding: 14px 18px;
+    border-radius: 16px;
+    box-shadow: 0 -2px 8px rgba(0, 0, 0, 0.06), 0 8px 24px rgba(0, 0, 0, 0.1);
+    border: 1px solid colors.$color-border;
+    z-index: 10;
+  }
+
+  .pf-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    padding: 12px 24px;
+    border-radius: 10px;
+    font-size: 15px;
+    font-weight: 600;
+    font-family: inherit;
+    cursor: pointer;
+    border: none;
+    transition: all 0.18s;
+
+    &:disabled {
+      opacity: 0.55;
+      cursor: not-allowed;
+    }
+
+    &--cancel {
+      background: colors.$color-light-gray;
+      color: colors.$color-text-secondary;
+      flex: 1;
+
+      &:hover:not(:disabled) {
+        background: colors.$color-gray-hover;
+        color: colors.$color-text-primary;
+      }
+    }
+
+    &--submit {
+      background: colors.$color-espresso;
+      color: colors.$color-white;
+      flex: 2;
+
+      &:hover:not(:disabled) {
+        opacity: 0.88;
+        transform: translateY(-1px);
+        box-shadow: 0 4px 12px rgba(43, 26, 15, 0.3);
+      }
+
+      &:active:not(:disabled) {
+        transform: translateY(0);
+      }
+    }
+  }
+
+  .pf-spinner {
+    display: inline-block;
+    width: 16px;
+    height: 16px;
+    border: 2px solid rgba(255, 255, 255, 0.35);
+    border-top-color: white;
+    border-radius: 50%;
+    animation: pf-spin 0.65s linear infinite;
+    flex-shrink: 0;
+  }
+
+  @keyframes pf-spin {
+    to {
+      transform: rotate(360deg);
+    }
+  }
+}

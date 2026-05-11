@@ -1,6 +1,7 @@
-import React from "react";
+import React, { useState, useRef, useEffect } from "react";
 import "./ProductTableRow.scss";
-import type { Product } from "@/types/productTypes";
+import type { Product, PinSection } from "@/types/productTypes";
+import { CONDITION_LABELS } from "@/types/productTypes";
 import useCategoryOptions from "@/hooks/categories/useCategoryOptions";
 
 interface ProductTableRowProps {
@@ -10,16 +11,17 @@ interface ProductTableRowProps {
   onDelete: (e: React.MouseEvent, productId: string) => void;
   onEdit: (productId: string) => void;
   onRowClick: () => void;
-  onPin?: (e: React.MouseEvent, product: Product) => void;
+  onPin?: (e: React.MouseEvent, product: Product, pinSection: PinSection | null) => void;
 }
 
-// Helper function to truncate text
-const truncate = (text: string | undefined, maxLength: number = 50): string => {
+const truncate = (text: string | undefined, maxLength = 50): string => {
   if (!text) return "";
-  return text.length > maxLength
-    ? text.substring(0, maxLength).trim() + "..."
-    : text;
+  return text.length > maxLength ? text.substring(0, maxLength).trim() + "..." : text;
 };
+
+function getCompatibleSections(product: Product): PinSection[] {
+  return [product.condition];
+}
 
 export const ProductTableRow: React.FC<ProductTableRowProps> = ({
   product,
@@ -31,40 +33,54 @@ export const ProductTableRow: React.FC<ProductTableRowProps> = ({
   onPin,
 }) => {
   const { getLabel } = useCategoryOptions();
+  const [pinMenuOpen, setPinMenuOpen] = useState(false);
+  const menuRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    if (!pinMenuOpen) return;
+    const handleClick = (e: MouseEvent) => {
+      if (menuRef.current && !menuRef.current.contains(e.target as Node)) {
+        setPinMenuOpen(false);
+      }
+    };
+    document.addEventListener("mousedown", handleClick);
+    return () => document.removeEventListener("mousedown", handleClick);
+  }, [pinMenuOpen]);
+
+  const isPinned = !!product.pinSection;
+  const compatibleSections = getCompatibleSections(product);
 
   return (
     <div
-      className={`product-row ${!product.isShown ? "is-hidden" : ""}${product.isPinned ? " pinned" : ""}`}
+      className={`product-row${!product.isShown ? " is-hidden" : ""}${isPinned ? " is-pinned" : ""}`}
       onClick={onRowClick}
     >
       <div className="col-image">
         <div className="thumbnail">
-          <img
-            src={product.images?.[0] || "/placeholder.jpg"}
-            alt={product.titleGe}
-          />
+          <img src={product.images?.[0] || "/placeholder.jpg"} alt={product.titleGe} />
         </div>
       </div>
 
       <div className="col-info">
         <div className="title-stack">
-          <div className="title-row">
-            <span
-              className="title-ge"
-              title={product.titleGe}
-            >
-              {truncate(product.titleGe)}
-            </span>
-            {product.isPinned && <span className="pin-badge">📌 პინი</span>}
-          </div>
+          <span className="title-ge" title={product.titleGe}>
+            {truncate(product.titleGe)}
+          </span>
           <span className="title-en" title={product.titleEn}>
             {truncate(product.titleEn)}
           </span>
-          {product.ownerType && (
-            <span className={`owner-type-badge owner-type-badge--${product.ownerType}`}>
-              {product.ownerType === "individual" ? "👤 ფიზიკური პირი" : "🏢 ორგანიზაცია"}
-            </span>
-          )}
+          <div className="badges-row">
+            {isPinned && product.pinSection && (
+              <span className="pin-badge">
+                📌 {CONDITION_LABELS[product.pinSection].ge}
+              </span>
+            )}
+            {isAdmin && product.ownerType && (
+              <span className={`owner-type-badge owner-type-badge--${product.ownerType}`}>
+                {product.ownerType === "individual" ? "👤 ფიზიკური პირი" : "🏢 ორგანიზაცია"}
+              </span>
+            )}
+          </div>
         </div>
       </div>
 
@@ -73,23 +89,17 @@ export const ProductTableRow: React.FC<ProductTableRowProps> = ({
       </div>
 
       <div className="col-status">
-        <span
-          className={`status-pill ${product.isShown ? "visible" : "hidden"}`}
-        >
+        <span className={`status-pill ${product.isShown ? "visible" : "hidden"}`}>
           {product.isShown ? "საჯარო" : "დამალული"}
         </span>
       </div>
 
       <div className="col-price">
-        <span className="price">
-          {product.price} {product.currency || "GEL"}
-        </span>
+        <span className="price">{product.price} {product.currency || "GEL"}</span>
       </div>
 
       <div className="col-stock">
-        <span
-          className={`stock-level ${product.stockQuantity > 0 ? "in-stock" : "out-of-stock"}`}
-        >
+        <span className={`stock-level ${product.stockQuantity > 0 ? "in-stock" : "out-of-stock"}`}>
           {product.stockQuantity}
         </span>
       </div>
@@ -98,40 +108,67 @@ export const ProductTableRow: React.FC<ProductTableRowProps> = ({
         <div className="action-buttons">
           {isAdmin ? (
             <>
-            <button
-              className={`action-btn pin-btn ${product.isPinned ? "active" : ""}`}
-              onClick={(e) => onPin?.(e, product)}
-              disabled={!product.isShown}
-              title={!product.isShown ? "დამალული პროდუქტის პინი შეუძლებელია" : product.isPinned ? "პინის მოხსნა" : "პინი"}
-            >
-              {product.isPinned ? "📌" : "📍"}
-            </button>
-            <button
-              className={`action-btn toggle-btn ${product.isShown ? "is-visible" : "is-hidden-state"}`}
-              onClick={(e) => onToggle(e, product)}
-              title={product.isShown ? "დამალვა" : "გამოჩენა"}
-            >
-              {product.isShown ? (
-                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                  <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/>
-                  <circle cx="12" cy="12" r="3"/>
-                </svg>
-              ) : (
-                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                  <path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94"/>
-                  <path d="M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19"/>
-                  <line x1="1" y1="1" x2="23" y2="23"/>
-                </svg>
-              )}
-            </button>
+              <div className="pin-menu-wrapper" ref={menuRef}>
+                <button
+                  className={`action-btn pin-btn ${isPinned ? "active" : ""}`}
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    if (isPinned) {
+                      onPin?.(e, product, null);
+                    } else {
+                      setPinMenuOpen((o) => !o);
+                    }
+                  }}
+                  disabled={!product.isShown}
+                  title={!product.isShown ? "დამალული პროდუქტის პინი შეუძლებელია" : isPinned ? "პინის მოხსნა" : "პინის სექცია"}
+                >
+                  {isPinned ? "📌" : "📍"}
+                </button>
+                {pinMenuOpen && (
+                  <div className="pin-dropdown">
+                    {compatibleSections.map((section) => (
+                      <button
+                        key={section}
+                        className={`pin-option${product.pinSection === section ? " active" : ""}`}
+                        onClick={(e) => { onPin?.(e, product, section); setPinMenuOpen(false); }}
+                      >
+                        {CONDITION_LABELS[section].ge} / {CONDITION_LABELS[section].en}
+                      </button>
+                    ))}
+                    {isPinned && (
+                      <button
+                        className="pin-option pin-option--unpin"
+                        onClick={(e) => { onPin?.(e, product, null); setPinMenuOpen(false); }}
+                      >
+                        ❌ პინის მოხსნა
+                      </button>
+                    )}
+                  </div>
+                )}
+              </div>
+              <button
+                className={`action-btn toggle-btn ${product.isShown ? "is-visible" : "is-hidden-state"}`}
+                onClick={(e) => onToggle(e, product)}
+                title={product.isShown ? "დამალვა" : "გამოჩენა"}
+              >
+                {product.isShown ? (
+                  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                    <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/>
+                    <circle cx="12" cy="12" r="3"/>
+                  </svg>
+                ) : (
+                  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                    <path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94"/>
+                    <path d="M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19"/>
+                    <line x1="1" y1="1" x2="23" y2="23"/>
+                  </svg>
+                )}
+              </button>
             </>
           ) : (
             <button
               className="action-btn edit-btn"
-              onClick={(e) => {
-                e.stopPropagation();
-                onEdit(product._id);
-              }}
+              onClick={(e) => { e.stopPropagation(); onEdit(product._id); }}
               title="რედაქტირება"
             >
               <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">

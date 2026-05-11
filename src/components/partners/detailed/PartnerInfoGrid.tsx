@@ -2,9 +2,7 @@ import React from "react";
 import TextInput from "@/components/ui/TextInput";
 import TextareaInput from "@/components/ui/TextareaInput";
 import SelectInput from "@/components/ui/SelectInput";
-import MultiSelectChips from "@/components/ui/MultiSelectChips";
 import { CITY_OPTIONS } from "@/components/ui/CityOptions";
-import useCategoryOptions from "@/hooks/categories/useCategoryOptions";
 import type { Partner } from "@/types/partner.types";
 import "./PartnerInfoGrid.scss";
 
@@ -18,7 +16,6 @@ interface PartnerInfoGridProps {
       HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement
     >,
   ) => void;
-  onCategoriesChange?: (categories: string[]) => void;
   errors: Record<string, string>;
 }
 
@@ -28,10 +25,8 @@ export function PartnerInfoGrid({
   isAdmin,
   editForm,
   onChange,
-  onCategoriesChange,
   errors,
 }: PartnerInfoGridProps) {
-  const { options: catOptions, getLabel } = useCategoryOptions();
   return (
     <>
       <div className="profile-grid">
@@ -184,30 +179,6 @@ export function PartnerInfoGrid({
             fullWidth
           />
         </div>
-      </div>
-
-      <div className="info-section categories">
-        <h2>კატეგორიები</h2>
-        {isEditing ? (
-          <MultiSelectChips
-            options={catOptions.map((c) => ({ value: c.slug, label: c.nameGe }))}
-            value={editForm.categories ?? []}
-            onChange={(cats) => onCategoriesChange?.(cats)}
-            placeholder="კატეგორია აირჩიეთ"
-          />
-        ) : (
-          <div className="category-chips">
-            {(partner.categories ?? []).length === 0 ? (
-              <span className="category-chips__empty">კატეგორია არ არის მითითებული</span>
-            ) : (
-              (partner.categories ?? []).map((slug) => (
-                <span key={slug} className="category-chips__chip">
-                  {getLabel(slug)}
-                </span>
-              ))
-            )}
-          </div>
-        )}
       </div>
 
       {(partner.description || partner.descriptionEn || isEditing || isAdmin) && (

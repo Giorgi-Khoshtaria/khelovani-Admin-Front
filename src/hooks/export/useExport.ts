@@ -5,6 +5,7 @@ import { getRolesRequest } from "@/apiCalls/roleApiCalls/role.req";
 import { getPermissionsRequest } from "@/apiCalls/roleApiCalls/permission.req";
 import { getMenuItemsRequest } from "@/apiCalls/menuApiCalls/menu.req";
 import { exportToExcel } from "@/utils/exportUtils";
+import { getErrorMessage } from "@/utils/handleApiError";
 
 export default function useExport() {
   const [loading, setLoading] = useState<{ [key: string]: boolean }>({
@@ -34,8 +35,8 @@ export default function useExport() {
         exportToExcel(exportData, "translations_export", "Translations");
         toast.success("Translations exported successfully");
       }
-    } catch {
-      toast.error("Failed to export translations");
+    } catch (err) {
+      toast.error(getErrorMessage(err, "Failed to export translations"));
     } finally {
       setLoading((prev) => ({ ...prev, translations: false }));
     }
@@ -56,8 +57,8 @@ export default function useExport() {
       }));
       exportToExcel(exportData, "roles_export", "Roles");
       toast.success("Roles exported successfully");
-    } catch {
-      toast.error("Failed to export roles");
+    } catch (err) {
+      toast.error(getErrorMessage(err, "Failed to export roles"));
     } finally {
       setLoading((prev) => ({ ...prev, roles: false }));
     }
@@ -74,8 +75,8 @@ export default function useExport() {
       }));
       exportToExcel(exportData, "permissions_export", "Permissions");
       toast.success("Permissions exported successfully");
-    } catch {
-      toast.error("Failed to export permissions");
+    } catch (err) {
+      toast.error(getErrorMessage(err, "Failed to export permissions"));
     } finally {
       setLoading((prev) => ({ ...prev, permissions: false }));
     }
@@ -94,8 +95,8 @@ export default function useExport() {
       }));
       exportToExcel(exportData, "menu_export", "Menu");
       toast.success("Menu items exported successfully");
-    } catch {
-      toast.error("Failed to export menu items");
+    } catch (err) {
+      toast.error(getErrorMessage(err, "Failed to export menu items"));
     } finally {
       setLoading((prev) => ({ ...prev, menu: false }));
     }

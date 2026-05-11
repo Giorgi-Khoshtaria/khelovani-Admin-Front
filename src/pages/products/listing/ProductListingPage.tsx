@@ -1,7 +1,7 @@
 import { useParams, useNavigate, useLocation } from "react-router-dom";
 import { useProductListing } from "@/hooks/products/useProductListing";
 import "./ProductListingPage.scss";
-import type { Product } from "@/types/productTypes";
+import type { Product, PinSection } from "@/types/productTypes";
 import { ProductFilters } from "@/components/products/listing/ProductFilters";
 import { ProductListHeader } from "@/components/products/listing/ProductListHeader";
 import { ProductTableRow } from "@/components/products/listing/ProductTableRow";
@@ -17,6 +17,8 @@ export default function ProductListingPage() {
     setSearch,
     category,
     setCategory,
+    condition,
+    setCondition,
     selectedPartnerId,
     setSelectedPartnerId,
     ownerType,
@@ -42,9 +44,9 @@ export default function ProductListingPage() {
     await handleToggleVisibility(product);
   };
 
-  const onPin = async (e: React.MouseEvent, product: Product) => {
+  const onPin = async (e: React.MouseEvent, product: Product, pinSection: PinSection | null) => {
     e.stopPropagation();
-    await handlePin(product);
+    await handlePin(product, pinSection);
   };
 
   const isProfileMode = location.pathname.startsWith("/profile");
@@ -112,6 +114,8 @@ export default function ProductListingPage() {
         onSearchChange={setSearch}
         category={category}
         onCategoryChange={setCategory}
+        condition={condition}
+        onConditionChange={setCondition}
         isAdmin={isAdmin}
         id={id}
         selectedPartnerId={selectedPartnerId}

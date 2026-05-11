@@ -5,6 +5,7 @@ import { updateProductPinRequest } from "@/apiCalls/partnerApiCalls/pinProduct.r
 import { toast } from "react-toastify";
 import type { Product } from "@/types/productTypes";
 import { parseJwt } from "@/utils/parseJwt";
+import { getErrorMessage } from "@/utils/handleApiError";
 
 export const useProductDetails = (partnerId?: string, productId?: string) => {
   const navigate = useNavigate();
@@ -30,8 +31,8 @@ export const useProductDetails = (partnerId?: string, productId?: string) => {
       if (showLoading) setLoading(true);
       const data = await getProductDetailsRequest(partnerId, productId);
       setProduct(data);
-    } catch {
-      toast.error("პროდუქტის მონაცემების ჩატვირთვა ვერ მოხერხდა");
+    } catch (err) {
+      toast.error(getErrorMessage(err, "პროდუქტის მონაცემების ჩატვირთვა ვერ მოხერხდა"));
       navigate(partnerId ? `/partners/${partnerId}/products` : "/products");
     } finally {
       if (showLoading) setLoading(false);
@@ -50,26 +51,25 @@ export const useProductDetails = (partnerId?: string, productId?: string) => {
       await deleteProductRequest(partnerId, productId);
       toast.success("პროდუქტი წარმატებით წაიშალა");
       navigate(partnerId ? `/partners/${partnerId}/products` : "/products");
-    } catch {
-      toast.error("შეცდომა პროდუქტის წაშლისას");
+    } catch (err) {
+      toast.error(getErrorMessage(err, "შეცდომა პროდუქტის წაშლისას"));
     }
   };
 
-  const handlePin = async () => {
+  const handlePin = async (pinSection: import("@/types/productTypes").PinSection | null) => {
     if (!productId || !product) return;
     if (pinning) return;
-    const newVal = !product.isPinned;
     try {
       setPinning(true);
-      const { data, meta } = await updateProductPinRequest(productId, newVal);
-      setProduct((prev) => prev ? { ...prev, isPinned: data.isPinned, pinnedAt: data.pinnedAt } : null);
-      if (newVal && meta.evicted.length > 0) {
+      const { data, meta } = await updateProductPinRequest(productId, pinSection);
+      setProduct((prev) => prev ? { ...prev, pinSection: data.pinSection, pinnedAt: data.pinnedAt } : null);
+      if (pinSection && meta.evicted.length > 0) {
         toast.info("სხვა პროდუქტი ავტომატურად მოიხსნა პინიდან");
       } else {
-        toast.success(newVal ? "პროდუქტი დაიპინა" : "პინი მოიხსნა");
+        toast.success(pinSection ? "პროდუქტი დაიპინა" : "პინი მოიხსნა");
       }
-    } catch {
-      toast.error("მოქმედება ვერ შესრულდა");
+    } catch (err) {
+      toast.error(getErrorMessage(err, "მოქმედება ვერ შესრულდა"));
     } finally {
       setPinning(false);
     }
@@ -85,9 +85,9 @@ export const useProductDetails = (partnerId?: string, productId?: string) => {
     try {
       await updateProductRequest(partnerId, productId, { isShown: newStatus });
       toast.success(originalStatus ? "პროდუქტი დაიმალა / Product hidden" : "პროდუქტი გამოჩნდა / Product shown");
-    } catch {
+    } catch (err) {
       setProduct(prev => prev ? { ...prev, isShown: originalStatus } : null);
-      toast.error("შეცდომა სტატუსის შეცვლისას");
+      toast.error(getErrorMessage(err, "შეცდომა სტატუსის შეცვლისას"));
     }
   };
 

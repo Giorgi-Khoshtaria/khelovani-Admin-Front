@@ -9,6 +9,7 @@ import { useProductForm } from "@/hooks/products/useProductForm";
 import ProductForm from "@/components/products/form/ProductForm";
 import { usePartnerContext } from "@/context/PartnerContext";
 import { parseJwt } from "@/utils/parseJwt";
+import { getErrorMessage } from "@/utils/handleApiError";
 import "./EditProductPage.scss";
 
 export default function EditProductPage() {
@@ -30,12 +31,12 @@ export default function EditProductPage() {
   const {
     formData,
     setFormData,
-    tagInputs,
     setTagInputs,
     errors,
     handleInputChange,
-    handleTagInputChange,
-    handleFileChange,
+    setArrayField,
+    appendProcessedImage,
+    resetImages,
     validate,
   } = useProductForm();
 
@@ -63,16 +64,15 @@ export default function EditProductPage() {
           images: [],
           currency: product.currency || "GEL",
           isShown: product.isShown || false,
-          isOneOfAKind: product.isOneOfAKind || false,
           shippingAvailable: product.shippingAvailable || false,
           shippingPrice:
             product.shippingPrice !== undefined
               ? product.shippingPrice.toString()
               : "",
-          locationGe: product.locationGe || "",
-          locationEn: product.locationEn || "",
           dimensions: product.dimensions || "",
           weight: product.weight !== undefined ? product.weight.toString() : "",
+          isOnSale: product.isOnSale || false,
+          discountPercent: product.discountPercent != null ? product.discountPercent.toString() : "",
           owner: product.owner || "",
         });
         setExistingImages(product.images || []);
@@ -82,8 +82,8 @@ export default function EditProductPage() {
           materialsGe: (product.materialsGe || []).join(", "),
           materialsEn: (product.materialsEn || []).join(", "),
         });
-      } catch {
-        toast.error("შეცდომა პროდუქტის ჩატვირთვისას / Error loading product");
+      } catch (err) {
+        toast.error(getErrorMessage(err, "შეცდომა პროდუქტის ჩატვირთვისას / Error loading product"));
         navigate(-1);
       } finally {
         setFetching(false);
@@ -101,7 +101,7 @@ export default function EditProductPage() {
 
     try {
       setLoading(true);
-      await updateProductRequest(partnerId, productId, submissionData);
+      await updateProductRequest(partnerId, productId, submissionData, "ge", existingImages);
       toast.success(
         "პროდუქტი წარმატებით განახლდა / Product successfully updated",
       );
@@ -111,12 +111,7 @@ export default function EditProductPage() {
           : `/profile/products/${productId}`,
       );
     } catch (error: unknown) {
-      const message =
-        error instanceof Error
-          ? (error as unknown as { response?: { data?: { message?: string } } })
-              .response?.data?.message || error.message
-          : "შეცდომა განახლებისას / Error updating product";
-      toast.error(message);
+      toast.error(getErrorMessage(error, "შეცდომა განახლებისას / Error updating product"));
     } finally {
       setLoading(false);
     }
@@ -135,20 +130,18 @@ export default function EditProductPage() {
 
       <ProductForm
         formData={formData}
-        tagInputs={tagInputs}
         errors={errors}
         loading={loading}
         isEdit={true}
         existingImages={existingImages}
         onSubmit={handleSubmit}
         handleInputChange={handleInputChange}
-        handleTagInputChange={
-          handleTagInputChange as (
-            name: "tagsGe" | "tagsEn" | "materialsGe" | "materialsEn",
-            value: string,
-          ) => void
+        setArrayField={setArrayField}
+        appendProcessedImage={appendProcessedImage}
+        resetImages={resetImages}
+        removeExistingImage={(url) =>
+          setExistingImages((prev) => prev.filter((u) => u !== url))
         }
-        handleFileChange={handleFileChange}
         onCancel={() => navigate(-1)}
         isAdmin={isAdmin}
       />

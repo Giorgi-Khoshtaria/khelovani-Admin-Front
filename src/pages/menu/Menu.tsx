@@ -10,6 +10,7 @@ import {
 import { validateMenuItemForm } from "@/validations/menuValidations";
 import { MenuTable } from "@/components/menu/MenuTable";
 import { MenuModal } from "@/components/menu/MenuModal";
+import { getErrorMessage } from "@/utils/handleApiError";
 import "./Menu.scss";
 
 const EMPTY_FORM = {
@@ -39,8 +40,8 @@ function Menu() {
       setIsLoading(true);
       const data = await getMenuItemsRequest();
       setItems(data);
-    } catch {
-      toast.error("მენიუს ჩატვირთვა ვერ მოხერხდა");
+    } catch (err) {
+      toast.error(getErrorMessage(err, "მენიუს ჩატვირთვა ვერ მოხერხდა"));
     } finally {
       setIsLoading(false);
     }
@@ -119,8 +120,8 @@ function Menu() {
       }
       closeModal();
       fetchItems();
-    } catch {
-      toast.error("შეცდომა. სცადეთ თავიდან.");
+    } catch (err) {
+      toast.error(getErrorMessage(err, "შეცდომა. სცადეთ თავიდან."));
     } finally {
       setIsSaving(false);
     }
@@ -133,8 +134,8 @@ function Menu() {
       await deleteMenuItemRequest(id);
       toast.success("წაიშალა");
       fetchItems();
-    } catch {
-      toast.error("წაშლა ვერ მოხერხდა");
+    } catch (err) {
+      toast.error(getErrorMessage(err, "წაშლა ვერ მოხერხდა"));
     } finally {
       setDeletingId(null);
     }

@@ -4,6 +4,7 @@ import { getRoleByIdRequest, updateRoleRequest } from "../../apiCalls/roleApiCal
 import { getPermissionsRequest } from "../../apiCalls/roleApiCalls/permission.req";
 import type { Role, Permission } from "../../types/role.types";
 import { toast } from "react-toastify";
+import { getErrorMessage } from "@/utils/handleApiError";
 import "./RoleDetailedPage.scss";
 
 export default function RoleDetailedPage() {
@@ -26,8 +27,8 @@ export default function RoleDetailedPage() {
       setRole(roleData);
       setAllPermissions(permData);
       setSelectedPermissionIds(roleData.permissions?.map((p) => p._id) || []);
-    } catch {
-      toast.error("მონაცემების ჩატვირთვა ვერ მოხერხდა");
+    } catch (err) {
+      toast.error(getErrorMessage(err, "მონაცემების ჩატვირთვა ვერ მოხერხდა"));
       navigate("/roles");
     } finally {
       setLoading(false);
@@ -78,8 +79,8 @@ export default function RoleDetailedPage() {
     try {
       await updateRoleRequest(id, { permissions: selectedPermissionIds });
       toast.success("უფლებები წარმატებით განახლდა");
-    } catch {
-      toast.error("შენახვა ვერ მოხერხდა");
+    } catch (err) {
+      toast.error(getErrorMessage(err, "შენახვა ვერ მოხერხდა"));
     }
   };
 

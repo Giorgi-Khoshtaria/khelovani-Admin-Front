@@ -19,11 +19,10 @@ export const useProductForm = (initialData?: Partial<CreateProductInput>) => {
     images: [],
     currency: "GEL",
     isShown: false,
-    isOneOfAKind: false,
+    isOnSale: false,
+    discountPercent: "",
     shippingAvailable: false,
     shippingPrice: "",
-    locationGe: "",
-    locationEn: "",
     dimensions: "",
     weight: "",
     owner: "",
@@ -61,7 +60,7 @@ export const useProductForm = (initialData?: Partial<CreateProductInput>) => {
     setTagInputs((prev) => ({ ...prev, [name]: value }));
     const array = value.split(",").map((s) => s.trim()).filter(Boolean);
     setFormData((prev) => ({ ...prev, [name]: array }));
-    
+
     if (errors[name]) {
       setErrors((prev) => {
         const newErrs = { ...prev };
@@ -70,6 +69,21 @@ export const useProductForm = (initialData?: Partial<CreateProductInput>) => {
       });
     }
   }, [errors]);
+
+  const setArrayField = useCallback(
+    (name: "tagsGe" | "tagsEn" | "materialsGe" | "materialsEn", items: string[]) => {
+      setFormData((prev) => ({ ...prev, [name]: items }));
+      setTagInputs((prev) => ({ ...prev, [name]: items.join(", ") }));
+      if (errors[name]) {
+        setErrors((prev) => {
+          const next = { ...prev };
+          delete next[name];
+          return next;
+        });
+      }
+    },
+    [errors],
+  );
 
   const handleFileChange = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files && e.target.files.length > 0) {
@@ -89,23 +103,57 @@ export const useProductForm = (initialData?: Partial<CreateProductInput>) => {
     }
   }, [errors]);
 
+  const appendProcessedImage = useCallback((file: File) => {
+    setFormData((prev) => ({ ...prev, images: [...prev.images, file].slice(0, 5) }));
+    setErrors((prev) => {
+      if (!prev.images) return prev;
+      const next = { ...prev };
+      delete next.images;
+      return next;
+    });
+  }, []);
+
+  const resetImages = useCallback(() => {
+    setFormData((prev) => ({ ...prev, images: [] }));
+  }, []);
+
   const validate = (isEdit: boolean, hasExistingImages: boolean) => {
+    const isOnSale = formData.isOnSale ?? false;
+    const rawDiscount = isOnSale && formData.discountPercent !== "" && formData.discountPercent != null
+      ? Number(formData.discountPercent)
+      : null;
+
     const submissionData = {
       ...formData,
       price: Number(formData.price || 0),
       stockQuantity: Number(formData.stockQuantity || 0),
       shippingPrice: formData.shippingPrice ? Number(formData.shippingPrice) : undefined,
       weight: formData.weight ? Number(formData.weight) : undefined,
+      discountPercent: rawDiscount === 0 || rawDiscount == null ? null : rawDiscount,
+      isOnSale,
     } as unknown as AddProductFormData;
 
     const validationErrors = validateAddProductForm(submissionData);
-    
+
     if (isEdit && hasExistingImages && formData.images.length === 0) {
       delete validationErrors.images;
     }
 
-    if (Object.keys(validationErrors).length > 0) {
+    const errorKeys = Object.keys(validationErrors);
+    if (errorKeys.length > 0) {
       setErrors(validationErrors);
+      const firstField = errorKeys[0];
+      requestAnimationFrame(() => {
+        const el =
+          document.querySelector(`[name="${firstField}"]`) ||
+          document.querySelector(".pf-input--error, .pf-error");
+        if (el) {
+          (el as HTMLElement).scrollIntoView({ behavior: "smooth", block: "center" });
+          if (el instanceof HTMLElement && typeof el.focus === "function") {
+            el.focus({ preventScroll: true });
+          }
+        }
+      });
       return null;
     }
 
@@ -121,7 +169,10 @@ export const useProductForm = (initialData?: Partial<CreateProductInput>) => {
     setErrors,
     handleInputChange,
     handleTagInputChange,
+    setArrayField,
     handleFileChange,
+    appendProcessedImage,
+    resetImages,
     validate
   };
 };

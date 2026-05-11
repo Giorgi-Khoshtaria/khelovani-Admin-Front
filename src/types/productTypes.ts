@@ -1,5 +1,34 @@
 import type { PartnerType } from "@/types/partner.types";
 
+export type ProductCondition =
+  | "handmade"
+  | "made_to_order"
+  | "limited_edition"
+  | "one_of_a_kind"
+  | "restored"
+  | "upcycled";
+
+export const PRODUCT_CONDITIONS: ProductCondition[] = [
+  "handmade",
+  "made_to_order",
+  "limited_edition",
+  "one_of_a_kind",
+  "restored",
+  "upcycled",
+];
+
+export const CONDITION_LABELS: Record<ProductCondition, { ge: string; en: string }> = {
+  handmade:        { ge: "ხელნაკეთი",            en: "Handmade" },
+  made_to_order:   { ge: "შეკვეთით",              en: "Made to Order" },
+  limited_edition: { ge: "შეზღუდული გამოშვება",  en: "Limited Edition" },
+  one_of_a_kind:   { ge: "ერთ-ერთი ეგზემპლარი", en: "One of a Kind" },
+  restored:        { ge: "აღდგენილი",             en: "Restored" },
+  upcycled:        { ge: "გადამუშავებული",        en: "Upcycled" },
+};
+
+// PinSection mirrors ProductCondition — a product pins into its own condition's section
+export type PinSection = ProductCondition;
+
 export interface Product {
   _id: string;
   ownerType?: PartnerType;
@@ -12,7 +41,7 @@ export interface Product {
   currency: string;
   category: string;
   stockQuantity: number;
-  condition: "new" | "handmade" | "vintage";
+  condition: ProductCondition;
   tagsGe: string[];
   tagsEn?: string[];
   materialsGe: string[];
@@ -24,10 +53,12 @@ export interface Product {
   dimensions?: string;
   weight?: number;
   isShown: boolean;
-  isPinned?: boolean;
+  isOnSale?: boolean;
+  discountPercent?: number | null;
+  isOneOfAKind?: boolean;
+  pinSection?: PinSection | null;
   pinnedAt?: string | null;
   createdAt: string;
-  isOneOfAKind?: boolean;
   owner: string;
 }
 
@@ -38,17 +69,19 @@ export interface AddProductFormData extends Omit<
   images: File[];
 }
 
-/**
- * Interface for the local form state in AddProductPage.
- * Allows numerical fields to be strings during input to prevent leading zeros and allow empty fields.
- */
 export interface CreateProductInput extends Omit<
   AddProductFormData,
-  "price" | "stockQuantity" | "shippingPrice" | "weight" | "category"
+  | "price"
+  | "stockQuantity"
+  | "shippingPrice"
+  | "weight"
+  | "category"
+  | "discountPercent"
 > {
   price: number | string;
   stockQuantity: number | string;
   shippingPrice: number | string;
   weight: number | string;
+  discountPercent: number | string | undefined;
   category: string;
 }

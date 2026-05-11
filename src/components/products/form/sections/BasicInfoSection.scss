@@ -1,0 +1,57 @@
+@use "@/styles/colors.scss" as colors;
+
+.product-form {
+  .condition-pills {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+  }
+
+  .condition-pill {
+    display: inline-flex;
+    align-items: center;
+    padding: 8px 14px;
+    border-radius: 10px;
+    border: 1.5px solid colors.$color-border;
+    cursor: pointer;
+    color: colors.$color-text-secondary;
+    background: colors.$color-ivory;
+    transition: all 0.18s;
+    user-select: none;
+
+    input[type="radio"] {
+      display: none;
+    }
+
+    span {
+      display: flex;
+      flex-direction: column;
+      gap: 1px;
+      font-size: 13px;
+      font-weight: 600;
+      line-height: 1.3;
+
+      small {
+        font-size: 11px;
+        font-weight: 400;
+        opacity: 0.75;
+      }
+    }
+
+    &:hover:not(.condition-pill--active) {
+      border-color: colors.$color-walnut;
+      color: colors.$color-walnut;
+      background: colors.$color-cream;
+    }
+
+    &--active {
+      border-color: colors.$color-espresso;
+      background: colors.$color-espresso;
+      color: colors.$color-white;
+
+      span small {
+        opacity: 0.7;
+      }
+    }
+  }
+}
