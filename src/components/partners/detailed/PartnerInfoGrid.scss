@@ -71,3 +71,37 @@
     font-size: 14px;
   }
 }
+
+.category-chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 4px;
+}
+
+.category-chip {
+  display: inline-flex;
+  align-items: center;
+  padding: 5px 14px;
+  border-radius: 999px;
+  border: 1px solid #d0c8c0;
+  font-size: 13px;
+  color: #5c4a3a;
+  background: #f5f0eb;
+  transition: background 0.15s, border-color 0.15s, color 0.15s;
+
+  &--active {
+    background: #3d2b1a;
+    border-color: #3d2b1a;
+    color: #fff;
+  }
+
+  &--clickable {
+    cursor: pointer;
+
+    &:hover:not(.category-chip--active) {
+      background: #e8e0d8;
+      border-color: #a08060;
+    }
+  }
+}

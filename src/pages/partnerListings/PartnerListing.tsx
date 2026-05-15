@@ -185,8 +185,8 @@ export default function PartnerListing() {
               className="filter-select"
             >
               <option value="">ყველა ტიპი</option>
-              <option value={PartnerTypeEnum.ORGANIZATION}>🏢 ორგანიზაცია</option>
-              <option value={PartnerTypeEnum.INDIVIDUAL}>👤 ფიზიკური პირი</option>
+              <option value={PartnerTypeEnum.ORGANIZATION}>🏢 კომპანია</option>
+              <option value={PartnerTypeEnum.INDIVIDUAL}>👤 ბრენდი</option>
             </select>
           </div>
         </div>

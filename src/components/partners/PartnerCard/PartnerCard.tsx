@@ -90,13 +90,15 @@ export default function PartnerCard({
             />
           )}
           <h3 className="partner-card__name">{partner.companyNameGe}</h3>
+        </div>
+        <div className="partner-card__badges">
           {partner.partnerType && (
             <span
               className={`partner-card__type-badge type--${partner.partnerType}`}
             >
               {partner.partnerType === "individual"
-                ? "👤 ფიზიკური პირი"
-                : "🏢 ორგანიზაცია"}
+                ? "👤 ბრენდი"
+                : "🏢 კომპანია"}
             </span>
           )}
           {partner.isPinned && (
@@ -106,6 +108,22 @@ export default function PartnerCard({
             <span className="partner-card__hidden-badge">🙈 დამალული</span>
           )}
         </div>
+      </div>
+
+      <div className="partner-card__body">
+        <p className="partner-card__email">
+          <strong>Ел-ფოსტა:</strong> {partner.email}
+        </p>
+        {partner.categories && partner.categories.length > 0 && (
+          <div className="partner-card__categories">
+            {partner.categories.map((slug) => (
+              <span key={slug} className="partner-card__cat-chip">{slug}</span>
+            ))}
+          </div>
+        )}
+      </div>
+
+      <div className="partner-card__footer">
         <span className={`status-badge ${partner.status}`}>
           {partner.status === PartnerStatus.PENDING
             ? "მოლოდინი"
@@ -113,56 +131,49 @@ export default function PartnerCard({
               ? "დადასტურებული"
               : "დაბლოკილი"}
         </span>
-      </div>
-
-      <div className="partner-card__body">
-        <p className="partner-card__email">
-          <strong>Ელ-ფოსტა:</strong> {partner.email}
-        </p>
-      </div>
-
-      <div className="partner-card__footer">
-        {isAdmin && (
-          <>
-            <button
-              className={`pin-btn ${partner.isPinned ? "active" : ""}`}
-              onClick={handlePin}
-              disabled={pinning}
-              title={partner.isPinned ? "პინის მოხსნა" : "პინი"}
-            >
-              {pinning ? "..." : partner.isPinned ? "📌" : "📍"}
-            </button>
-            <button
-              className={`visibility-btn ${isShown ? "visible" : "hidden"}`}
-              onClick={handleVisibility}
-              disabled={toggling}
-              title={isShown ? "დამალვა" : "გამოჩენა"}
-            >
-              {toggling ? "..." : isShown ? "👁" : "🙈"}
-            </button>
-          </>
-        )}
-        <Link to={`/partners/${partner._id}`} className="view-details-btn">
-          დეტალურად
-        </Link>
-        <button
-          className="delete-btn reject-btn"
-          onClick={async () => {
-            if (window.confirm("ნამდვილად გსურთ პარტნიორის წაშლა?")) {
-              try {
-                const { deletePartnerRequest } =
-                  await import("@/apiCalls/partnerApiCalls/getPartner.req");
-                await deletePartnerRequest(partner._id);
-                toast.success("პარტნიორი წარმატებით წაიშალა");
-                if (onDelete) onDelete();
-              } catch (err) {
-                toast.error(getErrorMessage(err, "წაშლა ვერ მოხერხდა"));
+        <div className="partner-card__actions">
+          {isAdmin && (
+            <>
+              <button
+                className={`pin-btn ${partner.isPinned ? "active" : ""}`}
+                onClick={handlePin}
+                disabled={pinning}
+                title={partner.isPinned ? "პინის მოხსნა" : "პინი"}
+              >
+                {pinning ? "..." : partner.isPinned ? "📌" : "📍"}
+              </button>
+              <button
+                className={`visibility-btn ${isShown ? "visible" : "hidden"}`}
+                onClick={handleVisibility}
+                disabled={toggling}
+                title={isShown ? "დამალვა" : "გამოჩენა"}
+              >
+                {toggling ? "..." : isShown ? "👁" : "🙈"}
+              </button>
+            </>
+          )}
+          <Link to={`/partners/${partner._id}`} className="view-details-btn">
+            დეტალურად
+          </Link>
+          <button
+            className="delete-btn"
+            onClick={async () => {
+              if (window.confirm("ნამდვილად გსურთ პარტნიორის წაშლა?")) {
+                try {
+                  const { deletePartnerRequest } =
+                    await import("@/apiCalls/partnerApiCalls/getPartner.req");
+                  await deletePartnerRequest(partner._id);
+                  toast.success("პარტნიორი წარმატებით წაიშალა");
+                  if (onDelete) onDelete();
+                } catch (err) {
+                  toast.error(getErrorMessage(err, "წაშლა ვერ მოხერხდა"));
+                }
               }
-            }
-          }}
-        >
-          წაშლა
-        </button>
+            }}
+          >
+            წაშლა
+          </button>
+        </div>
       </div>
     </div>
   );

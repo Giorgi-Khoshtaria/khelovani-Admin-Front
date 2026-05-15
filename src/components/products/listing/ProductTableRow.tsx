@@ -77,7 +77,7 @@ export const ProductTableRow: React.FC<ProductTableRowProps> = ({
             )}
             {isAdmin && product.ownerType && (
               <span className={`owner-type-badge owner-type-badge--${product.ownerType}`}>
-                {product.ownerType === "individual" ? "👤 ფიზიკური პირი" : "🏢 ორგანიზაცია"}
+                {product.ownerType === "individual" ? "👤 ბრენდი" : "🏢 კომპანია"}
               </span>
             )}
           </div>

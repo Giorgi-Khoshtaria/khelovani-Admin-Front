@@ -1,8 +1,10 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import TextInput from "@/components/ui/TextInput";
 import TextareaInput from "@/components/ui/TextareaInput";
 import SelectInput from "@/components/ui/SelectInput";
 import { CITY_OPTIONS } from "@/components/ui/CityOptions";
+import { getPublicCategoriesRequest } from "@/apiCalls/categoryApiCalls/category.req";
+import type { Category } from "@/types/category.types";
 import type { Partner } from "@/types/partner.types";
 import "./PartnerInfoGrid.scss";
 
@@ -27,6 +29,21 @@ export function PartnerInfoGrid({
   onChange,
   errors,
 }: PartnerInfoGridProps) {
+  const [allCategories, setAllCategories] = useState<Category[]>([]);
+
+  useEffect(() => {
+    getPublicCategoriesRequest().then(setAllCategories).catch(() => {});
+  }, []);
+
+  const selectedSlugs: string[] = (isEditing ? editForm.categories : partner.categories) ?? [];
+
+  const handleCategoryToggle = (slug: string) => {
+    const next = selectedSlugs.includes(slug)
+      ? selectedSlugs.filter((s) => s !== slug)
+      : [...selectedSlugs, slug];
+    onChange({ target: { id: "categories", value: next } } as unknown as React.ChangeEvent<HTMLInputElement>);
+  };
+
   return (
     <>
       <div className="profile-grid">
@@ -180,6 +197,26 @@ export function PartnerInfoGrid({
           />
         </div>
       </div>
+
+      {allCategories.length > 0 && (
+        <div className="info-section">
+          <h2>კატეგორიები</h2>
+          <div className="category-chips">
+            {allCategories.map((cat) => {
+              const active = selectedSlugs.includes(cat.slug);
+              return (
+                <span
+                  key={cat.slug}
+                  className={`category-chip${active ? " category-chip--active" : ""}${isEditing ? " category-chip--clickable" : ""}`}
+                  onClick={isEditing ? () => handleCategoryToggle(cat.slug) : undefined}
+                >
+                  {cat.nameGe}
+                </span>
+              );
+            })}
+          </div>
+        </div>
+      )}
 
       {(partner.description || partner.descriptionEn || isEditing || isAdmin) && (
         <div className="info-section description">

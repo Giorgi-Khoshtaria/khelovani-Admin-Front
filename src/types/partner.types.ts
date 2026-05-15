@@ -27,6 +27,7 @@ export interface PartnerData {
   isPinned?: boolean;
   pinnedAt?: string | null;
   isShown?: boolean;
+  categories?: string[];
   createdAt: string;
 }
 
@@ -55,4 +56,5 @@ export interface Partner {
   isPinned?: boolean;
   pinnedAt?: string | null;
   isShown?: boolean;
+  categories?: string[];
 }

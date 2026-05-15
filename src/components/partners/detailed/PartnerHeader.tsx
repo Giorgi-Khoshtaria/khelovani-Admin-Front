@@ -144,7 +144,7 @@ export function PartnerHeader({
 
         {!isEditing && partner.partnerType && (
           <div className={`type-badge type--${partner.partnerType}`}>
-            {partner.partnerType === "individual" ? "👤 ფიზიკური პირი" : "🏢 ორგანიზაცია"}
+            {partner.partnerType === "individual" ? "👤 ბრენდი" : "🏢 კომპანია"}
           </div>
         )}
 

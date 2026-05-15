@@ -112,8 +112,8 @@ export const ProductFilters: React.FC<ProductFiltersProps> = ({
                 }
               >
                 <option value="">ყველა მფლობელი</option>
-                <option value={PartnerTypeEnum.ORGANIZATION}>🏢 ორგანიზაცია</option>
-                <option value={PartnerTypeEnum.INDIVIDUAL}>👤 ფიზიკური პირი</option>
+                <option value={PartnerTypeEnum.ORGANIZATION}>🏢 კომპანია</option>
+                <option value={PartnerTypeEnum.INDIVIDUAL}>👤 ბრენდი</option>
               </select>
             </div>
           </div>
