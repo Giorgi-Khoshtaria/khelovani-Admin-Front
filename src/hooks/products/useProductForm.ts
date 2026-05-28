@@ -1,6 +1,7 @@
 import { useState, useCallback } from "react";
 import type { CreateProductInput, AddProductFormData } from "@/types/productTypes";
 import { validateAddProductForm } from "@/validations/productValidations";
+import { sanitizeNumericValue } from "@/utils/numericInput";
 
 export const useProductForm = (initialData?: Partial<CreateProductInput>) => {
   const [formData, setFormData] = useState<CreateProductInput>({
@@ -43,8 +44,15 @@ export const useProductForm = (initialData?: Partial<CreateProductInput>) => {
   ) => {
     const target = e.target as HTMLInputElement;
     const { name, value, type } = target;
-    const val = type === "checkbox" ? target.checked : value;
-    
+    // Block negatives across the board for number inputs — UI also
+    // intercepts the keys, but this catches paste/autofill/drag.
+    const val =
+      type === "checkbox"
+        ? target.checked
+        : type === "number"
+          ? sanitizeNumericValue(value)
+          : value;
+
     setFormData((prev) => ({ ...prev, [name]: val }));
     
     if (errors[name]) {
@@ -123,14 +131,20 @@ export const useProductForm = (initialData?: Partial<CreateProductInput>) => {
       ? Number(formData.discountPercent)
       : null;
 
+    // "One of a kind" is driven entirely by the condition field — derive
+    // the boolean and pin stock to 1 so the rest of the pipeline sees a
+    // consistent payload.
+    const isOneOfAKind = formData.condition === "one_of_a_kind";
+
     const submissionData = {
       ...formData,
       price: Number(formData.price || 0),
-      stockQuantity: Number(formData.stockQuantity || 0),
+      stockQuantity: isOneOfAKind ? 1 : Number(formData.stockQuantity || 0),
       shippingPrice: formData.shippingPrice ? Number(formData.shippingPrice) : undefined,
       weight: formData.weight ? Number(formData.weight) : undefined,
       discountPercent: rawDiscount === 0 || rawDiscount == null ? null : rawDiscount,
       isOnSale,
+      isOneOfAKind,
     } as unknown as AddProductFormData;
 
     const validationErrors = validateAddProductForm(submissionData);

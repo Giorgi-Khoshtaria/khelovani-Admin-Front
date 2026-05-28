@@ -1,15 +1,15 @@
+import type { UserAddress } from "./address.types";
+
 export interface User {
   _id: string;
   idNumber: string;
   nameGe?: string;
   nameEn: string;
-  dateOfBirth: string;
-  city: string;
-  address: string;
   email: string;
   phone: string;
   isVerified: boolean;
   isActive: boolean;
+  addresses?: UserAddress[];
   createdAt: string;
   updatedAt?: string;
 }

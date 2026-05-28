@@ -1,6 +1,7 @@
 import { useParams, useNavigate } from "react-router-dom";
 import { useUserDetails } from "@/hooks/users/useUserDetails";
 import { UserInfoForm } from "@/components/users/details/UserInfoForm";
+import { UserAddressList } from "@/components/users/details/UserAddressList";
 import "./UserDetailsPage.scss";
 
 export default function UserDetailsPage() {
@@ -37,6 +38,11 @@ export default function UserDetailsPage() {
       <div className="user-details-content card">
         <h2 className="section-title">მომხმარებლის ინფორმაცია</h2>
         <UserInfoForm user={user} />
+      </div>
+
+      <div className="user-details-content card">
+        <h2 className="section-title">შენახული მისამართები</h2>
+        <UserAddressList addresses={user.addresses} />
       </div>
     </div>
   );

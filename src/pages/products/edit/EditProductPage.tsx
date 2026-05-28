@@ -105,10 +105,13 @@ export default function EditProductPage() {
       toast.success(
         "პროდუქტი წარმატებით განახლდა / Product successfully updated",
       );
+      // Replace the edit entry in history so the user's back button skips
+      // straight to the page they came from instead of returning to edit.
       navigate(
         urlPartnerId
           ? `/partners/${partnerId}/products/${productId}`
           : `/profile/products/${productId}`,
+        { replace: true },
       );
     } catch (error: unknown) {
       toast.error(getErrorMessage(error, "შეცდომა განახლებისას / Error updating product"));

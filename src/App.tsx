@@ -32,6 +32,8 @@ import NotFound from "./pages/NotFound/NotFound";
 import UserListingPage from "./pages/users/listing/UserListingPage";
 import UserDetailsPage from "./pages/users/details/UserDetailsPage";
 import CategoryListing from "./pages/categories/CategoryListing";
+import LogsPage from "./pages/Logs/LogsPage";
+import MediaManagerPage from "./pages/media/MediaManagerPage";
 
 const IndexRedirect = () => {
   const { token } = usePartnerContext();
@@ -103,6 +105,10 @@ const router = createBrowserRouter([
             path: "categories",
             element: <CategoryListing />,
           },
+          {
+            path: "logs",
+            element: <LogsPage />,
+          },
         ],
       },
       // Shared / Partner-Specific Routes (Enforced Ownership)
@@ -135,6 +141,10 @@ const router = createBrowserRouter([
       {
         element: <ProtectedRoute />,
         children: [
+          {
+            path: "media",
+            element: <MediaManagerPage />,
+          },
           {
             path: "profile",
             element: <PartnerDetailedPage />,

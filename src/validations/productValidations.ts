@@ -123,6 +123,22 @@ export const productSchema = z.object({
     .array(z.any())
     .min(1, "აუცილებელია მინიმუმ 1 სურათი")
     .max(5, "მაქსიმუმ 5 სურათი"),
+  isOneOfAKind: z.boolean().optional(),
+}).superRefine((data, ctx) => {
+  // "One of a kind" is signalled by the condition value — when set, stock
+  // must stay ≤ 1. Mirrors the backend rule so the form catches it first.
+  if (
+    data.condition === "one_of_a_kind" &&
+    typeof data.stockQuantity === "number" &&
+    data.stockQuantity > 1
+  ) {
+    ctx.addIssue({
+      code: "custom",
+      message:
+        "ერთ-ერთი ეგზემპლარის მარაგი არ უნდა აღემატებოდეს 1-ს / One-of-a-kind stock must be 1 or less",
+      path: ["stockQuantity"],
+    });
+  }
 });
 
 export type ProductFormData = z.infer<typeof productSchema>;

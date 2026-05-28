@@ -1,0 +1,43 @@
+@use "@/styles/colors.scss" as colors;
+
+// Page-level layout only — filters / bulk bar / pagination styles live with
+// their own components under src/components/mediaManager/.
+
+.media-page {
+  padding: 24px;
+  max-width: 1400px;
+  margin: 0 auto;
+
+  &__header {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 16px;
+    margin-bottom: 20px;
+
+    h1 {
+      font-size: 24px;
+      font-weight: 700;
+      color: colors.$color-text-primary;
+    }
+  }
+
+  &__subtitle {
+    margin-top: 4px;
+    font-size: 14px;
+    color: colors.$color-text-secondary;
+  }
+}
+
+.media-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(190px, 1fr));
+  gap: 16px;
+}
+
+.media-state {
+  padding: 60px 20px;
+  text-align: center;
+  color: colors.$color-text-secondary;
+  font-size: 15px;
+}

@@ -1,0 +1,113 @@
+@use "@/styles/colors.scss" as colors;
+@use "./modalBase";
+
+.upload-drop {
+  border: 2px dashed colors.$color-border;
+  border-radius: 12px;
+  padding: 32px 16px;
+  text-align: center;
+  cursor: pointer;
+  transition: border-color 0.18s ease, background 0.18s ease;
+
+  &:hover,
+  &.is-dragging {
+    border-color: colors.$color-espresso;
+    background: colors.$color-bg-page;
+  }
+
+  &__title {
+    font-size: 14px;
+    font-weight: 600;
+    color: colors.$color-text-primary;
+  }
+
+  &__hint {
+    margin-top: 6px;
+    font-size: 12px;
+    color: colors.$color-text-secondary;
+  }
+}
+
+.upload-list {
+  margin-top: 14px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+
+  li {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 8px;
+    border: 1px solid colors.$color-border;
+    border-radius: 8px;
+
+    img {
+      width: 44px;
+      height: 44px;
+      object-fit: cover;
+      border-radius: 6px;
+    }
+  }
+
+  &__meta {
+    flex: 1;
+    min-width: 0;
+  }
+
+  &__name {
+    display: block;
+    font-size: 13px;
+    color: colors.$color-text-primary;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  &__size {
+    font-size: 11px;
+    color: colors.$color-text-secondary;
+  }
+
+  &__remove {
+    width: 26px;
+    height: 26px;
+    border: none;
+    background: colors.$color-light-gray;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 16px;
+    color: colors.$color-text-secondary;
+
+    &:hover {
+      background: colors.$color-danger-light;
+      color: colors.$color-danger;
+    }
+  }
+}
+
+.upload-progress {
+  margin-top: 14px;
+  position: relative;
+  height: 22px;
+  background: colors.$color-light-gray;
+  border-radius: 999px;
+  overflow: hidden;
+
+  &__bar {
+    height: 100%;
+    background: colors.$color-espresso;
+    transition: width 0.2s ease;
+  }
+
+  span {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 11px;
+    font-weight: 700;
+    color: colors.$color-text-primary;
+  }
+}

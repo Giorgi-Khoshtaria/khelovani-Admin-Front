@@ -33,11 +33,11 @@ const ProtectedRoute: React.FC<ProtectedRouteProps> = ({
     ? permissions.includes(requiredPermission) || role === "admin"
     : true;
 
-  // Ownership check: Non-admins must match the ID in the URL if requireOwnership is set
+  // Ownership check: non-admins must match the URL id; fail-closed when urlId is absent
   const isOwner =
-    requireOwnership && role !== "admin" && urlId
-      ? urlId === userPartnerId
-      : true;
+    !requireOwnership || role === "admin"
+      ? true
+      : !!urlId && urlId === userPartnerId;
 
   const isAuthorized = hasRole && hasPerm && isOwner;
 

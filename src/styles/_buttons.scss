@@ -88,6 +88,19 @@
   }
 }
 
+// Ghost / Subtle (transparent with border)
+.btn-ghost {
+  @extend .btn;
+  background-color: transparent;
+  border: 1px solid colors.$color-border;
+  color: colors.$color-text-secondary;
+
+  &:hover:not(:disabled) {
+    background-color: colors.$color-light-gray;
+    color: colors.$color-text-primary;
+  }
+}
+
 // Backward Compatibility
 .reject-btn {
   @extend .btn-danger;

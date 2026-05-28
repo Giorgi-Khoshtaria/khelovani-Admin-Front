@@ -1,0 +1,52 @@
+@use "@/styles/colors.scss" as colors;
+
+.media-filters {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 10px;
+  padding: 14px;
+  background: colors.$color-white;
+  border: 1px solid colors.$color-border;
+  border-radius: 12px;
+  margin-bottom: 16px;
+
+  &__field {
+    height: 38px;
+    padding: 0 12px;
+    border: 1px solid colors.$color-border;
+    border-radius: 8px;
+    font-size: 14px;
+    background: colors.$color-white;
+    color: colors.$color-text-primary;
+  }
+
+  &__search {
+    flex: 1;
+    min-width: 200px;
+  }
+
+  &__date {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 13px;
+    color: colors.$color-text-secondary;
+
+    input {
+      height: 38px;
+      padding: 0 10px;
+      border: 1px solid colors.$color-border;
+      border-radius: 8px;
+      font-size: 13px;
+      color: colors.$color-text-primary;
+    }
+  }
+
+  &__count {
+    margin-left: auto;
+    font-size: 13px;
+    font-weight: 600;
+    color: colors.$color-text-secondary;
+  }
+}

@@ -1,5 +1,6 @@
 import React from "react";
 import type { CreateProductInput } from "@/types/productTypes";
+import { blockNonPositiveKeys } from "@/utils/numericInput";
 
 interface ShippingSectionProps {
   formData: CreateProductInput;
@@ -56,6 +57,8 @@ const ShippingSection: React.FC<ShippingSectionProps> = ({
               name="shippingPrice"
               value={formData.shippingPrice}
               onChange={handleInputChange}
+              onKeyDown={blockNonPositiveKeys}
+              min={0}
               placeholder="0"
             />
             <span className="pf-input-group__suffix">₾</span>
@@ -85,6 +88,8 @@ const ShippingSection: React.FC<ShippingSectionProps> = ({
             name="weight"
             value={formData.weight}
             onChange={handleInputChange}
+            onKeyDown={blockNonPositiveKeys}
+            min={0}
             step="0.1"
             placeholder="0.0"
             className={errors.weight ? "pf-input--error" : ""}

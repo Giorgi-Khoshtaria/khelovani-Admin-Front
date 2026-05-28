@@ -10,9 +10,6 @@ export const UserInfoForm: React.FC<UserInfoFormProps> = ({ user }) => {
   const createdAt = user.createdAt
     ? new Date(user.createdAt).toLocaleString("ka-GE")
     : "";
-  const dob = user.dateOfBirth
-    ? new Date(user.dateOfBirth).toLocaleDateString("ka-GE")
-    : "";
 
   return (
     <form className="user-info-form" onSubmit={(e) => e.preventDefault()}>
@@ -74,42 +71,6 @@ export const UserInfoForm: React.FC<UserInfoFormProps> = ({ user }) => {
           />
         </div>
         <div className="user-info-form__field">
-          <label className="user-info-form__label">დაბ. თარიღი / Date of Birth</label>
-          <input
-            type="text"
-            className="user-info-form__input"
-            value={dob}
-            disabled
-            readOnly
-          />
-        </div>
-      </div>
-
-      <div className="user-info-form__row">
-        <div className="user-info-form__field">
-          <label className="user-info-form__label">ქალაქი / City</label>
-          <input
-            type="text"
-            className="user-info-form__input"
-            value={user.city}
-            disabled
-            readOnly
-          />
-        </div>
-        <div className="user-info-form__field">
-          <label className="user-info-form__label">მისამართი / Address</label>
-          <input
-            type="text"
-            className="user-info-form__input"
-            value={user.address}
-            disabled
-            readOnly
-          />
-        </div>
-      </div>
-
-      <div className="user-info-form__row">
-        <div className="user-info-form__field">
           <label className="user-info-form__label">სტატუსი / Status</label>
           <input
             type="text"
@@ -119,6 +80,9 @@ export const UserInfoForm: React.FC<UserInfoFormProps> = ({ user }) => {
             readOnly
           />
         </div>
+      </div>
+
+      <div className="user-info-form__row">
         <div className="user-info-form__field">
           <label className="user-info-form__label">ვერიფიკაცია / Verified</label>
           <input
@@ -129,9 +93,6 @@ export const UserInfoForm: React.FC<UserInfoFormProps> = ({ user }) => {
             readOnly
           />
         </div>
-      </div>
-
-      <div className="user-info-form__row">
         <div className="user-info-form__field">
           <label className="user-info-form__label">შექმნილია / Created At</label>
           <input

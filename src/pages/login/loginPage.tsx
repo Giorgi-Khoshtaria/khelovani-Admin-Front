@@ -1,7 +1,7 @@
 import "./loginPage.scss";
 import "@/styles/defaultTexts.scss";
 import { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { Navigate, useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import axios from "axios";
 import TextInput from "@/components/ui/TextInput";
@@ -25,12 +25,22 @@ const INITIAL_FORM: AdminLoginForm = {
 export default function AdminLoginPage() {
   const [isLoading, setIsLoading] = useState(false);
 
-  const { setToken } = usePartnerContext();
+  const { token, setToken } = usePartnerContext();
 
   const { formData, errors, setErrors, handleChange } =
     useFormHandler(INITIAL_FORM);
 
   const navigate = useNavigate();
+
+  if (token) {
+    const decoded = parseJwt(token);
+    const role = decoded?.role;
+    const partnerId = decoded?.id;
+    if (role === "organisation" && partnerId) {
+      return <Navigate to="/profile" replace />;
+    }
+    return <Navigate to="/menu" replace />;
+  }
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -47,17 +57,13 @@ export default function AdminLoginPage() {
       const response = await loginRequest(formData.email, formData.password);
       console.log("Login Response Data:", response);
 
-      const token =
-        response.token ||
-        response.accessToken ||
-        response.jwt ||
-        response.data?.token;
-      if (!token) {
-        console.error("Warning: No token found in response object!");
+      if (!response.success) {
+        toast.error(response.message || "შესვლის დროს დაფიქსირდა შეცდომა");
+        return;
       }
 
-      const partnerId =
-        response.id || response._id || response.partnerId || response.user?._id;
+      const token = response.data.token;
+      const partnerId = response.data.id;
 
       setToken(token);
 
@@ -78,7 +84,11 @@ export default function AdminLoginPage() {
         const responseData = error?.response?.data;
         if (responseData?.errors) {
           const shown = (Array.isArray(responseData.errors) ? responseData.errors : Object.values(responseData.errors))
-            .map((e: unknown) => (typeof e === "string" ? e : (e as any)?.message))
+            .map((e: unknown) =>
+              typeof e === "string"
+                ? e
+                : (e as { message?: string })?.message,
+            )
             .filter(Boolean);
           if (shown.length > 0) {
             shown.forEach((msg: string) => toast.error(msg));

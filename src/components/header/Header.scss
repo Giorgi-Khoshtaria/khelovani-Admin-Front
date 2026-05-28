@@ -74,6 +74,22 @@
       &:active {
         transform: scale(0.98);
       }
+
+      &:disabled {
+        opacity: 0.6;
+        cursor: not-allowed;
+      }
+    }
+
+    .clear-cache-btn {
+      background-color: transparent;
+      color: $color-espresso;
+      border: 1px solid $color-espresso;
+
+      &:hover:not(:disabled) {
+        background-color: $color-espresso;
+        color: $color-white;
+      }
     }
   }
 }

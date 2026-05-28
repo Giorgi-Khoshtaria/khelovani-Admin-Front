@@ -1,0 +1,17 @@
+@use "@/styles/colors.scss" as colors;
+
+.media-pagination {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 16px;
+  margin-top: 24px;
+
+  &__info {
+    font-size: 13px;
+    font-weight: 600;
+    color: colors.$color-text-secondary;
+    min-width: 110px;
+    text-align: center;
+  }
+}

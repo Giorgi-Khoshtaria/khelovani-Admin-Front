@@ -34,6 +34,10 @@ export default function SideManu() {
     links.push({ path: "/roles", label: "როლები" });
   if (role === "admin") links.push({ path: "/categories", label: "კატეგორიები" });
   if (role === "admin") links.push({ path: "/export", label: "ექსპორტი" });
+  if (hasPermission("logs.view"))
+    links.push({ path: "/logs", label: "ლოგები" });
+  if (hasPermission("media.view"))
+    links.push({ path: "/media", label: "მედია მენეჯერი" });
 
   // Organisation / Partner Links
   if (role === "organisation" && partnerId) {
@@ -50,6 +54,13 @@ export default function SideManu() {
       permissions.length === 0
     ) {
       links.push({ path: "/profile/products", label: "ჩემი პროდუქტები" });
+    }
+    if (
+      permissions.includes("organization.media.view") ||
+      permissions.includes("organization.media.manage") ||
+      permissions.length === 0
+    ) {
+      links.push({ path: "/media", label: "მედია მენეჯერი" });
     }
   }
 

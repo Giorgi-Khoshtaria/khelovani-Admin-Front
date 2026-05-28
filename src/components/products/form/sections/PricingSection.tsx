@@ -1,6 +1,7 @@
 import React from "react";
 import "./PricingSection.scss";
 import type { CreateProductInput } from "@/types/productTypes";
+import { blockNonPositiveKeys } from "@/utils/numericInput";
 
 interface PricingSectionProps {
   formData: CreateProductInput;
@@ -17,6 +18,10 @@ const PricingSection: React.FC<PricingSectionProps> = ({
   isAdmin,
   handleInputChange,
 }) => {
+  // A product with condition "one_of_a_kind" is intrinsically unique —
+  // its stock is fixed at 1 and the field is read-only here.
+  const isOneOfAKind = formData.condition === "one_of_a_kind";
+
   const setVisibility = (val: boolean) => {
     handleInputChange({
       target: { name: "isShown", value: val, type: "checkbox", checked: val },
@@ -48,6 +53,8 @@ const PricingSection: React.FC<PricingSectionProps> = ({
               value={formData.price}
               onChange={handleInputChange}
               onWheel={(e) => (e.target as HTMLInputElement).blur()}
+              onKeyDown={blockNonPositiveKeys}
+              min={0}
               placeholder="0"
               className={errors.price ? "pf-input--error" : ""}
             />
@@ -62,14 +69,24 @@ const PricingSection: React.FC<PricingSectionProps> = ({
             <input
               type="number"
               name="stockQuantity"
-              value={formData.stockQuantity}
+              value={isOneOfAKind ? 1 : formData.stockQuantity}
               onChange={handleInputChange}
               onWheel={(e) => (e.target as HTMLInputElement).blur()}
+              onKeyDown={blockNonPositiveKeys}
               placeholder="0"
+              disabled={isOneOfAKind}
+              readOnly={isOneOfAKind}
+              min={0}
+              max={isOneOfAKind ? 1 : undefined}
               className={errors.stockQuantity ? "pf-input--error" : ""}
             />
             <span className="pf-input-group__suffix">ც</span>
           </div>
+          {isOneOfAKind && (
+            <span className="pf-hint">
+              მარაგი დაფიქსირებულია 1-ზე, რადგან ეს არის ერთ-ერთი ეგზემპლარი
+            </span>
+          )}
           {errors.stockQuantity && <span className="pf-error">{errors.stockQuantity}</span>}
         </div>
 
@@ -105,6 +122,7 @@ const PricingSection: React.FC<PricingSectionProps> = ({
             <small>გამოიყენეთ პროცენტული ფასდაკლება</small>
           </div>
         </label>
+
       </div>
 
       {formData.isOnSale && (
@@ -116,6 +134,7 @@ const PricingSection: React.FC<PricingSectionProps> = ({
               name="discountPercent"
               value={formData.discountPercent ?? ""}
               onChange={handleInputChange}
+              onKeyDown={blockNonPositiveKeys}
               min={1}
               max={99}
               placeholder="20"
