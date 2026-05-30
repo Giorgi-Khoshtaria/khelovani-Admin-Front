@@ -1,0 +1,224 @@
+@use "sass:list";
+@use "@/styles/colors.scss" as colors;
+@use "@/styles/_buttons.scss" as *;
+
+$mono: ui-monospace, SFMono-Regular, Menlo, monospace;
+
+$method-colors: (
+  "get": (#dbeafe, #1d4ed8),
+  "post": (#dcfce7, #15803d),
+  "put": (#fef3c7, #b45309),
+  "patch": (#fef9c3, #a16207),
+  "delete": (#fee2e2, #b91c1c),
+);
+
+$status-colors: (
+  "200": (#dcfce7, #15803d),
+  "300": (#dbeafe, #1e40af),
+  "400": (#fef3c7, #92400e),
+  "500": (#fee2e2, #991b1b),
+);
+
+$source-colors: (
+  "admin": (#e0e7ff, #3730a3),
+  "partner": (#fce7f3, #9d174d),
+  "user": (#dcfce7, #166534),
+  "public": (#f3f4f6, #374151),
+);
+
+.logs-loading,
+.logs-empty {
+  text-align: center;
+  padding: 56px 24px;
+  color: colors.$color-text-secondary;
+  font-size: 14px;
+
+  p {
+    margin: 0;
+  }
+}
+
+.logs-empty {
+  background: colors.$color-white;
+  border-radius: 14px;
+  border: 1px solid colors.$color-border;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.04);
+}
+
+.logs-list {
+  overflow: hidden;
+  background: colors.$color-white;
+  border-radius: 14px;
+  border: 1px solid colors.$color-border;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.04);
+
+  .logs-list-header,
+  .logs-row {
+    display: grid;
+    grid-template-columns: 150px 88px 1fr 76px 82px 88px 120px 36px;
+    align-items: center;
+    gap: 6px;
+    padding: 9px 16px;
+    font-size: 12.5px;
+  }
+
+  .logs-list-header {
+    font-weight: 600;
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    color: colors.$color-text-secondary;
+    background: colors.$color-ivory;
+    border-bottom: 1px solid colors.$color-border;
+  }
+
+  .logs-row {
+    border-bottom: 1px solid rgba(colors.$color-border, 0.6);
+    cursor: pointer;
+    transition: background 0.1s;
+
+    &:last-of-type {
+      border-bottom: none;
+    }
+
+    &:hover {
+      background: colors.$color-ivory;
+
+      .delete-btn {
+        opacity: 1;
+      }
+    }
+
+    .col-time {
+      color: colors.$color-text-secondary;
+      font-size: 12px;
+    }
+
+    .col-url {
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+      font-family: $mono;
+      font-size: 11.5px;
+      color: colors.$color-text-primary;
+    }
+
+    .col-duration {
+      color: colors.$color-text-secondary;
+      font-size: 12px;
+    }
+  }
+
+  .col-method {
+    font-family: $mono;
+    font-weight: 700;
+    font-size: 11px;
+    display: inline-flex;
+    align-items: center;
+  }
+
+  @each $name, $pair in $method-colors {
+    $bg: list.nth($pair, 1);
+    $fg: list.nth($pair, 2);
+
+    .method-#{$name} {
+      background: $bg;
+      color: $fg;
+      padding: 2px 7px;
+      border-radius: 5px;
+    }
+  }
+
+  .status-badge {
+    display: inline-block;
+    padding: 2px 8px;
+    border-radius: 6px;
+    font-weight: 700;
+    font-size: 11.5px;
+    font-family: $mono;
+    letter-spacing: 0.3px;
+  }
+
+  @each $code, $pair in $status-colors {
+    $bg: list.nth($pair, 1);
+    $fg: list.nth($pair, 2);
+
+    .status-#{$code} {
+      background: $bg;
+      color: $fg;
+    }
+  }
+
+  .source-badge {
+    display: inline-block;
+    padding: 2px 8px;
+    border-radius: 6px;
+    font-size: 10.5px;
+    text-transform: uppercase;
+    font-weight: 700;
+    letter-spacing: 0.4px;
+    background: colors.$color-bg-secondary;
+    color: colors.$color-walnut;
+  }
+
+  @each $name, $pair in $source-colors {
+    $bg: list.nth($pair, 1);
+    $fg: list.nth($pair, 2);
+
+    .source-#{$name} {
+      background: $bg;
+      color: $fg;
+    }
+  }
+
+  .delete-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 26px;
+    height: 26px;
+    background: transparent;
+    border: none;
+    border-radius: 6px;
+    color: colors.$color-text-secondary;
+    font-size: 16px;
+    cursor: pointer;
+    opacity: 0;
+    transition:
+      background 0.15s,
+      color 0.15s,
+      opacity 0.15s;
+
+    &:hover {
+      background: colors.$color-danger-light;
+      color: colors.$color-danger;
+    }
+  }
+
+  .pagination {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 16px;
+    padding: 16px 0;
+    border-top: 1px solid colors.$color-border;
+
+    button {
+      @extend .btn-outline;
+      padding: 6px 18px;
+      font-size: 13px;
+
+      &:disabled {
+        opacity: 0.4;
+        cursor: not-allowed;
+      }
+    }
+
+    .page-info {
+      font-size: 13px;
+      color: colors.$color-text-secondary;
+      min-width: 100px;
+      text-align: center;
+    }
+  }
+}
