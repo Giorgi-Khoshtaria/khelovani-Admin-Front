@@ -26,6 +26,8 @@ export default function SideManu() {
     links.push({ path: "/users", label: "მომხმარებლები" });
   if (hasPermission("products.viewAll"))
     links.push({ path: "/products", label: "ყველა პროდუქტი" });
+  if (hasPermission("orders.viewAll"))
+    links.push({ path: "/orders", label: "შეკვეთები" });
   if (role === "admin")
     links.push({ path: "/products/pinned", label: "პინ-პროდუქტები" });
   if (hasPermission("translations.read"))
@@ -56,6 +58,12 @@ export default function SideManu() {
       links.push({ path: "/profile/products", label: "ჩემი პროდუქტები" });
     }
     if (
+      permissions.includes("organization.orders.view") ||
+      permissions.length === 0
+    ) {
+      links.push({ path: "/profile/orders", label: "ჩემი შეკვეთები" });
+    }
+    if (
       permissions.includes("organization.media.view") ||
       permissions.includes("organization.media.manage") ||
       permissions.length === 0
@@ -83,6 +91,15 @@ export default function SideManu() {
     if (
       linkPath === "/profile/products" &&
       location.pathname.startsWith("/profile/products")
+    )
+      return true;
+
+    // Orders highlighting (admin + partner)
+    if (linkPath === "/orders" && location.pathname.startsWith("/orders"))
+      return true;
+    if (
+      linkPath === "/profile/orders" &&
+      location.pathname.startsWith("/profile/orders")
     )
       return true;
 

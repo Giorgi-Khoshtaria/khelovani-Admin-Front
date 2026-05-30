@@ -20,6 +20,7 @@ import AddProductPage from "./pages/products/add/AddProductPage";
 import ProductDetailsPage from "./pages/products/details/ProductDetailsPage";
 import EditProductPage from "./pages/products/edit/EditProductPage";
 import PinnedProductsPage from "./pages/products/pinned/PinnedProductsPage";
+import OrderListingPage from "./pages/orders/listing/OrderListingPage";
 
 import RoleManagement from "./pages/Roles/RoleManagement";
 import RoleDetailedPage from "./pages/Roles/RoleDetailedPage";
@@ -76,6 +77,10 @@ const router = createBrowserRouter([
           {
             path: "products/pinned",
             element: <PinnedProductsPage />,
+          },
+          {
+            path: "orders",
+            element: <OrderListingPage />,
           },
           {
             path: "translations",
@@ -152,6 +157,10 @@ const router = createBrowserRouter([
           {
             path: "profile/products",
             element: <ProductListingPage />,
+          },
+          {
+            path: "profile/orders",
+            element: <OrderListingPage />,
           },
           {
             path: "profile/products/add",
