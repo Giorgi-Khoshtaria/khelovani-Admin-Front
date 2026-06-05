@@ -1,0 +1,103 @@
+.modal-shell-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(17, 24, 39, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+  padding: 16px;
+}
+
+.modal-shell {
+  background: #fff;
+  border-radius: 14px;
+  width: 100%;
+  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.2);
+
+  &--form {
+    max-width: 480px;
+    max-height: 90vh;
+    overflow-y: auto;
+  }
+
+  &--confirm {
+    max-width: 400px;
+  }
+
+  &__header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 20px 24px;
+    border-bottom: 1px solid #e5e7eb;
+
+    h2 {
+      font-size: 18px;
+      font-weight: 700;
+      color: #1a1a2e;
+    }
+  }
+
+  &__close {
+    background: none;
+    border: none;
+    font-size: 26px;
+    line-height: 1;
+    color: #9ca3af;
+    cursor: pointer;
+
+    &:hover {
+      color: #1f2937;
+    }
+  }
+
+  &--confirm .modal-shell__header {
+    border-bottom: none;
+    padding-bottom: 0;
+  }
+}
+
+/* Buttons shared by modal footers */
+.modal-btn {
+  padding: 10px 18px;
+  border-radius: 8px;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  border: 1px solid transparent;
+  transition: background 0.15s ease, opacity 0.15s ease;
+
+  &:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+  }
+
+  &--primary {
+    background: #1a1a2e;
+    color: #fff;
+
+    &:not(:disabled):hover {
+      background: #2d2d44;
+    }
+  }
+
+  &--secondary {
+    background: #fff;
+    color: #374151;
+    border-color: #d1d5db;
+
+    &:not(:disabled):hover {
+      background: #f9fafb;
+    }
+  }
+
+  &--danger {
+    background: #dc2626;
+    color: #fff;
+
+    &:not(:disabled):hover {
+      background: #b91c1c;
+    }
+  }
+}

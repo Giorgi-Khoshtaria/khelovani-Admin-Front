@@ -18,6 +18,7 @@ interface PartnerHeaderProps {
   ) => void;
   onPin?: () => void;
   onToggleVisibility?: () => void;
+  onViewStatistics?: () => void;
   pinning?: boolean;
   toggling?: boolean;
 }
@@ -36,6 +37,7 @@ export function PartnerHeader({
   onStatusUpdate,
   onPin,
   onToggleVisibility,
+  onViewStatistics,
   pinning,
   toggling,
 }: PartnerHeaderProps) {
@@ -51,6 +53,12 @@ export function PartnerHeader({
       </div>
 
       <div className="header-actions">
+        {!isEditing && onViewStatistics && (
+          <button className="stats-btn" onClick={onViewStatistics}>
+            📊 სტატისტიკა
+          </button>
+        )}
+
         {isOwnProfile && (
           <>
             {isEditing ? (

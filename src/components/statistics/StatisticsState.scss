@@ -1,0 +1,32 @@
+.stats-state {
+  padding: 60px 24px;
+  text-align: center;
+  color: #6b7280;
+  background: #fff;
+  border: 1px solid #e5e7eb;
+  border-radius: 12px;
+
+  p {
+    margin-bottom: 16px;
+    font-size: 15px;
+  }
+
+  button {
+    background: #1a1a2e;
+    color: #fff;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 8px;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+
+    &:hover {
+      background: #2d2d44;
+    }
+  }
+
+  &--error p {
+    color: #dc2626;
+  }
+}

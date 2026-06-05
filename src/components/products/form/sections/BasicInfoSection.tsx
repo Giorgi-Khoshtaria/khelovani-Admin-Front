@@ -8,7 +8,9 @@ interface BasicInfoSectionProps {
   formData: CreateProductInput;
   errors: Record<string, string>;
   handleInputChange: (
-    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>,
+    e: React.ChangeEvent<
+      HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement
+    >,
   ) => void;
 }
 
@@ -20,7 +22,14 @@ const BasicInfoSection: React.FC<BasicInfoSectionProps> = ({
   <div className="pf-card">
     <div className="pf-card__header">
       <div className="pf-card__icon">
-        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+        <svg
+          width="20"
+          height="20"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          strokeWidth="2"
+        >
           <path d="M11 4H4a2 2 0 00-2 2v14a2 2 0 002 2h14a2 2 0 002-2v-7" />
           <path d="M18.5 2.5a2.121 2.121 0 013 3L12 15l-4 1 1-4 9.5-9.5z" />
         </svg>
@@ -35,7 +44,9 @@ const BasicInfoSection: React.FC<BasicInfoSectionProps> = ({
       <div className="pf-lang-col">
         <div className="pf-lang-badge pf-lang-badge--ge">🇬🇪 ქართული</div>
         <div className="pf-field">
-          <label className="pf-label">სათაური <span className="pf-required">*</span></label>
+          <label className="pf-label">
+            სათაური <span className="pf-required">*</span>
+          </label>
           <input
             type="text"
             name="titleGe"
@@ -47,23 +58,31 @@ const BasicInfoSection: React.FC<BasicInfoSectionProps> = ({
           {errors.titleGe && <span className="pf-error">{errors.titleGe}</span>}
         </div>
         <div className="pf-field">
-          <label className="pf-label">აღწერა <span className="pf-required">*</span></label>
+          <label className="pf-label">
+            აღწერა <span className="pf-required">*</span>
+          </label>
           <textarea
             name="descriptionGe"
             value={formData.descriptionGe}
             onChange={handleInputChange}
             rows={4}
-            className={errors.descriptionGe ? "pf-input pf-input--error" : "pf-input"}
+            className={
+              errors.descriptionGe ? "pf-input pf-input--error" : "pf-input"
+            }
             placeholder="პროდუქტის დეტალური აღწერა..."
           />
-          {errors.descriptionGe && <span className="pf-error">{errors.descriptionGe}</span>}
+          {errors.descriptionGe && (
+            <span className="pf-error">{errors.descriptionGe}</span>
+          )}
         </div>
       </div>
 
       <div className="pf-lang-col">
         <div className="pf-lang-badge pf-lang-badge--en">🇬🇧 English</div>
         <div className="pf-field">
-          <label className="pf-label">Title <span className="pf-required">*</span></label>
+          <label className="pf-label">
+            Title <span className="pf-required">*</span>
+          </label>
           <input
             type="text"
             name="titleEn"
@@ -75,23 +94,31 @@ const BasicInfoSection: React.FC<BasicInfoSectionProps> = ({
           {errors.titleEn && <span className="pf-error">{errors.titleEn}</span>}
         </div>
         <div className="pf-field">
-          <label className="pf-label">Description <span className="pf-required">*</span></label>
+          <label className="pf-label">
+            Description <span className="pf-required">*</span>
+          </label>
           <textarea
             name="descriptionEn"
             value={formData.descriptionEn}
             onChange={handleInputChange}
             rows={4}
-            className={errors.descriptionEn ? "pf-input pf-input--error" : "pf-input"}
+            className={
+              errors.descriptionEn ? "pf-input pf-input--error" : "pf-input"
+            }
             placeholder="Detailed product description..."
           />
-          {errors.descriptionEn && <span className="pf-error">{errors.descriptionEn}</span>}
+          {errors.descriptionEn && (
+            <span className="pf-error">{errors.descriptionEn}</span>
+          )}
         </div>
       </div>
     </div>
 
     <div className="pf-row">
       <div className="pf-field">
-        <label className="pf-label">კატეგორია <span className="pf-required">*</span></label>
+        <label className="pf-label">
+          კატეგორია <span className="pf-required">*</span>
+        </label>
         <CategoryPicker
           value={formData.category}
           onChange={handleInputChange}
@@ -100,7 +127,9 @@ const BasicInfoSection: React.FC<BasicInfoSectionProps> = ({
         {errors.category && <span className="pf-error">{errors.category}</span>}
       </div>
       <div className="pf-field">
-        <label className="pf-label">მდგომარეობა <span className="pf-required">*</span></label>
+        <label className="pf-label">
+          მდგომარეობა <span className="pf-required">*</span>
+        </label>
         <div className="condition-pills">
           {PRODUCT_CONDITIONS.map((value) => (
             <label

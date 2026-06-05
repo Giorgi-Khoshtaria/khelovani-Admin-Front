@@ -233,6 +233,9 @@ export default function PartnerDetailedPage() {
         onStatusUpdate={handleStatusUpdate}
         onPin={handlePin}
         onToggleVisibility={handleToggleVisibility}
+        onViewStatistics={() =>
+          navigate(isOwnProfile ? "/profile/statistics" : `/partners/${id}/statistics`)
+        }
         pinning={pinning}
         toggling={toggling}
       />

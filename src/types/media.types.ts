@@ -22,8 +22,14 @@ export interface MediaOrganization {
   name: string;
 }
 
+export interface MediaFolder {
+  name: string;
+  path: string;
+}
+
 export interface MediaFilters {
   orgId?: string;
+  folder?: string;
   search?: string;
   dateFrom?: string;
   dateTo?: string;

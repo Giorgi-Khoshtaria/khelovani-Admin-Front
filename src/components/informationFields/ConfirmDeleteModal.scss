@@ -1,0 +1,23 @@
+.if-confirm {
+  padding: 16px 24px 24px;
+
+  p {
+    color: #4b5563;
+    font-size: 14px;
+    margin-bottom: 20px;
+
+    code {
+      background: #f3f4f6;
+      padding: 1px 6px;
+      border-radius: 5px;
+      color: #1a1a2e;
+      font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+    }
+  }
+
+  &__actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 10px;
+  }
+}

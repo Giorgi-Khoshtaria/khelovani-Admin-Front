@@ -2,8 +2,13 @@ import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { toast } from "react-toastify";
 import { usePartnerContext } from "@/context/PartnerContext";
 import { parseJwt } from "@/utils/parseJwt";
-import type { MediaItem, MediaOrganization } from "@/types/media.types";
+import type {
+  MediaFolder,
+  MediaItem,
+  MediaOrganization,
+} from "@/types/media.types";
 import {
+  getMediaFoldersRequest,
   getMediaOrganizationsRequest,
   getMediaRequest,
 } from "@/apiCalls/mediaApiCalls";
@@ -21,6 +26,7 @@ const PAGE_SIZE = 30;
 
 const EMPTY_FILTERS: MediaFilterValues = {
   orgId: "",
+  folder: "",
   search: "",
   dateFrom: "",
   dateTo: "",
@@ -44,6 +50,7 @@ export default function MediaManagerPage() {
   const [totalCount, setTotalCount] = useState(0);
   const [loading, setLoading] = useState(false);
   const [organizations, setOrganizations] = useState<MediaOrganization[]>([]);
+  const [folders, setFolders] = useState<MediaFolder[]>([]);
 
   // ─── Pagination ────────────────────────────────────────────────
   // Cloudinary search is cursor-based (no page offsets), so we keep a stack
@@ -78,17 +85,21 @@ export default function MediaManagerPage() {
 
   const totalPages = Math.max(1, Math.ceil(totalCount / PAGE_SIZE));
 
-  // Load org list once (admin only).
+  // Load org + folder lists once (admin only).
   useEffect(() => {
     if (!isAdmin) return;
     getMediaOrganizationsRequest()
       .then(setOrganizations)
       .catch(() => toast.error("ორგანიზაციების ჩატვირთვა ვერ მოხერხდა"));
+    getMediaFoldersRequest()
+      .then(setFolders)
+      .catch(() => toast.error("ფოლდერების ჩატვირთვა ვერ მოხერხდა"));
   }, [isAdmin]);
 
   const apiFilters = useMemo(
     () => ({
       orgId: isAdmin ? filterValues.orgId || undefined : undefined,
+      folder: isAdmin ? filterValues.folder || undefined : undefined,
       search: filterValues.search || undefined,
       dateFrom: filterValues.dateFrom || undefined,
       dateTo: filterValues.dateTo || undefined,
@@ -252,6 +263,7 @@ export default function MediaManagerPage() {
       <MediaFilters
         isAdmin={isAdmin}
         organizations={organizations}
+        folders={folders}
         totalCount={totalCount}
         value={filterValues}
         onChange={setFilterValues}

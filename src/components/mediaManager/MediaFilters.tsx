@@ -1,10 +1,11 @@
 import { useEffect, useState } from "react";
-import type { MediaOrganization } from "@/types/media.types";
+import type { MediaFolder, MediaOrganization } from "@/types/media.types";
 import "./MediaFilters.scss";
 
 /** Filter values consumed by the listing API. */
 export interface MediaFilterValues {
   orgId: string;
+  folder: string;
   search: string;
   dateFrom: string;
   dateTo: string;
@@ -13,10 +14,18 @@ export interface MediaFilterValues {
 interface Props {
   isAdmin: boolean;
   organizations: MediaOrganization[];
+  folders: MediaFolder[];
   totalCount: number;
   value: MediaFilterValues;
   onChange: (next: MediaFilterValues) => void;
 }
+
+const FOLDER_LABELS: Record<string, string> = {
+  general: "ზოგადი",
+  organizations: "ორგანიზაციები",
+  products: "პროდუქტები",
+  pages: "გვერდები",
+};
 
 /**
  * Filters panel for the Media Manager — owns the local debounced search
@@ -25,6 +34,7 @@ interface Props {
 export default function MediaFilters({
   isAdmin,
   organizations,
+  folders,
   totalCount,
   value,
   onChange,
@@ -50,19 +60,40 @@ export default function MediaFilters({
 
   const clearAll = () => {
     setSearchInput("");
-    onChange({ orgId: "", search: "", dateFrom: "", dateTo: "" });
+    onChange({ orgId: "", folder: "", search: "", dateFrom: "", dateTo: "" });
   };
 
-  const hasFilters =
-    !!(value.orgId || value.search || value.dateFrom || value.dateTo);
+  const hasFilters = !!(
+    value.orgId ||
+    value.folder ||
+    value.search ||
+    value.dateFrom ||
+    value.dateTo
+  );
 
   return (
     <div className="media-filters">
       {isAdmin && (
         <select
           className="media-filters__field"
+          value={value.folder}
+          // Folder and org filters are mutually exclusive.
+          onChange={(e) => setField({ folder: e.target.value, orgId: "" })}
+        >
+          <option value="">ყველა ფოლდერი</option>
+          {folders.map((f) => (
+            <option key={f.path} value={f.name}>
+              {FOLDER_LABELS[f.name] || f.name}
+            </option>
+          ))}
+        </select>
+      )}
+
+      {isAdmin && (
+        <select
+          className="media-filters__field"
           value={value.orgId}
-          onChange={(e) => setField({ orgId: e.target.value })}
+          onChange={(e) => setField({ orgId: e.target.value, folder: "" })}
         >
           <option value="">ყველა ორგანიზაცია</option>
           {organizations.map((o) => (

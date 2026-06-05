@@ -1,0 +1,144 @@
+.if-row {
+  display: grid;
+  grid-template-columns: 1.4fr 0.8fr 2fr 2fr 90px;
+  gap: 12px;
+  align-items: center;
+  padding: 14px 18px;
+  border-bottom: 1px solid #f3f4f6;
+  font-size: 14px;
+  color: #1f2937;
+
+  &:last-child {
+    border-bottom: none;
+  }
+
+  &:hover {
+    background: #fafafe;
+  }
+
+  &__key code {
+    background: #f3f4f6;
+    padding: 2px 8px;
+    border-radius: 6px;
+    font-size: 13px;
+    color: #1a1a2e;
+    font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+  }
+
+  &__value,
+  &__desc {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  &__value a {
+    color: #1a1a2e;
+    text-decoration: none;
+
+    &:hover {
+      text-decoration: underline;
+    }
+  }
+
+  &__desc {
+    color: #6b7280;
+  }
+
+  &__badge {
+    display: inline-block;
+    padding: 3px 10px;
+    border-radius: 999px;
+    font-size: 12px;
+    font-weight: 600;
+
+    &--text {
+      background: #ececf3;
+      color: #1a1a2e;
+    }
+    &--url {
+      background: #ecfdf5;
+      color: #059669;
+    }
+    &--number {
+      background: #fef3c7;
+      color: #b45309;
+    }
+    &--date {
+      background: #fce7f3;
+      color: #be185d;
+    }
+    &--upload {
+      background: #dcdce6;
+      color: #1a1a2e;
+    }
+  }
+
+  &__file {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    text-decoration: none;
+    color: #1a1a2e;
+    overflow: hidden;
+
+    img {
+      width: 28px;
+      height: 28px;
+      object-fit: contain;
+      border: 1px solid #e5e7eb;
+      border-radius: 6px;
+      background: #f9fafb;
+      flex-shrink: 0;
+    }
+
+    span {
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+
+    &:hover span {
+      text-decoration: underline;
+    }
+  }
+
+  &__actions {
+    display: flex;
+    gap: 6px;
+    justify-content: flex-end;
+
+    button {
+      width: 30px;
+      height: 30px;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+      font-size: 16px;
+      line-height: 1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: background 0.15s ease;
+    }
+  }
+
+  &__edit {
+    background: #1a1a2e;
+    color: #fff;
+
+    &:hover {
+      background: #2d2d44;
+    }
+  }
+
+  &__delete {
+    background: #fef2f2;
+    color: #dc2626;
+    font-size: 20px;
+
+    &:hover {
+      background: #fee2e2;
+    }
+  }
+}

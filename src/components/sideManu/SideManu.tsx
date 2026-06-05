@@ -22,8 +22,7 @@ export default function SideManu() {
     links.push({ path: "/menu", label: "მენიუ" });
   if (hasPermission("users.list"))
     links.push({ path: "/partners", label: "პარტნიორების სია" });
-  if (role === "admin")
-    links.push({ path: "/users", label: "მომხმარებლები" });
+  if (role === "admin") links.push({ path: "/users", label: "მომხმარებლები" });
   if (hasPermission("products.viewAll"))
     links.push({ path: "/products", label: "ყველა პროდუქტი" });
   if (hasPermission("orders.viewAll"))
@@ -34,8 +33,13 @@ export default function SideManu() {
     links.push({ path: "/translations", label: "თარგმანები" });
   if (hasPermission("roles.read"))
     links.push({ path: "/roles", label: "როლები" });
-  if (role === "admin") links.push({ path: "/categories", label: "კატეგორიები" });
+  if (role === "admin")
+    links.push({ path: "/categories", label: "კატეგორიები" });
+  if (hasPermission("settings.view"))
+    links.push({ path: "/information", label: "ინფორმმაციული ველები" });
   if (role === "admin") links.push({ path: "/export", label: "ექსპორტი" });
+  if (hasPermission("statistics.view"))
+    links.push({ path: "/statistics", label: "სტატისტიკა" });
   if (hasPermission("logs.view"))
     links.push({ path: "/logs", label: "ლოგები" });
   if (hasPermission("media.view"))
@@ -62,6 +66,12 @@ export default function SideManu() {
       permissions.length === 0
     ) {
       links.push({ path: "/profile/orders", label: "ჩემი შეკვეთები" });
+    }
+    if (
+      permissions.includes("organization.analytics.view") ||
+      permissions.length === 0
+    ) {
+      links.push({ path: "/profile/statistics", label: "სტატისტიკა" });
     }
     if (
       permissions.includes("organization.media.view") ||

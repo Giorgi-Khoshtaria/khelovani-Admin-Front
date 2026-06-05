@@ -1,6 +1,7 @@
 import api from "../api";
 import type {
   MediaFilters,
+  MediaFolder,
   MediaItem,
   MediaListResponse,
   MediaOrganization,
@@ -10,11 +11,13 @@ import type {
 export const getMediaRequest = async (
   filters: MediaFilters = {},
 ): Promise<MediaListResponse> => {
-  const { orgId, search, dateFrom, dateTo, cursor, limit = 30 } = filters;
+  const { orgId, folder, search, dateFrom, dateTo, cursor, limit = 30 } =
+    filters;
 
   const response = await api.get("/api/admin/media", {
     params: {
       ...(orgId && { orgId }),
+      ...(folder && { folder }),
       ...(search && { search }),
       ...(dateFrom && { dateFrom }),
       ...(dateTo && { dateTo }),
@@ -31,6 +34,12 @@ export const getMediaOrganizationsRequest = async (): Promise<
   MediaOrganization[]
 > => {
   const response = await api.get("/api/admin/media/organizations");
+  return response.data.data;
+};
+
+/** Top-level Cloudinary folders (general, organizations, …) for the folder filter. */
+export const getMediaFoldersRequest = async (): Promise<MediaFolder[]> => {
+  const response = await api.get("/api/admin/media/folders");
   return response.data.data;
 };
 

@@ -35,6 +35,9 @@ import UserDetailsPage from "./pages/users/details/UserDetailsPage";
 import CategoryListing from "./pages/categories/CategoryListing";
 import LogsPage from "./pages/Logs/LogsPage";
 import MediaManagerPage from "./pages/media/MediaManagerPage";
+import InformationFieldsPage from "./pages/InformationFields/InformationFieldsPage";
+import AdminStatisticsPage from "./pages/statistics/AdminStatisticsPage";
+import PartnerStatisticsPage from "./pages/statistics/PartnerStatisticsPage";
 
 const IndexRedirect = () => {
   const { token } = usePartnerContext();
@@ -114,6 +117,14 @@ const router = createBrowserRouter([
             path: "logs",
             element: <LogsPage />,
           },
+          {
+            path: "information",
+            element: <InformationFieldsPage />,
+          },
+          {
+            path: "statistics",
+            element: <AdminStatisticsPage />,
+          },
         ],
       },
       // Shared / Partner-Specific Routes (Enforced Ownership)
@@ -140,6 +151,10 @@ const router = createBrowserRouter([
             path: "partners/:id/products/:productId/edit",
             element: <EditProductPage />,
           },
+          {
+            path: "partners/:id/statistics",
+            element: <AdminStatisticsPage />,
+          },
         ],
       },
       // Dedicated Profile Routes (Organizers)
@@ -161,6 +176,10 @@ const router = createBrowserRouter([
           {
             path: "profile/orders",
             element: <OrderListingPage />,
+          },
+          {
+            path: "profile/statistics",
+            element: <PartnerStatisticsPage />,
           },
           {
             path: "profile/products/add",
