@@ -27,6 +27,8 @@ export default function SideManu() {
     links.push({ path: "/products", label: "ყველა პროდუქტი" });
   if (hasPermission("orders.viewAll"))
     links.push({ path: "/orders", label: "შეკვეთები" });
+  if (hasPermission("reviews.viewAll"))
+    links.push({ path: "/reviews", label: "შეფასებები" });
   if (role === "admin")
     links.push({ path: "/products/pinned", label: "პინ-პროდუქტები" });
   if (hasPermission("translations.read"))
@@ -66,6 +68,12 @@ export default function SideManu() {
       permissions.length === 0
     ) {
       links.push({ path: "/profile/orders", label: "ჩემი შეკვეთები" });
+    }
+    if (
+      permissions.includes("organization.reviews.view") ||
+      permissions.length === 0
+    ) {
+      links.push({ path: "/profile/reviews", label: "ჩემი შეფასებები" });
     }
     if (
       permissions.includes("organization.analytics.view") ||
@@ -110,6 +118,16 @@ export default function SideManu() {
     if (
       linkPath === "/profile/orders" &&
       location.pathname.startsWith("/profile/orders")
+    )
+      return true;
+
+    // Reviews highlighting (admin + partner). "/profile/reviews" does not
+    // start with "/reviews", so the admin entry stays dark in the partner view.
+    if (linkPath === "/reviews" && location.pathname.startsWith("/reviews"))
+      return true;
+    if (
+      linkPath === "/profile/reviews" &&
+      location.pathname.startsWith("/profile/reviews")
     )
       return true;
 

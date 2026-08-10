@@ -21,6 +21,7 @@ import ProductDetailsPage from "./pages/products/details/ProductDetailsPage";
 import EditProductPage from "./pages/products/edit/EditProductPage";
 import PinnedProductsPage from "./pages/products/pinned/PinnedProductsPage";
 import OrderListingPage from "./pages/orders/listing/OrderListingPage";
+import ReviewListingPage from "./pages/reviews/listing/ReviewListingPage";
 
 import RoleManagement from "./pages/Roles/RoleManagement";
 import RoleDetailedPage from "./pages/Roles/RoleDetailedPage";
@@ -84,6 +85,10 @@ const router = createBrowserRouter([
           {
             path: "orders",
             element: <OrderListingPage />,
+          },
+          {
+            path: "reviews",
+            element: <ReviewListingPage />,
           },
           {
             path: "translations",
@@ -176,6 +181,10 @@ const router = createBrowserRouter([
           {
             path: "profile/orders",
             element: <OrderListingPage />,
+          },
+          {
+            path: "profile/reviews",
+            element: <ReviewListingPage profileMode />,
           },
           {
             path: "profile/statistics",

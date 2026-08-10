@@ -19,6 +19,8 @@ interface PartnerHeaderProps {
   onPin?: () => void;
   onToggleVisibility?: () => void;
   onViewStatistics?: () => void;
+  /** Opens the reviews list pre-filtered to this organisation. */
+  onViewReviews?: () => void;
   pinning?: boolean;
   toggling?: boolean;
 }
@@ -38,6 +40,7 @@ export function PartnerHeader({
   onPin,
   onToggleVisibility,
   onViewStatistics,
+  onViewReviews,
   pinning,
   toggling,
 }: PartnerHeaderProps) {
@@ -53,12 +56,24 @@ export function PartnerHeader({
       </div>
 
       <div className="header-actions">
-        {!isEditing && onViewStatistics && (
-          <button className="stats-btn" onClick={onViewStatistics}>
-            📊 სტატისტიკა
-          </button>
+        {/* 1 — navigation links out to related pages */}
+        {!isEditing && (onViewStatistics || onViewReviews) && (
+          <div className="header-group header-group--links">
+            {onViewStatistics && (
+              <button className="stats-btn" onClick={onViewStatistics}>
+                📊 სტატისტიკა
+              </button>
+            )}
+            {onViewReviews && (
+              <button className="reviews-btn" onClick={onViewReviews}>
+                ⭐ შეფასებები
+              </button>
+            )}
+          </div>
         )}
 
+        {/* 2 — actions that change this partner */}
+        <div className="header-group header-group--actions">
         {isOwnProfile && (
           <>
             {isEditing ? (
@@ -98,7 +113,7 @@ export function PartnerHeader({
         {!isEditing && isAdmin && (
           <div className="admin-pin-actions">
             <button
-              className={`pin-btn ${partner.isPinned ? "active" : ""}`}
+              className={`header-pin-btn ${partner.isPinned ? "active" : ""}`}
               onClick={onPin}
               disabled={pinning || updating}
               title={partner.isPinned ? "პინის მოხსნა" : "პინი"}
@@ -106,7 +121,7 @@ export function PartnerHeader({
               {pinning ? "..." : partner.isPinned ? "📌 პინის მოხსნა" : "📍 პინი"}
             </button>
             <button
-              className={`visibility-btn ${isShown ? "visible" : "hidden"}`}
+              className={`header-visibility-btn ${isShown ? "visible" : "hidden"}`}
               onClick={onToggleVisibility}
               disabled={toggling || updating}
               title={isShown ? "დამალვა" : "გამოჩენა"}
@@ -140,7 +155,6 @@ export function PartnerHeader({
             {partner.status !== PartnerStatus.BANNED && (
               <button
                 className="ban-btn"
-                style={{ marginLeft: "8px" }}
                 onClick={() => onStatusUpdate(PartnerStatus.BANNED)}
                 disabled={updating}
               >
@@ -149,22 +163,27 @@ export function PartnerHeader({
             )}
           </div>
         )}
+        </div>
 
-        {!isEditing && partner.partnerType && (
-          <div className={`type-badge type--${partner.partnerType}`}>
-            {partner.partnerType === "individual" ? "👤 ბრენდი" : "🏢 კომპანია"}
-          </div>
-        )}
-
+        {/* 3 — read-only status badges */}
         {!isEditing && (
-          <div className={`status-badge ${partner.status}`}>
-            {partner.status === PartnerStatus.PENDING
-              ? "მოლოდინი"
-              : partner.status === PartnerStatus.APPROVED
-                ? "დადასტურებული"
-                : partner.status === PartnerStatus.BANNED
-                  ? "დაბლოკილი"
-                  : ""}
+          <div className="header-group header-group--status">
+            {partner.partnerType && (
+              <div className={`type-badge type--${partner.partnerType}`}>
+                {partner.partnerType === "individual"
+                  ? "👤 ბრენდი"
+                  : "🏢 კომპანია"}
+              </div>
+            )}
+            <div className={`status-badge ${partner.status}`}>
+              {partner.status === PartnerStatus.PENDING
+                ? "მოლოდინი"
+                : partner.status === PartnerStatus.APPROVED
+                  ? "დადასტურებული"
+                  : partner.status === PartnerStatus.BANNED
+                    ? "დაბლოკილი"
+                    : ""}
+            </div>
           </div>
         )}
       </div>

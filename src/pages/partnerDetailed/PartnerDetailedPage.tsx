@@ -236,6 +236,13 @@ export default function PartnerDetailedPage() {
         onViewStatistics={() =>
           navigate(isOwnProfile ? "/profile/statistics" : `/partners/${id}/statistics`)
         }
+        onViewReviews={() =>
+          // Admins land on the global list pre-filtered to this organisation;
+          // a partner viewing its own profile goes to its own review inbox.
+          navigate(
+            isOwnProfile ? "/profile/reviews" : `/reviews?partnerId=${id}`,
+          )
+        }
         pinning={pinning}
         toggling={toggling}
       />

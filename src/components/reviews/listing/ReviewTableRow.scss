@@ -1,0 +1,169 @@
+@use "@/styles/colors.scss" as colors;
+@use "@/styles/_breakpoints.scss" as *;
+
+// Must match ReviewListHeader.scss.
+.review-row {
+  display: grid;
+  grid-template-columns: 1.6fr 1.6fr 130px 3fr 120px 150px;
+  align-items: start;
+  gap: 12px;
+  padding: 16px 20px;
+  border-bottom: 1px solid colors.$color-cream;
+  transition: background-color 0.2s ease;
+
+  &:hover {
+    background-color: colors.$color-ivory;
+  }
+
+  &.is-hidden {
+    opacity: 0.7;
+    background-color: #fafafa;
+  }
+
+  &--no-partner {
+    grid-template-columns: 1.6fr 130px 3fr 120px 150px;
+  }
+
+  &--no-actions {
+    grid-template-columns: 1.6fr 1.6fr 130px 3fr 120px;
+  }
+
+  &--no-partner#{&}--no-actions {
+    grid-template-columns: 1.6fr 130px 3fr 120px;
+  }
+
+  @include tablet {
+    grid-template-columns: 1fr;
+    gap: 8px;
+  }
+
+  // A grid track defaults to a min-content minimum, so a long email or an
+  // unbroken comment widens the row past the card. The card clips with
+  // overflow:hidden, which pushed the actions column out of the clickable
+  // area entirely — the buttons were rendered but unreachable.
+  > div {
+    min-width: 0;
+  }
+
+  &__author,
+  &__partner {
+    display: block;
+    font-size: 14px;
+    font-weight: 600;
+    color: colors.$color-text-primary;
+    overflow-wrap: anywhere;
+  }
+
+  &__email,
+  &__type {
+    display: block;
+    margin-top: 2px;
+    font-size: 11px;
+    color: colors.$color-text-secondary;
+    overflow-wrap: anywhere;
+  }
+
+  &__stars {
+    display: inline-flex;
+    gap: 1px;
+    font-size: 14px;
+    line-height: 1;
+  }
+
+  &__star {
+    color: colors.$color-border;
+
+    &--on {
+      color: #e0a300;
+    }
+  }
+
+  &__comment {
+    margin: 0;
+    font-size: 13.5px;
+    line-height: 1.55;
+    color: colors.$color-text-secondary;
+    overflow-wrap: anywhere;
+  }
+
+  &__expand {
+    margin-top: 4px;
+    padding: 0;
+    border: none;
+    background: none;
+    font-size: 12px;
+    font-weight: 600;
+    color: colors.$color-walnut;
+    cursor: pointer;
+    text-decoration: underline;
+  }
+
+  &__btn {
+    padding: 6px 12px;
+    border-radius: 6px;
+    border: 1px solid colors.$color-border;
+    background: #fff;
+    font-size: 12px;
+    font-weight: 600;
+    color: colors.$color-text-primary;
+    cursor: pointer;
+    transition: all 0.15s ease;
+    white-space: nowrap;
+
+    &:hover {
+      background: colors.$color-ivory;
+      border-color: colors.$color-walnut;
+    }
+
+    &--danger {
+      color: #b3261e;
+      border-color: #f1c9c6;
+
+      &:hover {
+        background: #fdecea;
+        border-color: #b3261e;
+      }
+    }
+  }
+
+  .col-date {
+    font-size: 12.5px;
+    color: colors.$color-text-secondary;
+    white-space: nowrap;
+  }
+
+  .col-rating {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    align-items: flex-start;
+  }
+
+  // Prefixed on purpose. ProductTableRow.scss declares a GLOBAL
+  // `.col-actions { pointer-events: none }` (these stylesheets aren't
+  // scoped), and pointer-events is inherited — a plain `.col-actions` here
+  // silently swallowed every click on the moderation buttons.
+  .review-col-actions {
+    display: flex;
+    gap: 8px;
+    justify-self: end;
+    flex-wrap: wrap;
+
+    @include tablet {
+      justify-self: start;
+    }
+  }
+}
+
+.review-visibility {
+  padding: 2px 8px;
+  border-radius: 999px;
+  font-size: 10.5px;
+  font-weight: 700;
+  letter-spacing: 0.03em;
+
+  &--hidden {
+    background: #fdecea;
+    color: #b3261e;
+  }
+}

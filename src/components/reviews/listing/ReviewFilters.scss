@@ -1,0 +1,86 @@
+@use "@/styles/colors.scss" as colors;
+@use "@/styles/_inputs.scss" as inputs;
+@use "@/styles/_breakpoints.scss" as *;
+
+.filters {
+  padding: 20px 24px;
+  margin-bottom: 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+
+  &__row {
+    display: grid;
+    gap: 12px;
+
+    &--search {
+      grid-template-columns: 1fr;
+    }
+
+    &--selects {
+      grid-template-columns: repeat(4, 1fr);
+
+      @include tablet {
+        grid-template-columns: repeat(2, 1fr);
+      }
+
+      @include mobile {
+        grid-template-columns: 1fr;
+      }
+    }
+  }
+
+  &__group {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+
+    &--search {
+      width: 100%;
+    }
+  }
+
+  &__label {
+    font-size: 11px;
+    font-weight: 600;
+    color: colors.$color-text-secondary;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    padding-left: 2px;
+  }
+
+  &__search-wrapper,
+  &__select-wrapper {
+    position: relative;
+    display: flex;
+    align-items: center;
+  }
+
+  &__search-icon,
+  &__select-icon {
+    position: absolute;
+    left: 12px;
+    width: 16px;
+    height: 16px;
+    color: colors.$color-text-secondary;
+    pointer-events: none;
+    flex-shrink: 0;
+  }
+
+  &__input,
+  &__select {
+    @extend .input-field;
+    padding-left: 38px;
+  }
+
+  &__select {
+    cursor: pointer;
+    appearance: auto;
+    width: 100%;
+
+    // No leading icon on these, so reclaim the reserved space.
+    &--plain {
+      padding-left: 14px;
+    }
+  }
+}

@@ -1,0 +1,61 @@
+@use "@/styles/colors.scss" as colors;
+@use "@/styles/_breakpoints.scss" as *;
+
+// Kept in sync by hand with ReviewTableRow.scss, as the other lists do.
+$grid: 1.6fr 1.6fr 130px 3fr 120px 150px;
+$grid-no-partner: 1.6fr 130px 3fr 120px 150px;
+$grid-no-actions: 1.6fr 1.6fr 130px 3fr 120px;
+$grid-plain: 1.6fr 130px 3fr 120px;
+
+.review-list-header {
+  display: grid;
+  grid-template-columns: $grid;
+  align-items: center;
+  padding: 10px 20px;
+  background: linear-gradient(to bottom, colors.$color-bg-secondary, colors.$color-ivory);
+  border-bottom: 2px solid colors.$color-border;
+
+  &--no-partner {
+    grid-template-columns: $grid-no-partner;
+  }
+
+  &--no-actions {
+    grid-template-columns: $grid-no-actions;
+  }
+
+  &--no-partner#{&}--no-actions {
+    grid-template-columns: $grid-plain;
+  }
+
+  > div {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    // Same min-content blowout guard as the row, so the two stay aligned.
+    min-width: 0;
+
+    span {
+      font-size: 11px;
+      font-weight: 700;
+      color: colors.$color-walnut;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+    }
+
+    small {
+      font-size: 10px;
+      font-weight: 400;
+      color: colors.$color-text-secondary;
+      letter-spacing: 0.04em;
+    }
+
+    &.review-col-actions {
+      justify-self: end;
+      padding-right: 8px;
+    }
+  }
+
+  @include tablet {
+    display: none;
+  }
+}
