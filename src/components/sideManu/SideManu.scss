@@ -6,8 +6,11 @@
   background-color: $color-white;
   border-right: 1px solid $color-border;
   height: calc(100vh - 64px); // Adjust based on header height
-  padding: 20px 0;
+  padding: 16px 12px;
   box-shadow: 2px 0 5px rgba(0, 0, 0, 0.02);
+  overflow-y: auto;
+  overflow-x: hidden;
+  flex-shrink: 0;
 
   @include mobile {
     width: 100%;
@@ -26,12 +29,13 @@
 
     &__item {
       margin-bottom: 0;
+      border-radius: 999px;
 
       &.active {
         .side-manu__link {
-          background-color: transparent;
+          background-color: $color-accent;
+          color: $color-white;
           border-left: none;
-          border-bottom: 4px solid $color-accent;
         }
       }
     }
@@ -40,6 +44,7 @@
       padding: 8px 16px;
       white-space: nowrap;
       border-left: none;
+      border-radius: 999px;
     }
   }
 
@@ -47,12 +52,21 @@
     list-style: none;
     padding: 0;
     margin: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
   }
 
   &__item {
-    margin-bottom: 4px;
+    border: 1px solid $color-border;
+    border-radius: 8px;
+    overflow: hidden;
+    transition: border-color 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
 
     &.active {
+      border-color: $color-accent;
+      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.06);
+
       .side-manu__link {
         background-color: $color-bg-secondary;
         color: $color-text-dark;
@@ -64,7 +78,7 @@
 
   &__link {
     display: block;
-    padding: 12px 24px;
+    padding: 12px 20px;
     color: $color-text-secondary;
     text-decoration: none;
     font-weight: 500;

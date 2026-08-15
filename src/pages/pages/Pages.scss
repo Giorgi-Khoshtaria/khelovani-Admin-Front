@@ -1,0 +1,27 @@
+@use "sass:color";
+@use "@/styles/colors.scss" as colors;
+@use "@/styles/_buttons.scss" as *;
+
+.pages-page {
+  padding: 32px;
+
+  .page-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 32px;
+
+    h1 {
+      margin: 0;
+      font-size: 28.8px;
+      color: colors.$color-text-primary;
+    }
+  }
+
+  .loading {
+    text-align: center;
+    padding: 48px;
+    color: colors.$color-text-secondary;
+    font-size: 15.2px;
+  }
+}

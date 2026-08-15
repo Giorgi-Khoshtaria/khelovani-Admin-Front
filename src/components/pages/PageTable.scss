@@ -1,0 +1,87 @@
+@use "@/styles/colors.scss" as colors;
+@use "@/styles/buttons" as *;
+@use "@/styles/badges" as *;
+
+.page-table-wrapper {
+  background: colors.$color-white;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+  overflow: hidden;
+}
+
+.page-table {
+  width: 100%;
+  border-collapse: collapse;
+  text-align: left;
+
+  th,
+  td {
+    padding: 16px 20px;
+    border-bottom: 1px solid colors.$color-cream;
+  }
+
+  th {
+    background-color: colors.$color-ivory;
+    font-weight: 600;
+    font-size: 14.4px;
+    color: colors.$color-espresso;
+  }
+
+  code {
+    background: colors.$color-bg-page;
+    padding: 3.2px 8px;
+    border-radius: 4px;
+    font-family: monospace;
+    font-size: 14.4px;
+    color: colors.$color-espresso;
+  }
+
+  .description-cell {
+    max-width: 320px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    color: colors.$color-text-secondary;
+  }
+
+  .og-thumb {
+    width: 48px;
+    height: 32px;
+    border-radius: 4px;
+    object-fit: cover;
+    display: block;
+
+    &--empty {
+      background: colors.$color-bg-page;
+      border: 1px dashed colors.$color-cream;
+    }
+  }
+
+  .actions-cell {
+    display: flex;
+    gap: 8px;
+  }
+
+  .empty-row td {
+    text-align: center;
+    padding: 48px;
+    color: colors.$color-text-secondary;
+    font-size: 15.2px;
+  }
+
+  .status-badge {
+    @extend .status-badge;
+  }
+}
+
+.btn-primary-sm {
+  @extend .btn-outline;
+  padding: 6.4px 12.8px;
+  font-size: 13.6px;
+}
+
+.btn-danger-sm {
+  @extend .btn-danger;
+  padding: 6.4px 12.8px;
+  font-size: 13.6px;
+}

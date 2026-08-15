@@ -10,6 +10,9 @@ import {
   Navigate,
 } from "react-router-dom";
 import Menu from "./pages/menu/Menu";
+import Pages from "./pages/pages/Pages";
+import AddPagePage from "./pages/pages/add/AddPagePage";
+import EditPagePage from "./pages/pages/edit/EditPagePage";
 import PartnerDetailedPage from "./pages/partnerDetailed/PartnerDetailedPage";
 import { PartnerProvider } from "./context/PartnerProvider";
 import PartnerListing from "./pages/partnerListings/PartnerListing";
@@ -69,6 +72,18 @@ const router = createBrowserRouter([
           {
             path: "menu",
             element: <Menu />,
+          },
+          {
+            path: "pages",
+            element: <Pages />,
+          },
+          {
+            path: "pages/add",
+            element: <AddPagePage />,
+          },
+          {
+            path: "pages/edit/:id",
+            element: <EditPagePage />,
           },
           {
             path: "partners",

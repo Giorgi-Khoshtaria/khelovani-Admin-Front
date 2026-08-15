@@ -20,6 +20,8 @@ export default function SideManu() {
   // Admin / Moderator Links
   if (hasPermission("menu.manage"))
     links.push({ path: "/menu", label: "მენიუ" });
+  if (hasPermission("pages.manage"))
+    links.push({ path: "/pages", label: "გვერდები / SEO" });
   if (hasPermission("users.list"))
     links.push({ path: "/partners", label: "პარტნიორების სია" });
   if (role === "admin") links.push({ path: "/users", label: "მომხმარებლები" });
@@ -100,6 +102,11 @@ export default function SideManu() {
 
     // Admin /users highlighting
     if (linkPath === "/users" && location.pathname.startsWith("/users")) {
+      return true;
+    }
+
+    // Admin /pages (SEO) highlighting — covers /pages/add, /pages/edit/:id
+    if (linkPath === "/pages" && location.pathname.startsWith("/pages")) {
       return true;
     }
 

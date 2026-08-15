@@ -1,0 +1,56 @@
+@use "@/styles/colors.scss" as colors;
+
+.add-page-page {
+  padding: 28px 24px 40px;
+  width: 100%;
+
+  .page-header {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    margin-bottom: 28px;
+    padding-bottom: 20px;
+    border-bottom: 1.5px solid colors.$color-bg-secondary;
+
+    .back-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 8px 14px;
+      border-radius: 10px;
+      border: 1.5px solid colors.$color-border;
+      background: colors.$color-white;
+      color: colors.$color-text-secondary;
+      font-size: 13px;
+      font-weight: 600;
+      font-family: inherit;
+      cursor: pointer;
+      transition: all 0.18s;
+      flex-shrink: 0;
+
+      &:hover {
+        border-color: colors.$color-walnut;
+        color: colors.$color-walnut;
+        background: colors.$color-cream;
+      }
+    }
+
+    .header-text {
+      flex: 1;
+
+      h1 {
+        margin: 0 0 4px;
+        font-size: 22px;
+        font-weight: 700;
+        color: colors.$color-espresso;
+        letter-spacing: -0.02em;
+      }
+
+      p {
+        margin: 0;
+        font-size: 13px;
+        color: colors.$color-text-secondary;
+      }
+    }
+  }
+}
